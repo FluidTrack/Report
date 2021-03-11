@@ -52,10 +52,11 @@ searchButton.addEventListener('click',() => {
     let url = "/Report"
     url += `?target=${name.value}&range=${Range.value}`
     if(advance.checked) {
-      url += `&server=${serverAddress}:${serverPort}`
+      url += `&server=${serverAddress.value}:${serverPort.value}/`
     } else {
       url += `&server=http://fluidtrack.site/`
     }
     console.log(url)
+    location.href=url;
   }
 });

@@ -11,6 +11,7 @@
   <meta property="og:title" content="FluidTrack Report" />
   <meta property="og:description" content="Auto Report" />
   <meta property="og:image" content="../IMG/metaImage.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <title>FluidTrack Report</title>
 </head>
 <body>
@@ -163,6 +164,18 @@
    </div>
 </div>
 
+<div class="UI_NotificationBG noPrint" >
+</div>
+
+<div class="UI_PrintBG noPrint" >
+</div>
+
+<div class="UI_GitBG  noPrint">
+</div>
+
+<div class="UI_HomeBG  noPrint">
+</div>
+
 <div class="UI_Notification UI_Button noPrint" id="notiButton">
   <i class="fas fa-exclamation-triangle" ></i><br>
   주의사항
@@ -170,13 +183,19 @@
 
 <div class="UI_Print UI_Button noPrint" id="printButton">
   <i class="fas fa-print" ></i><br>
-  프린트
+  PDF변환
+</div>
+
+<div class="UI_Home UI_Button noPrint" id="HomeButton">
+  <i class="fas fa-home"></i><br>
+  홈으로
 </div>
 
 <div class="UI_Git UI_Button noPrint" id="gitButton">
   <i class="fas fa-bug"></i><br>
   버그리포트
 </div>
+
 
 
 <div class="blind noPrint" id="blind">
@@ -196,8 +215,11 @@
   </div>
 </div>
 
+
+<script language="javascript" src="../JS/PlatformCheck.js"></script>
+<script language="javascript" src="../JS/Graph.js"></script>
 <script language="javascript" src="../JS/DataFetch.js"></script>
 <script language="javascript" src="../JS/UI.js"></script>
-<script language="javascript" src="../JS/Graph.js"></script>
+
 </body>
 </html>

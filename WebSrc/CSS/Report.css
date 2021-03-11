@@ -11,7 +11,6 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    /* background-color: #FAFAFA; */
     background-color: rgb(56, 56, 56);
 }
 
@@ -53,7 +52,7 @@ body{
 
     .page {
         position: relative;
-        height: 842px;
+        height: 840px;
         margin: 0;
         border: initial;
         border-radius: initial;
@@ -61,6 +60,7 @@ body{
         min-height: initial;
         box-shadow: initial;
         page-break-after: always;
+        overflow: hidden;
     }
 }
 
@@ -630,7 +630,20 @@ body{
   ============================================================================================*/
 .UI_Button{
   position: fixed;
-  width: 110px;
+  width: 100px;
+  height: 80px;
+  color:white;
+  border-radius: 10px;
+  margin-right :10px;
+  bottom: 35px;
+  text-align: center;
+  cursor:pointer;
+  transition: 0.2s;
+}
+
+.UI_NotificationBG, .UI_PrintBG, .UI_GitBG, .UI_HomeBG {
+  position: fixed;
+  width: 100px;
   height: 80px;
   color:white;
   border-radius: 10px;
@@ -641,13 +654,34 @@ body{
   transition: 0.2s;
 }
 
+.UI_PrintBG {
+  right:10px;
+  background-color: #095217;
+}
+
+.UI_NotificationBG {
+  right:120px;
+  background-color: #a36200;
+}
+
+.UI_GitBG {
+  left:10px;
+  background-color: rgb(0, 79, 163);
+}
+
+.UI_HomeBG {
+  right:230px;
+  background-color: hsl(12, 70%, 28%);
+}
+
+
 .UI_Button i {
   font-size: 28px;
   line-height: 50px;
 }
 
 .UI_Button:hover {
-  bottom:25px;
+  bottom:30px;
 }
 
 .UI_Print {
@@ -656,7 +690,7 @@ body{
 }
 
 .UI_Notification {
-  right:130px;
+  right:120px;
   background-color: rgb(255, 153, 0);
 }
 
@@ -665,10 +699,15 @@ body{
   background-color: rgb(0, 125, 255);
 }
 
+.UI_Home {
+  right:230px;
+  background-color: #c04627;
+}
+
 .blind {
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0,0.7);
+  background-color: rgba(0, 0, 0,0.9);
   position: fixed;
   display: none;
   z-index: -1;
