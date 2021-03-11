@@ -71,7 +71,7 @@
    <!--===========================================================================================
        PAGE 2
    ============================================================================================-->
-   <!-- <div class="page">
+   <div class="page">
        <div class="Header_Title">FluidTrack Report</div>
        <div class="Header_Date" id="P2_DateRange">2021년 1월 1일 ~ 2021년 1월 14일 (1,2 주차)</div>
        <div class="HeaderHR"></div>
@@ -116,12 +116,6 @@
        <img src="../IMG/YonseiSymbol3.png" class="Footer_Logo">
        <div class="Footer_Organization">세브란스병원</div>
        <div class="Footer_Page">2</div>
-   </div> -->
-
-   <div class="page">
-     <div class="Header_Title">FluidTrack Report</div>
-     <div class="Header_Date" id="P2_DateRange">2021년 1월 1일 ~ 2021년 1월 14일 (1,2 주차)</div>
-     <div class="HeaderHR"></div>
    </div>
 
    <!--===========================================================================================
@@ -164,16 +158,42 @@
        <div class="Footer_Page">3</div>
    </div>
 </div>
-<!--
-<div class="UI_Notification UI_Button noPrint">
-  <i class="fas fa-exclamation-triangle"></i><br>
+
+<div class="UI_Notification UI_Button noPrint" id="notiButton">
+  <i class="fas fa-exclamation-triangle" ></i><br>
   주의사항
 </div>
 
-<div class="UI_Print UI_Button noPrint">
-  <i class="fas fa-info-circle"></i><br>
+<div class="UI_Print UI_Button noPrint" id="printButton">
+  <i class="fas fa-print" ></i><br>
   프린트
-</div> -->
+</div>
 
+<div class="UI_Git UI_Button noPrint" id="gitButton">
+  <i class="fas fa-bug"></i><br>
+  버그리포트
+</div>
+
+
+<div class="blind noPrint" id="blind">
+  <div class="UI_Popup noPrint">
+    <div class="Popup_Title">
+      사용 주의사항
+    </div>
+    <img src="../IMG/PrintSetting.png" alt="print setting" class="PrintSetting">
+    <div class="description">
+      인쇄시 반드시 위와 같은 설정으로 PDF로 인쇄하여야 합니다. <br />
+      <span>특히, 옵션에서 배경 그래픽을 반드시 체크하세요.</span><br />
+      FluidTrack Report는 <span>데스크탑 / Chrome 환경</span>에서 동작합니다.
+    </div>
+    <div class="OkButton" id="OkButton">
+      확인
+    </div>
+  </div>
+</div>
+
+<script language="javascript" src="../JS/DataFetch.js"></script>
+<script language="javascript" src="../JS/UI.js"></script>
+<script language="javascript" src="../JS/Graph.js"></script>
 </body>
 </html>
