@@ -3,9 +3,9 @@
     GRAPH CSS
 
 ============================================================================================*/
-.P1_DailyGraph, .P1_WeaklyGraph, .P1_TimezoneGraph,
-.P2_DailyGraph, .P2_WeaklyGraph, .P2_TimezoneGraph,
-.P3_DailyGraph, .P3_WeaklyGraph {
+.P1_DailyGraph, .P1_weeklyGraph, .P1_TimezoneGraph,
+.P2_DailyGraph, .P2_weeklyGraph, .P2_TimezoneGraph,
+.P3_DailyGraph, .P3_weeklyGraph {
   position: absolute;
   transform: translate(-50%,-50%);
   left:50%;

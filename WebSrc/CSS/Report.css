@@ -333,7 +333,7 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.P1_WeaklyTitle{
+.P1_weeklyTitle{
   position: absolute;
   width: 345px;
   height: 30px;
@@ -346,7 +346,7 @@ body{
   line-height: 30px;
 }
 
-.P1_WeaklyGraphDiv{
+.P1_weeklyGraphDiv{
   position: absolute;
   width: 345px;
   height: 140px;
@@ -451,7 +451,7 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.P2_WeaklyTitle{
+.P2_weeklyTitle{
   position: absolute;
   width: 345px;
   height: 30px;
@@ -464,7 +464,7 @@ body{
   line-height: 30px;
 }
 
-.P2_WeaklyGraphDiv{
+.P2_weeklyGraphDiv{
   position: absolute;
   width: 345px;
   height: 140px;
@@ -569,7 +569,7 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.P3_WeaklyTitle{
+.P3_weeklyTitle{
   position: absolute;
   width: 523px;
   height: 30px;
@@ -582,7 +582,7 @@ body{
   line-height: 30px;
 }
 
-.P3_WeaklyGraphDiv{
+.P3_weeklyGraphDiv{
   position: absolute;
   width: 523px;
   height: 140px;
