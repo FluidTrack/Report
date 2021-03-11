@@ -1,0 +1,109 @@
+/*============================================================================================
+
+   BASIC CSS
+
+============================================================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&family=Bungee&family=Roboto&display=swap');
+
+body {
+   width: 100%;
+   height: 100%;
+   margin: 0;
+   padding: 0;
+   /* background-color: #FAFAFA; */
+   background-color: rgb(56, 56, 56);
+}
+
+body{
+   background-color: rgb(56, 56, 56) !important;
+}
+
+* {
+   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   font-family: 'Gothic A1', sans-serif;
+   -webkit-text-size-adjust: none;
+   text-decoration: none;
+}
+
+/*============================================================================================
+
+   Main Div CSS
+
+============================================================================================*/
+.mainDiv {
+  width: 400px;
+  height: 640px;
+  transform: translate(-50%,-50%);
+  left:50%;
+  top:50%;
+  background-color: white;
+  border-radius: 10px;
+  position: absolute;
+}
+
+.title{
+  line-height: 50px;
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+  height: 50px;
+  background-color: rgb(119, 7, 0);
+  text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  color:white;
+}
+
+.icon{
+  width: 100%;
+  margin-top:20px;
+  height: 250px;
+  font-size: 200px;
+  line-height: 250px;
+  text-align: center;
+  color:rgb(163, 163, 163);
+}
+
+.subText{
+  font-size: 18px;
+  margin-left:20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description{
+  width: 360px;
+  margin-left:20px;
+  height:130px;
+  padding:10px;
+  background-color: rgb(230, 230, 230);
+  margin-bottom: 20px;
+}
+
+.footer {
+  margin-left:20px;
+  margin-bottom: 40px;
+}
+
+.OkButton{
+  width: 360px;
+  margin-left: 20px;
+  text-align: center;
+  background-color: rgb(28, 28, 28);
+  color:white;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 5px;
+  cursor:pointer;
+  transition: 0.1s;
+}
+
+.OkButton i {
+  margin-right: 10px;
+}
+
+.OkButton:hover{
+  background-color: rgb(57, 57, 57);
+}
