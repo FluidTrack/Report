@@ -378,7 +378,7 @@ body{
 }
 
 .P1_CommentBG{
-  background-image: url(../IMG/P1_comment.svg);
+  background-image: url(../IMG/P1_comment.png);
   position: absolute;
   width: 524px;
   height: 139px;
@@ -495,7 +495,7 @@ body{
 }
 
 .P2_CommentBG{
-  background-image: url(../IMG/P2_comment.svg);
+  background-image: url(../IMG/P2_comment.png);
   position: absolute;
   width: 524px;
   height: 139px;
@@ -590,7 +590,7 @@ body{
 }
 
 .P3_CommentBG{
-  background-image: url(../IMG/P3_comment.svg);
+  background-image: url(../IMG/P3_comment.png);
   position: absolute;
   width: 524px;
   height: 139px;

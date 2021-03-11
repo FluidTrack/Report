@@ -200,9 +200,9 @@ body{
 .searchButtonBG{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:50%;
-  top:calc(50% + 190px);
-  width: 300px;
+  left:calc(50% - 100px);
+  top:calc(50% + 200px);
+  width: 330px;
   height: 60px;
   background-color: rgb(0, 53, 79);
   line-height: 60px;
@@ -215,9 +215,9 @@ body{
 .searchButton{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:50%;
-  top:calc(50% + 180px);
-  width: 300px;
+  left:calc(50% - 100px);
+  top:calc(50% + 190px);
+  width: 330px;
   height: 60px;
   background-color: rgb(0, 73, 108);
   line-height: 60px;
@@ -230,11 +230,56 @@ body{
 }
 
 .searchButton:hover{
-  top:calc(50% + 183px);
+  top:calc(50% + 193px);
 }
 
 
-.searchButton i, .noti i { margin-right: 20px; }
+
+.DB_ButtonBG{
+  position: absolute;
+  transform: translate(-50%,-50%);
+  left:calc(50% + 180px);
+  top:calc(50% + 200px);
+  width: 140px;
+  height: 90px;
+  background-color: rgb(177, 117, 0);
+  line-height: 60px;
+  font-size: 24px;
+  border-radius: 7px;
+  text-align: center;
+  color:white;
+}
+
+.DB_Button{
+  position: absolute;
+  transform: translate(-50%,-50%);
+  left:calc(50% + 180px);
+  top:calc(50% + 190px);
+  width: 140px;
+  height: 90px;
+  background-color: rgb(233, 154, 0);
+  line-height: 60px;
+  font-size: 18px;
+  border-radius: 7px;
+  text-align: center;
+  color:white;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.DB_Button i{
+  display: block;
+  font-size: 45px;
+  line-height: 20px;
+  margin-top:20px;
+}
+
+.DB_Button:hover{
+  top:calc(50% + 193px);
+}
+
+
+.searchButton i,.noti i { margin-right: 20px; }
 .noti i {font-size: 20px;}
 
 .noti{

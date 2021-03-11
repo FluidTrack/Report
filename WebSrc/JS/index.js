@@ -7,6 +7,7 @@ let serverAddress = document.getElementById('serverAddress');
 let serverPort = document.getElementById('serverPort');
 let noti = document.getElementById('noti');
 let footer = document.getElementById('footer');
+let DB_Button = document.getElementById('DB_Button');
 let searchButton = document.getElementById('searchButton');
 
 window.onpageshow = function (event) {
@@ -32,6 +33,10 @@ advance.addEventListener('click', () => {
 
 footer.addEventListener('click', () => {
   location.href="https://github.com/FluidTrack"
+})
+
+DB_Button.addEventListener('click', () => {
+  location.href="http://fluidtrack.site/"
 })
 
 let isMobile = () => {
