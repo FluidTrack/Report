@@ -1,0 +1,632 @@
+ 'Roboto';/*============================================================================================
+
+    BASIC CSS
+
+============================================================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@500&family=Roboto&display=swap');
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* background-color: #FAFAFA; */
+    background-color: rgb(56, 56, 56);
+}
+
+body{
+    background-color: rgb(56, 56, 56) !important;
+}
+
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    -webkit-text-size-adjust: none;
+}
+
+.page {
+    width: 595px;    min-height: 842px;
+    margin: 10mm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+@page {
+    size: 595px 842px;
+    margin: 0;
+}
+
+@media print {
+    html, body {
+        width: 595px;
+        height: 842px;
+        background-color: white !important;
+    }
+    .noPrint{
+      display: none; !important;
+    }
+
+    .page {
+        position: relative;
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: 595px;
+        min-height: initial;
+        box-shadow: initial;
+        page-break-after: always;
+    }
+}
+
+.bullet {
+  margin-right: 5px;
+  line-height: 30px;
+}
+
+/*============================================================================================
+
+    HEADER CSS
+
+============================================================================================*/
+.Header_Title{
+  /* FluidTrack Report */
+  position: absolute;
+  width: 152px;
+  height: 15px;
+  left: 35px;
+  top: 35px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 15px;
+
+  /* yonsei blue */
+  color: #003777;
+}
+
+.Header_Date{
+  position: absolute;
+  width: 214px;
+  height: 12px;
+  left: 345px;
+  top: 38px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  /* identical to box height */
+
+  text-align: right;
+
+  color: #000000;
+}
+
+.HeaderHR{
+  position: absolute;
+  width: 527px;
+  height: 0px;
+  left: 34px;
+  top: 55px;
+
+  border: 1px solid #003777;
+  background-color: #003777;
+}
+
+/*============================================================================================
+
+    FOOTER CSS
+
+============================================================================================*/
+.Footer_HR{
+  position: absolute;
+  width: 527px;
+  height: 0px;
+  left: 35px;
+  top: 792px;
+  border: 1px solid #003777;
+  background-color: #003777;
+}
+
+.Footer_Logo{
+  /* yonsei symbol */
+  position: absolute;
+  width: 37px;
+  height: 37px;
+  left: 38px;
+  top: 797px;
+}
+
+.Footer_Organization{
+  position: absolute;
+  width: 72px;
+  height: 15px;
+  left: 80px;
+  top: 808px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
+}
+
+.Footer_Page{
+  position: absolute;
+  width: 7px;
+  height: 14px;
+  left: 553px;
+  top: 808px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+
+  /* yonsei blue */
+  color: #003777;
+}
+
+
+/*============================================================================================
+
+    PAGE _ 1 CSS
+
+============================================================================================*/
+.P1_TitleHR {
+  position: absolute;
+  width: 527px;
+  height: 0px;
+  left: 34px;
+  top: 78px;
+  border: 1px solid #003777;
+  background-color: #003777;
+}
+
+.P1_Title{
+  /* FluidTrack Report */
+  position: absolute;
+  width: 268px;
+  height: 39px;
+  left: 33px;
+  top: 46px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+
+  /* yonsei blue */
+  color: #003777;
+}
+
+.P1_Name{
+  position: absolute;
+  width: 300px;
+  height: 12px;
+  left: 37px;
+  top: 89px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: #000000;
+}
+
+.P1_Info{
+  position: absolute;
+  width: 300px;
+  height: 21px;
+  left: 37px;
+  top: 107px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: #000000;
+}
+
+.P1_IdNum{
+  position: absolute;
+  width: 300px;
+  height: 21px;
+  left: 37px;
+  top: 125px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: #000000;
+}
+
+.P1_DateRange{
+  position: absolute;
+  width: 210px;
+  height: 12px;
+  left: 341px;
+  top: 89px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: right;
+  color: #000000;
+}
+
+.P1_Notification{
+  position: absolute;
+  width: 280px;
+  height: 24px;
+  left: 274px;
+  top: 116px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  text-align: right;
+
+  color: #9B9B9B;
+}
+
+.P1_HR{
+  position: absolute;
+  width: 527px;
+  height: 0px;
+  left: 34px;
+  top: 157px;
+
+  border: 1px solid #C4C4C4;
+  background-color: #C4C4C4;
+}
+
+.P1_Part1Title{
+  position: absolute;
+  width: 150px;
+  height: 21px;
+  left: 37px;
+  top: 172px;
+  font-size: 16px;
+  line-height: 15px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.P1_DailyTitle{
+  position: absolute;
+  width: 345px;
+  height: 30px;
+  left: 37px;
+  top: 200px;
+  background: #F3F9FF;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P1_DailyGraphDiv{
+  position: absolute;
+  width: 345px;
+  height: 142px;
+  left: 37px;
+  top: 240px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P1_WeaklyTitle{
+  position: absolute;
+  width: 345px;
+  height: 30px;
+  left: 37px;
+  top: 414px;
+  background: #F3F9FF;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P1_WeaklyGraphDiv{
+  position: absolute;
+  width: 345px;
+  height: 140px;
+  left: 37px;
+  top: 459px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P1_TimezoneTitle{
+  position: absolute;
+  width: 165px;
+  height: 30px;
+  left: 396px;
+  top: 199px;
+  background: #F3F9FF;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P1_TimezoneGraphDiv{
+  position: absolute;
+  width: 165px;
+  height: 363px;
+  left: 396px;
+  top: 237px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P1_CommentBG{
+  background-image: url(../IMG/P1_comment.svg);
+  position: absolute;
+  width: 524px;
+  height: 139px;
+  left: 38px;
+  top: 627px;
+}
+
+.P1_CommentTitle{
+  position: absolute;
+  width: 523.5px;
+  height: 30px;
+  left: 55px;
+  top: 627px;
+  line-height: 30px;
+  font-size: 10px;
+}
+
+.P1_CommentTextArea {
+  position: absolute;
+  width: 520px;
+  height: 107px;
+  left: 40px;
+  top: 658px;
+
+  border:none;
+  outline: none;
+  resize: none;
+  padding:20px;
+  overflow:hidden;
+  font-size: 10px;
+}
+
+
+
+/*============================================================================================
+
+    PAGE _ 2 CSS
+
+============================================================================================*/
+.P2_Part2Title{
+  position: absolute;
+  left: 37px;
+  top: 83px;
+  font-size: 16px;
+  line-height: 15px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.P2_DailyTitle{
+  position: absolute;
+  width: 345px;
+  height: 30px;
+  left: 37px;
+  top: 113px;
+  background: #FFF9E8;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P2_DailyGraphDiv{
+  position: absolute;
+  width: 345px;
+  height: 142px;
+  left: 37px;
+  top: 153px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P2_WeaklyTitle{
+  position: absolute;
+  width: 345px;
+  height: 30px;
+  left: 37px;
+  top: 327px;
+  background: #FFF9E8;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P2_WeaklyGraphDiv{
+  position: absolute;
+  width: 345px;
+  height: 140px;
+  left: 37px;
+  top: 372px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P2_TimezoneTitle{
+  position: absolute;
+  width: 165px;
+  height: 30px;
+  left: 396px;
+  top: 112px;
+  background: #FFF9E8;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P2_TimezoneGraphDiv{
+  position: absolute;
+  width: 165px;
+  height: 363px;
+  left: 396px;
+  top: 150px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P2_CommentBG{
+  background-image: url(../IMG/P2_comment.svg);
+  position: absolute;
+  width: 524px;
+  height: 139px;
+  left: 38px;
+  top: 556px;
+}
+
+.P2_CommentTitle{
+  position: absolute;
+  width: 523.5px;
+  height: 30px;
+  left: 55px;
+  top: 556px;
+  line-height: 30px;
+  font-size: 10px;
+}
+
+.P2_CommentTextArea {
+  position: absolute;
+  width: 520px;
+  height: 107px;
+  left: 40px;
+  top: 587px;
+
+  border:none;
+  outline: none;
+  resize: none;
+  padding:20px;
+  overflow:hidden;
+  font-size: 10px;
+}
+
+
+
+/*============================================================================================
+
+    PAGE _ 3 CSS
+
+============================================================================================*/
+.P3_Part3Title{
+  position: absolute;
+  left: 37px;
+  top: 83px;
+  font-size: 16px;
+  line-height: 15px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.P3_DailyTitle{
+  position: absolute;
+  width: 523px;
+  height: 30px;
+  left: 37px;
+  top: 113px;
+  background: #FFD2A6;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P3_DailyGraphDiv{
+  position: absolute;
+  width: 523px;
+  height: 142px;
+  left: 37px;
+  top: 153px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P3_WeaklyTitle{
+  position: absolute;
+  width: 523px;
+  height: 30px;
+  left: 37px;
+  top: 327px;
+  background: #FFD2A6;
+  padding-left: 20px;
+  clip-path:polygon(0px 0px, calc(100% - 10px) 0px, 100% 10px, 100% 100%, 10px 100%, 0px calc(100% - 10px));
+  font-size: 10px;
+  line-height: 30px;
+}
+
+.P3_WeaklyGraphDiv{
+  position: absolute;
+  width: 523px;
+  height: 140px;
+  left: 37px;
+  top: 372px;
+  background-color: rgb(247, 247, 247);
+}
+
+.P3_CommentBG{
+  background-image: url(../IMG/P3_comment.svg);
+  position: absolute;
+  width: 524px;
+  height: 139px;
+  left: 38px;
+  top: 556px;
+}
+
+.P3_CommentTitle{
+  position: absolute;
+  width: 523.5px;
+  height: 30px;
+  left: 55px;
+  top: 556px;
+  line-height: 30px;
+  font-size: 10px;
+}
+
+.P3_CommentTextArea {
+  position: absolute;
+  width: 520px;
+  height: 107px;
+  left: 40px;
+  top: 587px;
+
+  border:none;
+  outline: none;
+  resize: none;
+  padding:20px;
+  overflow:hidden;
+  font-size: 10px;
+
+
+  /*============================================================================================
+
+      UI CSS
+
+  ============================================================================================*/
+.UI_Button{
+
+}

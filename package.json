@@ -1,0 +1,29 @@
+{
+  "name": "fluid-track-report",
+  "version": "1.0.0",
+  "description": "Auto fluid track report generator based on web server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FluidTrack/Report.git"
+  },
+  "keywords": [
+    "FluidTrack"
+  ],
+  "author": "KimYC1223",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FluidTrack/Report/issues"
+  },
+  "homepage": "https://github.com/FluidTrack/Report#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
