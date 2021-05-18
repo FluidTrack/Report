@@ -37,7 +37,7 @@ let loadData = () => {
   console.log(`User ID ${targetID} / User Name :${targetName}`);
   P1_Name.innerHTML = `${targetName} 어린이`
   P1_IdNum.innerHTML = `등록 번호 :${userData.creation_date.split('-')[0]}_${targetID}`
-  
+
   let rangeInt = parseInt(range)
   startDate = new Date(userData.creation_date)
   startDate.setTime(startDate.getTime() + (rangeInt*14*24*60*60*1000));
@@ -62,58 +62,66 @@ let loadData = () => {
 
   console.log(`${startDateStamp} ~ ${endDateStamp} 데이터`)
 
-  let str2 = `${targetURL}read_water_logs?id=${targetID}&startRange=${startDateStamp}&endRage=${endDateStamp}`
+  let str2 = `${targetURL}read_water_logs?id=${targetID}&startRange=${startDateStamp}&endRange=${endDateStamp}`
+  //console.log(`water url : ${str2}`)
   jQuery.ajax({
     type:'GET',						// POST 방식으로
-    url: `${str2}`,		
+    url: `${str2}`,
     processData:false,					// 기본 설정
     contentType: false,					// 기본 설정
     success: function(msg) {			// 성공시
+      //console.log(`Water : ${msg}`)
       if (msg != "null") {
         UserWaterData = JSON.parse(msg).WaterLogs[0];
       } else {
         UserWaterData = null
       }
-      
-      let str3 = `${targetURL}read_drink_logs?id=${targetID}&startRange=${startDateStamp}&endRage=${endDateStamp}`
+
+      let str3 = `${targetURL}read_drink_logs?id=${targetID}&startRange=${startDateStamp}&endRange=${endDateStamp}`
+      //console.log(`drink url : ${str3}`)
       jQuery.ajax({
         type:'GET',						// POST 방식으로
-        url: `${str3}`,		
+        url: `${str3}`,
         processData:false,					// 기본 설정
         contentType: false,					// 기본 설정
         success: function(msg) {			// 성공시
+          //console.log(`Drink : ${msg}`)
           if (msg != "null") {
             UserDrinkData = JSON.parse(msg).DrinkLogs[0];
           } else {
             UserDrinkData = null
           }
-          
-          let str4 = `${targetURL}read_Poop_logs?id=${targetID}&startRange=${startDateStamp}&endRage=${endDateStamp}`
+
+          let str4 = `${targetURL}read_Poop_logs?id=${targetID}&startRange=${startDateStamp}&endRange=${endDateStamp}`
+          //console.log(`poop url : ${str4}`)
           jQuery.ajax({
             type:'GET',						// POST 방식으로
-            url: `${str4}`,		
+            url: `${str4}`,
             processData:false,					// 기본 설정
             contentType: false,					// 기본 설정
             success: function(msg) {			// 성공시
+              //console.log(`Poop : ${msg}`)
               if (msg != "null") {
                 UserPoopData = JSON.parse(msg).PoopLogs[0];
               } else {
                 UserPoopData = null
               }
-              
-              let str5 = `${targetURL}read_Pee_logs?id=${targetID}&startRange=${startDateStamp}&endRage=${endDateStamp}`
+
+              let str5 = `${targetURL}read_Pee_logs?id=${targetID}&startRange=${startDateStamp}&endRange=${endDateStamp}`
+              //console.log(`pee url : ${str5}`)
               jQuery.ajax({
                 type:'GET',						// POST 방식으로
-                url: `${str5}`,		
+                url: `${str5}`,
                 processData:false,					// 기본 설정
                 contentType: false,					// 기본 설정
                 success: function(msg) {			// 성공시
+                  //console.log(`Pee : ${msg}`)
                   if (msg != "null") {
                     UserPeeData = JSON.parse(msg).PeeLogs[0];
                   } else {
                     UserPeeData = null
                   }
-                  
+
                   DataLoadComplete();
                 },error: function(msg) {			// 실패시
                   location.href=`/ConnectFail`;
@@ -143,7 +151,7 @@ if(isNaN(target)) {
   let str = `${targetURL}read_users?searchName=${targetStr}`
   jQuery.ajax({
     type:'GET',						// POST 방식으로
-    url: `${str}`,		
+    url: `${str}`,
     processData:false,					// 기본 설정
     contentType: false,					// 기본 설정
     success: function(msg) {			// 성공시
@@ -155,7 +163,7 @@ if(isNaN(target)) {
       } catch(e) {
         location.href=`/SearchingFail`;
       }
-      
+
     },error: function(msg) {			// 실패시
       location.href=`/ConnectFail`;
     }
@@ -164,7 +172,7 @@ if(isNaN(target)) {
   let str = `${targetURL}read_users?id=${target}`
   jQuery.ajax({
     type:'GET',						// POST 방식으로
-    url: `${str}`,		
+    url: `${str}`,
     processData:false,					// 기본 설정
     contentType: false,					// 기본 설정
     success: function(msg) {			// 성공시
@@ -182,4 +190,3 @@ if(isNaN(target)) {
     }
   });
 }
-
