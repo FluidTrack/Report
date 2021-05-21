@@ -72,7 +72,7 @@ let loadData = () => {
     success: function(msg) {			// 성공시
       //console.log(`Water : ${msg}`)
       if (msg != "null") {
-        UserWaterData = JSON.parse(msg).WaterLogs[0];
+        UserWaterData = JSON.parse(msg).WaterLogs;//[0]; //선영: Data array components 전부를 가져오도록 수정함 
       } else {
         UserWaterData = null
       }
@@ -122,7 +122,7 @@ let loadData = () => {
                     UserPeeData = null
                   }
 
-                  DataLoadComplete();
+                  DataLoadComplete(startDateStamp);
                 },error: function(msg) {			// 실패시
                   location.href=`/ConnectFail`;
                 }
