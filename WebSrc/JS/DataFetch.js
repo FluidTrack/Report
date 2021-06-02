@@ -87,7 +87,7 @@ let loadData = () => {
         success: function(msg) {			// 성공시
           //console.log(`Drink : ${msg}`)
           if (msg != "null") {
-            UserDrinkData = JSON.parse(msg).DrinkLogs[0];
+            UserDrinkData = JSON.parse(msg).DrinkLogs;//[0]; //선영: Data array components 전부를 가져오도록 수정함 
           } else {
             UserDrinkData = null
           }
@@ -117,7 +117,7 @@ let loadData = () => {
                 success: function(msg) {			// 성공시
                   //console.log(`Pee : ${msg}`)
                   if (msg != "null") {
-                    UserPeeData = JSON.parse(msg).PeeLogs[0];
+                    UserPeeData = JSON.parse(msg).PeeLogs;
                   } else {
                     UserPeeData = null
                   }

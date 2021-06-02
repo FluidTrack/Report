@@ -333,6 +333,46 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
+.P1_DailyGraph{
+  height: 122px;
+}
+
+.legend{
+  position: relative;
+  bottom: 140px;
+  left: 175px;
+  font-size: 5px;
+}
+
+/*-----------------basic setting for graph------------------------------*/
+.line-class-목표{
+  stroke-dasharray: 3 3;
+}
+.bb-tooltip-container{
+  display:none;
+}
+  
+
+.bb-axis.bb-axis-x path {
+  stroke-width: 0.5px;
+  stroke: #000;
+  fill: none;
+}
+
+.bb-axis.bb-axis-y path {
+  stroke-width: 0.5px;
+  stroke: #000;
+  fill: none;
+}
+
+.max{
+  font-size: 20px;
+}
+
+/*-------------------------------------------------*/
+
+
+
 .P1_weeklyTitle{
   position: absolute;
   width: 345px;
@@ -351,7 +391,7 @@ body{
   width: 345px;
   height: 140px;
   left: 37px;
-  top: 459px;
+  top: 454px;
   background-color: rgb(247, 247, 247);
 }
 
@@ -371,11 +411,26 @@ body{
 .P1_TimezoneGraphDiv{
   position: absolute;
   width: 165px;
-  height: 363px;
+  height: 290px;
   left: 396px;
   top: 237px;
   background-color: rgb(247, 247, 247);
 }
+
+.P1_TimezoneGraph{
+  height: 290px;
+}
+
+#TimeLegend{
+  position: absolute;
+  width: 165px;
+  height: 70px;
+  left:396px;
+  top: 527px;
+  background-color: rgb(247, 247, 247);
+  font-size:5px;
+}
+
 
 .P1_CommentBG{
   background-image: url(../IMG/P1_comment.png);
