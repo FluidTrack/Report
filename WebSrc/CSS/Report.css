@@ -349,8 +349,11 @@ body{
   stroke-dasharray: 3 3;
 }
 .bb-tooltip-container{
-  display:none;
+  /*display:none;*/
+  width:100px;
+  height:30px;
 }
+
   
 
 .bb-axis.bb-axis-x path {
@@ -365,9 +368,7 @@ body{
   fill: none;
 }
 
-.max{
-  font-size: 20px;
-}
+
 
 /*-------------------------------------------------*/
 
@@ -418,7 +419,9 @@ body{
 }
 
 .P1_TimezoneGraph{
-  height: 290px;
+  width: 210px;
+  height: 280px;
+  
 }
 
 #TimeLegend{
