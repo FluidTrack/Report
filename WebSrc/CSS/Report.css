@@ -330,7 +330,7 @@ body{
   height: 142px;
   left: 37px;
   top: 240px;
-  background-color: rgb(247, 247, 247);
+  background-color: white;
 }
 
 .P1_DailyGraph{
@@ -345,6 +345,14 @@ body{
 }
 
 /*-----------------basic setting for graph------------------------------*/
+
+.bb-chart-bars{
+  opacity:1.0;
+}
+
+.bb-texts-물{
+  font-size:6px
+}
 .line-class-목표{
   stroke-dasharray: 3 3;
 }
@@ -393,7 +401,7 @@ body{
   height: 140px;
   left: 37px;
   top: 454px;
-  background-color: rgb(247, 247, 247);
+  background-color:white;
 }
 
 .P1_TimezoneTitle{
@@ -412,7 +420,7 @@ body{
 .P1_TimezoneGraphDiv{
   position: absolute;
   width: 165px;
-  height: 290px;
+  height: 360px;
   left: 396px;
   top: 237px;
   background-color: rgb(247, 247, 247);
@@ -420,11 +428,14 @@ body{
 
 .P1_TimezoneGraph{
   width: 210px;
-  height: 280px;
+  height: 360px;
+  .bb-chart-texts{
+    font-size:3px;
+  }
   
 }
 
-#TimeLegend{
+/*#TimeLegend{
   position: absolute;
   width: 165px;
   height: 70px;
@@ -432,7 +443,9 @@ body{
   top: 527px;
   background-color: rgb(247, 247, 247);
   font-size:5px;
-}
+}*/
+
+
 
 
 .P1_CommentBG{

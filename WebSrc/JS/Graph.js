@@ -93,8 +93,8 @@ let DataLoadComplete = (startDateStamp) => {
     let height2=290;
     let width2=165;
 
-    week1=1;
-    week2=2;
+    let week1=1;
+    let week2=2;
 
 
     let days=key_days(start); //for daily axis and data matching 
@@ -106,103 +106,143 @@ let DataLoadComplete = (startDateStamp) => {
     //-------------------------------------------WATER(daily, weekly, hourly )--------------------------------------------//
    
    //daily
-    let daily_water_count=ccl_Day_Hour(UserWaterData, days, hours)[0]; 
-    let daily_water_Values=["물"];
+    let dailyWaterCount=count_Daily(UserWaterData, days);
+    let dailyWaterIntake=[]
+    for(let i=0; i<dailyWaterCount.length; i++){
+        dailyWaterIntake.push(dailyWaterCount[i]*100)
+    }
+    dailyWaterIntake.unshift(["물"]);
 
-        //find the max, min amount of water intake, calculate average, count*100(ml)
-        let firstKey=Object.keys(daily_water_count)[0];
-    let maxWater=daily_water_count[firstKey]*100;
-    let minWater=daily_water_count[firstKey]*100;
+
+        //calculate the max, min, average value of water intake;
+    let maxWater=0
+    let minWater=0
     let total_water=0;
 
-    for(var key in daily_water_count){
-        let temp=daily_water_count[key]*100;
+    for(let i=1; i<dailyWaterIntake.length; i++){
+        temp=dailyWaterIntake[i];
         total_water+=temp;
-        daily_water_Values.push(temp);
         if(temp<minWater){minWater=temp;}
         if(temp>maxWater){maxWater=temp;}
     }
-    let average_water=parseInt(total_water/14);
+    let avgWater=parseInt(total_water/14);
+
+   
     
 
-    //weekly  ******************************************추후 다른 주 데이터도 받아와야함 *************************
+    //weekly  
+    //***************추후 다른 주 데이터도 받아와야함 **********
 
-    let weekly_water_Values=['물', 0, 0, 0, 0, 0, 0, 0, 0]
-    for(let i=1; i<daily_water_Values.length; i++){
-        if(i<7){
-            weekly_water_Values[week1]+=daily_water_Values[i];
+    let weeklyWaterIntake=['물', 0, 0, 0, 0, 0, 0, 0, 0] //8 weeks data
+    let week1_Water=0;
+    let week2_Water=0;
+    
+    for(let i=1; i<dailyWaterIntake.length; i++){
+        if(i<8){
+            week1_Water+=dailyWaterIntake[i];
         }
         else{
-            weekly_water_Values[week2]+=daily_water_Values[i];
+            week2_Water+=dailyWaterIntake[i];
         }
     }
-    weekly_water_Values[week1]=parseInt(weekly_water_Values[week1]/7);
-    weekly_water_Values[week2]=parseInt(weekly_water_Values[week2]/7);
-    console.log(weekly_water_Values);
+
+    weeklyWaterIntake[week1]=parseInt(week1_Water/7);
+    weeklyWaterIntake[week2]=parseInt(week2_Water/7);
+    console.log(week1_Water, week2_Water, weeklyWaterIntake);
+
+
 
 
 
 
     //hourly
-    let hourly_water=hourlyData(UserWaterData, ccl_Day_Hour, days, hours, parsed_hours);
-    let hourly_water_Values=hourly_water[0];
-    let parsed_hours_water=hourly_water[1];
+    let hourlyWater=count_parse_hourly(UserWaterData, count_Hourly, hours, parsed_hours);
+    let hourlyWaterIntake=hourlyWater[0];
+    let parsedHours_water=hourlyWater[1];
 
         //count * 100(ml)
-    for(let i=0; i<hourly_water_Values.length; i++){
-        hourly_water_Values[i]=parseInt(hourly_water_Values[i]*100);
+    for(let i=0; i<hourlyWaterIntake.length; i++){
+        hourlyWaterIntake[i]=parseInt(hourlyWaterIntake[i]*100);
     }
-    hourly_water_Values.unshift("물");
+    hourlyWaterIntake.unshift("물");
+    console.log(hourlyWaterIntake, parsedHours_water);
 
 
 
-    //-------------WATER INTAKE GOAL(for drawing graph-------------------//
-    let goal_water=["목표"];
-    for(let i=0; i<14; i++){
-        goal_water.push(1000);
-        }
-    //-------------WATER INTAKE AVERAGE(for drawing graph----------------//
+                    //-------------WATER INTAKE GOAL(for drawing graph-------------------//
+                    let goal_water=["목표"];
+                    for(let i=0; i<14; i++){
+                        goal_water.push(1000);
+                        }
+                    //-------------WATER INTAKE AVERAGE(for drawing graph----------------//
 
-    let avg_water=["평균"];
-    for(let i=0; i<14; i++){
-        avg_water.push(average_water);
-        }
+                    let avg_water=["평균"];
+                    for(let i=0; i<14; i++){
+                        avg_water.push(avgWater);
+                        }
 
 
     //-----------------------------------------------DRINK(only daily, weekly)-----------------------------------//
+
     //daily
-    let daily_drink=ccl_Day_Hour(UserDrinkData, days, hours)[0];
+    let dailyDrinkCount=count_Daily(UserDrinkData, days);
+    let dailyDrinkIntake=[]
+    //console.log(dailyDrink);
         //add water logs to drink logs for drawing a graph (daily)
-    for(key in daily_drink){
-        if(key in daily_water_count){
-            daily_drink[key]+=daily_water_count[key]; 
+    for(let i=0; i<dailyDrinkCount.length; i++){
+            dailyDrinkIntake.push((dailyDrinkCount[i]+dailyWaterCount[i])*100); 
+    }
+    //console.log(dailyDrinkIntake)
 
+    dailyDrinkIntake.unshift("총 수분 (물+음료)")
+    let dailymaxDrink=0;
+    for(let i=0; i<dailyDrinkIntake.length; i++){
+        if(dailyDrinkIntake[i]>dailymaxDrink){dailymaxDrink=dailyDrinkIntake[i]
         }
-        else{
-            console.log("ERROR");
-        }
+    }
+ 
+
+
+    //weekly ************************
+    //******************추후 다른 주 데이터도 받아와야함 *************************
+    let  weeklyDrinkIntake=["총 수분 (물+음료)", 0, 0, 0, 0, 0, 0, 0, 0];
+    let week1_Drink=0;
+    let week2_Drink=0;
+    for(let i=1; i<dailyDrinkIntake.length;i++){
+        if(i<8){week1_Drink+=dailyDrinkIntake[i];}
+        else{week2_Drink+=dailyDrinkIntake[i];}
     }
 
-        //DRINK: make an array for value of graph
-    let daily_drink_Values=["총 수분 (물+음료)"];
-    for(var key in daily_drink){
-        daily_drink_Values.push(daily_drink[key]*100);
-    }
+    weeklyDrinkIntake[week1]=parseInt(week1_Drink/7); //normalization
+    weeklyDrinkIntake[week2]=parseInt(week2_Drink/7);
 
-    //weekly ******************************************추후 다른 주 데이터도 받아와야함 *************************
-    let weekly_drink_Values=["총 수분 (물+음료)", 0, 0, 0, 0, 0, 0, 0, 0];
-    for(let i=1; i<daily_drink_Values.length;i++){
-        if(i<7){weekly_drink_Values[week1]+=daily_drink_Values[i];}
-        else{weekly_drink_Values[week2]+=daily_drink_Values[i];}
+    let weeklymaxDrink=0;
+    for(let i=0; i<weeklyDrinkIntake.length; i++){
+        if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]};
     }
-
-    weekly_drink_Values[week1]=parseInt(weekly_drink_Values[week1]/7);
-    weekly_drink_Values[week2]=parseInt(weekly_drink_Values[week2]/7);
+    //console.log(weeklymaxDrink);
   
 
 
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
+
+/*testWater=['물'];
+testDrink=["총 수분 (물+음료)"];
+for(let i=0; i<14; i++){if(i%3==0){testWater.push(1500);}else if(i%2==0){testWater.push(0);}else{testWater.push(700);}}
+for(let i=0; i<14; i++){if(i%3==0){testDrink.push(1800);}else if(i%2==0){testDrink.push(100);}else{testDrink.push(700);}}
+maxDrink=1500
+maxWater=1500;
+minWater=0;*/
+
+let P1DG_maxY=dailymaxDrink+(300-(dailymaxDrink%300));
+let P1DG_grid=[];
+for(let i=0; i<=P1DG_maxY/300; i++){
+    P1DG_grid.push({"value":i*300})
+}
+console.log(P1DG_grid);
+
+
     var P1_DailyGraph = bb.generate({
         size: {
                 height: height1,
@@ -211,16 +251,20 @@ let DataLoadComplete = (startDateStamp) => {
         padding: {
                 top: 30,
                 right: 40,
-                bottom: 25,
+                bottom: 0,
                 left: 30
             },
         data: {
                 
                 columns: 
-                    [daily_drink_Values,
-                    daily_water_Values,
-                    goal_water,
-                    avg_water
+
+                    [
+                        //testWater,
+                        //testDrink,
+                        dailyWaterIntake,
+                        dailyDrinkIntake,
+                        goal_water,
+                        avg_water
                     ],
                 axes:{
                     "물":"y",
@@ -228,12 +272,6 @@ let DataLoadComplete = (startDateStamp) => {
                     "avg_water":"y2"
 
                 },
-                groups: [
-                    [
-                        "물",
-                        "총 수분 (물+음료)"
-                    ]
-                      ],
                 
                 types: {
                         "물": "bar",
@@ -253,7 +291,7 @@ let DataLoadComplete = (startDateStamp) => {
                     format:function(d,i, j){ //d=value i=dataId j=dataIndex
                         //console.log(d, i, j);
                         if(i=="물"){
-                            if(d>=1200){return d;} //if water intake amount is greater than 1200ml, use same bar height for all but shosw it's data label.
+                            //if(d>=1200){return d;} //if water intake amount is greater than 1200ml, use same bar height for all but shosw it's data label.
                             if(d==maxWater||d==minWater){return d;} //show only minimum and miximum value of water intake. 
                         }
                     },
@@ -264,28 +302,62 @@ let DataLoadComplete = (startDateStamp) => {
 
                 
                 console.log(document.getElementById("P1_DailyGraph"));
+                let test=0; 
 
 
-                let temp=0; //Add new line "평균" to average amount of water intake, and Change it's text color
-                let elem=$(".P1_DailyGraph").find(".tick").each(function(i){ 
-                    if(i==18){  //평균 1000ml의 tick index
-                        temp=this;
-                        d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
-                        d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-10").text("평균");
+                 /*-----------------------------------Y2 Think Domain Design --------------------------------------------*/
 
+                let elem1=$(".P1_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+                    if(i==0){ //change opacity of Y2
+                        test=this;
+                        d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
                     }
-                    if(i==19){
-                        temp=this;
-                        d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
-                        d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 1).attr("dy", "-10").text("목표");
-
+                    else{
+                        //d3.select(this).style('stroke-opacity', 0.5);
                     }
-                });
-                console.log(temp);
+                })
 
-                //console.log(document.getElementsByClassName("bb-axis bb-axis-y2"));
-                //const test=d3.select("#P1_DailyGraph").select("#bb-axis bb-axis-y2").select("#tick").selectAll("Div").append("Div");
-                //console.log(test);
+
+                /*-----------------------------------Water Data label Design --------------------------------------------*/
+                let elem2=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
+                    d3.select(this).style("font-size", "8px")//.style("font-weight", "bold"); //modify font size
+
+                    originalY=parseFloat($(this).attr("y"));  
+                    Y=originalY//+10
+                    if($(this).text()==maxWater+""){
+                        d3.select(this).attr("y", Y)
+                    }
+ 
+                })
+
+
+                /*-----------------------------------Bar Design--------------------------------------------------------- */
+
+                let elem3=$(".P1_DailyGraph").find(".bb-bars-총-수분--물-음료-").find("path").each(function(i){
+                    test=this;
+                    //console.log(this);
+
+                    let thisD=$(this).attr("d");
+                    //console.log(thisD);
+                    let start_M=1;
+                    let start_V1 = parseInt(thisD.indexOf('V', 1)) + 1;
+
+                    let M=thisD.slice(start_M, parseInt(thisD.indexOf('V', 1)));
+                    let V1=thisD.slice(start_V1, parseInt(thisD.indexOf('V', 2)));
+                    //console.log(M, V1);
+
+                    //let start = parseInt(thisD.indexOf(thisD, 'Z', 0))
+                    //console.log(start);
+
+
+                })
+
+                /*-----------------------------------X axis Design--------------------------------------------------------- */
+                let elem4=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
+                    d3.select(this).style("font-size", "8px");
+ 
+                })                
+
 
         
             },
@@ -293,7 +365,7 @@ let DataLoadComplete = (startDateStamp) => {
         bar: {
  
                 width: {
-                    "물": 10,
+                    "물": 6,
                     "총 수분 (물+음료)":4, //not being applied now. if you want to locate this aside water bar, remove 'group' part above
                         },
                 zerobased: true,
@@ -308,32 +380,34 @@ let DataLoadComplete = (startDateStamp) => {
                     x: {
                     type: "category",
                     categories: days,
-                    height:5,
+                    //height:5,
                     tick:{
                         text:{
                             show:true,
                             },
-                        width: 100,
+                        width: 50,
                         },
                     },
 
                     y: {
                         show:true,
-                        default: [0, 1200],
+ 
+                        //default: [0, 1200],
+                        default: [0, P1DG_maxY],
                         tick:{
-                            values: [300, 600, 900, 1200],
+                            //values: [300, 600, 900, 1200],
+                            stepSize: 300,
                         },
-                        max:1500,
+                        max:P1DG_maxY,
                         padding:0,
                     },
                     
                     y2:{
                         show:true,
                         tick: {
-                            values: [average_water, 1000],
+                            values: [avgWater, 1000],
                             format: function(data){
-                                console.log(data);
-                                return data; //+"ml"
+                                return data; 
                             },
                             
                         },
@@ -359,13 +433,16 @@ let DataLoadComplete = (startDateStamp) => {
 
         grid:{
             y:{
-                lines:[
+                show:false,
+                lines:P1DG_grid,
+                /*lines:[
                     {value: 0, },
                     {value: 300, },
                     {value: 600, },
                     {value: 900, },
                     {value: 1200,},
-                 ],
+                    {value: 1500,},
+                 ],*/
             },
             lines:{front: false}
         },
@@ -375,8 +452,10 @@ let DataLoadComplete = (startDateStamp) => {
 
 
 
+/*---------------------------------------------LEGEND DESIGN--------------------------------------------------------- */
+ 
+     setTimeout(function(){
 
-      setTimeout(function(){
                         //Legend
                 d3.select(".P1_DG")
                 .append("rect")
@@ -410,35 +489,59 @@ let DataLoadComplete = (startDateStamp) => {
                 
 
                     //labels
-                    d3.select(".P1_DG")
-                    .append("text")
-                    .attr('x', 10)
-                    .attr('y',20)
-                    .text("ml")
-                    .style('font-size', '100%')
-                    .style('font-weight','bold')
+                d3.select(".P1_DG")
+                .append("text")
+                .attr('x', 10)
+                .attr('y',20)
+                .text("ml")
+                .style('font-size', '100%')
+                .style('font-weight','bold')
 
-                    /*d3.select(".P1_DG")
-                    .append("text")
-                    .attr('x', 320)
-                    .attr('y',43)
-                    .text("목표")
-                    .style('font-size', '80%')
-
-                    d3.select(".P1_DG")
-                    .append("text")
-                    .attr('x', 315)
-                    .attr('y',52)
-                    .text("1000ml")
-                    .style('font-size', '80%')
-
-                    d3.select(".P1_DG")
-                    .append("line")
-                    .attr('x1', 309)
-                    .attr('y1',48)
-                    .attr('x2', 313)
-                    .attr('y2',48)*/
       }, 100)
+
+     /*-----------------------------------TICK Design--------------------------------------------------------- */
+     
+      setTimeout(function(){
+
+   
+        let elem0=$(".P1_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+            if(i==0){  //평균 1000ml의 tick index
+                test=this;
+                d3.select(this).select("line").style("stroke", "#56A4FF")
+                d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
+                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-10").text("평균");
+
+            }
+            if(i==1){
+                test=this;
+                d3.select(this).select("line").style("stroke", "#03C52E")
+                d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
+                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 1).attr("dy", "-10").text("목표");
+
+            }
+        }, 100);
+
+      })
+
+/*-----------------------------------DATA LABEL DESIGN--------------------------------------------------------- */
+     /*setTimeout(function(){ //data label on svg 
+        let chartTransForm = $("#P1_DailyGraph svg g").first().attr("transform");
+
+        let htmlText = "";
+        $("#P1_DailyGraph .bb-texts text").each(function(){
+            htmlText += $(this).clone().wrapAll("<text/>").parent().html();
+            $(this).remove();
+        });
+
+        htmlText = '<g class="bb-texts" transform="' + chartTransForm +'">' + htmlText + '</g>';
+        $("#P1_DailyGraph svg").append(htmlText);
+        $("#P1_DailyGraph").html($("#P1_DailyGraph").html());
+
+    });
+
+  */
+
+
  
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -446,7 +549,18 @@ let DataLoadComplete = (startDateStamp) => {
 
 
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------// 
- //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------//   
+ //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------//
+
+    let testDrink2=["총 수분 (물+음료)", 1200, 1500, 0, 0, 0, 0, 0, 0]
+    //weeklymaxDrink=1500
+
+    let P1WG_maxY=weeklymaxDrink+(300-(weeklymaxDrink%300));
+    let P1WG_grid=[];
+    for(let i=0; i<=P1WG_maxY/300; i++){
+        P1WG_grid.push({"value":i*300})
+    }
+    console.log(P1WG_grid);
+
  
     var P1_WeeklyGraph = bb.generate({
         size:{
@@ -463,17 +577,15 @@ let DataLoadComplete = (startDateStamp) => {
 
             data: {
                     columns: 
-                        [weekly_water_Values,
-                        weekly_drink_Values,
-                        ],
-                    onmax: function(data) {
-                        return data[0].value;
-                        },
+                        [weeklyWaterIntake,
+                        weeklyDrinkIntake,
+                            //testDrink2
+                    ],
                     type: "line"
                         ,
                     colors:{
                             "물": "#56A4FF",
-                            "총 수분 (물+음료)": "#DEDEDE",
+                            "총 수분 (물+음료)": "#C4C4C4",
                         },  
                    labels:true,
                 },
@@ -482,6 +594,22 @@ let DataLoadComplete = (startDateStamp) => {
                     zerobased: true
                 },
 
+            onrendered: function() {
+
+                
+                    console.log(document.getElementById("P1_weeklyGraph"));
+
+                   // -----------------------------------Data Label position Design------------------------------------------------ */
+
+                    let elem0=$(".P1_weeklyGraph").find(".bb-chart-texts").find("text").each(function(i){ //Label Position
+                        d3.select(this).style("font-size", "7px").style("font-weight", "bold");                    
+
+
+                    })
+
+
+
+                },
             axis: {
                         x: {
                         type: "category",
@@ -497,7 +625,7 @@ let DataLoadComplete = (startDateStamp) => {
 
                         y: {
                             show:true,
-                            max:1200,
+                            max:P1WG_maxY,
                             tick:{
                                 stepSize: 300
                             },
@@ -512,15 +640,20 @@ let DataLoadComplete = (startDateStamp) => {
 
             grid:{
                 y:{
-                    lines:[
+                    show:false,
+                    /*lines:[
                         {value: 0, },
                         {value: 300, },
                         {value: 600, },
                         {value: 900, },
                         {value: 1200, },
-                    ],
+                    ],*/
+                    lines:P1WG_grid
                 },
                 lines:{front: false}
+            },
+            tooltip:{
+                show:true
             },
             svg:{classname:"P1_WG"},
             bindto: "#P1_weeklyGraph",
@@ -587,24 +720,64 @@ let DataLoadComplete = (startDateStamp) => {
         .style('font-weight','bold')
 
 
+        /*setTimeout(function(){ //data label on svg 
+            let chartTransForm = $("#P1_weeklyGraph svg g").first().attr("transform");
+    
+            let htmlText = "";
+            $("#P1_weeklyGraph .bb-texts text").each(function(){
+                htmlText += $(this).clone().wrapAll("<text/>").parent().html();
+                //$(this).remove();
+            });
+    
+            htmlText = '<g class="bb-texts" transform="' + chartTransForm +'">' + htmlText + '</g>';
+            $("#P1_weeklyGraph svg").append(htmlText);
+            $("#P1_weeklyGraph").html($("#P1_weeklyGraph").html());
+    
+        }, 100);*/
+
+  
+
  //------------------------------------------------------------------------------------------------------------------------------//
 
 
 
 
  //-------------------------------------------------WATER HOURLY GRAPH-----------------------------------------------------------// 
- //-------------------------------------------------WATER HOURLY GRAPH-----------------------------------------------------------// 
+ //-------------------------------------------------WATER HOURLY GRAPH-----------------------------------------------------------//
+ 
+        let P1HG_legendCircle=[];
+
+        let P1HG_grid=[];
+        for(let i=0; i<parsedHours_water.length; i++){
+            P1HG_grid.push({"value":i});
+        }
+
+        testHour3=["물"];
+        for(let i=0; i<parsedHours_water.length; i++){
+            if(i%3==0){
+                testHour3.push(200)} 
+            else if(i%2==0){
+                testHour3.push(150)}
+            else{
+                testHour3.push(0)}
+            }
+
     var P1_TimezoneGraph = bb.generate({
         size:{
             //width:width2,
-            //height:height2,
+            height:270
 
         },
         padding:{
-            bottom:10,
+            bottom:0,
+            right: 30
         },
         data:{
-            columns:[["cheating", 150], hourly_water_Values, ],
+            columns:[
+                ["cheating", 50, 100, 150], 
+                //testWater,
+                hourlyWaterIntake 
+            ],
             type: "bubble",
             colors:{
                 "물":"#56A4FF",
@@ -613,21 +786,45 @@ let DataLoadComplete = (startDateStamp) => {
             },
         
         },
+
+        onrendered: function() {
+
+                
+            console.log(document.getElementById("P1_TimezoneGraph"));
+
+            /*-----------------------------------circle design------------------------------------------------ */
+
+            let elem0=$(".P1_TimezoneGraph").find(".bb-circles-물").find("circle").each(function(i){ //circle centering
+                $(this).attr("cx", 35)
+            })
+
+             /*-----------------------------------Legend design------------------------------------------------ */
+             //let P1HG_legendCircle=[];
+             let elem1=$(".P1_TimezoneGraph").find(".bb-circles-cheating").find("circle").each(function(i){ //circle centering
+                if(i==0||i==1||i==2){
+                    P1HG_legendCircle.push($(this).attr("r"))
+                }
+             })
+
+             console.log(P1HG_legendCircle);
+
+        },
+
         bubble: {
-            maxR: 15
+            maxR: 9
           },
-        grid:{
-            x: {
-              show: false
-                },
-            }
-            ,
+
         axis:{
             rotated:true,
                 x: {
                     padding:0,
-                type: "category",
-                categories: parsed_hours_water,
+                    type: "category",
+                    categories: parsedHours_water,
+                    tick:{
+                        show:false
+                
+                    }
+                    
                     
                  },
                 y: {
@@ -638,9 +835,29 @@ let DataLoadComplete = (startDateStamp) => {
                 },
         },
 
+        grid:{
+            x: {
+              show: false,
+              lines:P1HG_grid
+                },
+            }
+        ,
+
+
         legend:{
             show:false,
         },
+
+        tooltip:{
+            format:{
+                value: function(value, ratio, id){
+                    if(id=="물") 
+                    {return value;}
+                    else{return}
+                }
+            }
+        },
+
         svg: {
             classname: 'P1_TG_SVG'
           },
@@ -649,129 +866,167 @@ let DataLoadComplete = (startDateStamp) => {
         bindto:"#P1_TimezoneGraph"
     })
 
-        //Centering circles
-        const P1_TG_SVG=d3.select(".P1_TG_SVG")
-        .selectAll("circle")
-        .attr("cx", 35)
+
+
+
 
         //Drawing Legends
-        const legend=d3.select("#TimeLegend")
-        const svg=legend
-        .append("svg")
-        .attr("height", 70)
-        .attr("width", 165);
+        setTimeout(function(){
+
+        const legend=d3.select("#P1_TimezoneGraph")
+        const svg=legend.append("svg")
+        .attr("class", "lgd")
+        .attr("heigt", "90")
+        .attr("width", width2)
+        //.append("g").attr("class", "lgd")
 
         svg.append("text")
-        .attr('x', 10)
-        .attr('y', 10)
+        .attr('x', 35)
+        .attr('y', 25)
         .attr('fill', 'black')
         .text('물 섭취량')
-        .style('font-size', '175%')
+        .style('font-size', "9px")
+        .style('font-weight', 'bold')
 
         svg.append("circle") // 원형
-        .attr("r", 15)
-        .attr("cx", 30)
-        .attr("cy", 35)
+        .attr("r", P1HG_legendCircle[2])
+        .attr("cx", 45)
+        .attr("cy", 50)
         .attr("fill", "#56A4FF")
         .style("opacity", 0.5)
 
         svg.append("text") // text
-        .attr('x', 20)
-        .attr('y', 60)
+        .attr('x', 35)
+        .attr('y', 75)
         .attr('fill', 'black')
         .text('150ml')
-        .style('font-size', '150%')
+        .style('font-size', '7px')
 
         svg.append("circle") // 원형
-        .attr("r", 10)
-        .attr("cx", 80)
-        .attr("cy", 35)
+        .attr("r", P1HG_legendCircle[1])
+        .attr("cx", 95)
+        .attr("cy", 50)
         .attr("fill", "#56A4FF")
         .style("opacity", 0.5)
         
         svg.append("text") // text
-        .attr('x', 70)
-        .attr('y', 60)
+        .attr('x', 85)
+        .attr('y', 75)
         .attr('fill', 'black')
         .text('100ml')
-        .style('font-size', '150%')
+        .style('font-size', '7px')
         
         svg.append("circle") // 원형
-        .attr("r", 5)
-        .attr("cx", 127)
-        .attr("cy", 35)
+        .attr("r", P1HG_legendCircle[0])
+        .attr("cx", 142)
+        .attr("cy", 50)
         .attr("fill", "#56A4FF")
         .style("opacity", 0.5)
 
         svg.append("text") // text
-        .attr('x', 120)
-        .attr('y', 60)
+        .attr('x', 135)
+        .attr('y', 75)
         .attr('fill', 'black')
         .text('50ml')
-        .style('font-size', '150%')
+        .style('font-size', '7px')
+        }, 100)
+        
 //------------------------------------------------------------------------------------------------------------------------------//
 
        
 }   
 
     //Arrange the water intake and pee logs by days and hours
-    function ccl_Day_Hour(Data, days, hours){
+    function count_Daily(Data, days){
 
-        let dailyData={};
-        let hourlyData={};
+        let dailyData=new Array(14);
 
-        //create date keys(14 days, 24 hours)
         for(let i=0; i<14; i++){
-            dailyData[days[i]]=0;
-        }
-
-        for(let i=0; i<24; i++){
-            hourlyData[hours[i]]=0;
+            dailyData[i]=0;
         }
 
         
-        //Count by day and hour
+        //Count by day
         for(let i=0; i<Data.length; i++){
             let temp=Data[i];
-
             let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/');
-            if(temp_day in dailyData){dailyData[temp_day]++;}
-            else{console.log("ERROR");}
 
-            //parsing the hours of data and count
-            let temp_hour=temp.timestamp.split(" ")[1].split(":")[0];
-            if(temp_hour in hourlyData){hourlyData[temp_hour]++;}
-            else{console.log("ERROR");}
+            let checkDay=false;
+            //let checkHour=false;
+            for(let j=0; j<days.length; j++){
+                if(temp_day==days[j]){
+                    dailyData[j]++;
+                    checkDay=true;
+                    break;
+                }
+            }
+            if(checkDay==false){console.log("ERROR!!")}
     
         }
-    return [dailyData, hourlyData];
+        console.log(dailyData);
+        return dailyData;
+
+
+    }
+
+    function count_Hourly(Data, hours){
+
+        let hourlyData=new Array(24);
+        for(let i=0; i<24; i++){
+            hourlyData[i]=0;
+        }
+        
+        for(let i=0; i<Data.length; i++){
+
+            let temp=Data[i];
+            let temp_hour=temp.timestamp.split(" ")[1].split(":")[0];
+
+            let checkHour=false;
+            for(let j=0; j<hours.length; j++){
+                if(temp_hour==hours[j]){
+                    hourlyData[j]++;
+                    checkHour=true;
+                    break;
+                }
+            }
+            if(checkHour==false){console.log("ERROR!!");}
+
+        }
+        //console.log(hourlyData);
+        return hourlyData;
+
+
     }
 
     //for drawing hourly graph, parse the data and find the start, last index of data(not zero) and axis 
-    function hourlyData(UserData, ccl_Day_Hour, days, hours, parsed_hours){
+    function count_parse_hourly(UserData, count_Hourly, hours, parsedHours){
         //make a new array that contains only values (for drawing graph)
-       let hourly_data=ccl_Day_Hour(UserData, days, hours)[1];
-       let hourly_data_Values=[];
-       for(var key in hourly_data){
-           hourly_data_Values.push(hourly_data[key]/14); //normalized
+       let originalHourData=count_Hourly(UserData, hours);
+       let parsedHourData=[];
+       for(let i=0; i<originalHourData.length; i++){
+            parsedHourData.push(originalHourData[i]/14); //normalization by 2 weeks
        }
+
+
            //find the start and last hour of water take
        let startIdx=0;
        let lastIdx=23;
    
        for(let i=startIdx; i<lastIdx+1; i++){
-           if(hourly_data_Values[i]!=0){startIdx=i;break;}
+           if(parsedHourData[i]!=0){startIdx=i;break;}
        }
    
        for(let i=lastIdx; i>startIdx-1; i--){
-           if(hourly_data_Values[i]!=0){lastIdx=i; break;}
+           if(parsedHourData[i]!=0){lastIdx=i; break;}
        }
 
 
-       hourly_data_Values=hourly_data_Values.slice(startIdx, lastIdx+1);
-       parsed_hours=parsed_hours.slice(startIdx, lastIdx+1);
+       parsedHourData=parsedHourData.slice(startIdx, lastIdx+1);
+       parsedHours=parsedHours.slice(startIdx, lastIdx+1);
 
-       return [hourly_data_Values, parsed_hours];
+       console.log(parsedHourData, parsedHours);
+
+       return [parsedHourData, parsedHours];
     }
 
     
