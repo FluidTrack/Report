@@ -350,19 +350,7 @@ body{
   opacity:1.0;
 }
 
-.bb-texts-물{
-  font-size:6px
-}
-.line-class-목표{
-  stroke-dasharray: 3 3;
-}
-.bb-tooltip-container{
-  /*display:none;*/
-  width:100px;
-  height:30px;
-}
 
-  
 
 .bb-axis.bb-axis-x path {
   stroke-width: 0.5px;
@@ -372,8 +360,25 @@ body{
 
 .bb-axis.bb-axis-y path {
   stroke-width: 0.5px;
-  stroke: #000;
+  stroke:white;
   fill: none;
+}
+
+.bb-grid bb-grid-lines path{
+  stroke:#D3D3D3
+}
+
+.P2_DailyGraph bb bb-tooltip-container{
+  /*display:none;*/
+  width:100px;
+  height:30px;
+}
+
+.bb-texts-물{
+  font-size:6px
+}
+.line-class-목표{
+  stroke-dasharray: 3 3;
 }
 
 
@@ -429,9 +434,7 @@ body{
 .P1_TimezoneGraph{
   width: 210px;
   height: 360px;
-  .bb-chart-texts{
-    font-size:3px;
-  }
+  
   
 }
 
@@ -519,8 +522,19 @@ body{
   height: 142px;
   left: 37px;
   top: 153px;
-  background-color: rgb(247, 247, 247);
+  background-color: white
+
 }
+
+/*------------------------------------*/
+.P2_DailyGraph bb bb-tooltip-container{
+
+  width:200px;
+  height:30px;
+
+}
+
+/*------------------------------------*/
 
 .P2_weeklyTitle{
   position: absolute;
@@ -541,7 +555,7 @@ body{
   height: 140px;
   left: 37px;
   top: 372px;
-  background-color: rgb(247, 247, 247);
+  background-color: white;
 }
 
 .P2_TimezoneTitle{
@@ -564,6 +578,13 @@ body{
   left: 396px;
   top: 150px;
   background-color: rgb(247, 247, 247);
+}
+
+.P2_TimezoneGraph{
+  width: 210px;
+  height: 360px;
+  
+  
 }
 
 .P2_CommentBG{

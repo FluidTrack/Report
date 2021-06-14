@@ -117,7 +117,7 @@ let loadData = () => {
                 success: function(msg) {			// 성공시
                   //console.log(`Pee : ${msg}`)
                   if (msg != "null") {
-                    UserPeeData = JSON.parse(msg).PeeLogs;
+                    UserPeeData = JSON.parse(msg).PeeLogs; //선영: Data array components 전부를 가져오도록 수정함 
                   } else {
                     UserPeeData = null
                   }

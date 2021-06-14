@@ -90,7 +90,7 @@ let DataLoadComplete = (startDateStamp) => {
     let height1=142;
     let width1=350;
 
-    let height2=290;
+    let height2=270;
     let width2=165;
 
     let week1=1;
@@ -130,7 +130,7 @@ let DataLoadComplete = (startDateStamp) => {
    
     
 
-    //weekly  
+    //weekly (normalized)
     //***************추후 다른 주 데이터도 받아와야함 **********
 
     let weeklyWaterIntake=['물', 0, 0, 0, 0, 0, 0, 0, 0] //8 weeks data
@@ -148,14 +148,14 @@ let DataLoadComplete = (startDateStamp) => {
 
     weeklyWaterIntake[week1]=parseInt(week1_Water/7);
     weeklyWaterIntake[week2]=parseInt(week2_Water/7);
-    console.log(week1_Water, week2_Water, weeklyWaterIntake);
+    //console.log(week1_Water, week2_Water, weeklyWaterIntake);
 
 
 
 
 
 
-    //hourly
+    //hourly (normalized)
     let hourlyWater=count_parse_hourly(UserWaterData, count_Hourly, hours, parsed_hours);
     let hourlyWaterIntake=hourlyWater[0];
     let parsedHours_water=hourlyWater[1];
@@ -165,7 +165,7 @@ let DataLoadComplete = (startDateStamp) => {
         hourlyWaterIntake[i]=parseInt(hourlyWaterIntake[i]*100);
     }
     hourlyWaterIntake.unshift("물");
-    console.log(hourlyWaterIntake, parsedHours_water);
+    //console.log(hourlyWaterIntake, parsedHours_water);
 
 
 
@@ -203,9 +203,9 @@ let DataLoadComplete = (startDateStamp) => {
  
 
 
-    //weekly ************************
+    //weekly (normalized)
     //******************추후 다른 주 데이터도 받아와야함 *************************
-    let  weeklyDrinkIntake=["총 수분 (물+음료)", 0, 0, 0, 0, 0, 0, 0, 0];
+    let weeklyDrinkIntake=["총 수분 (물+음료)", 0, 0, 0, 0, 0, 0, 0, 0];
     let week1_Drink=0;
     let week2_Drink=0;
     for(let i=1; i<dailyDrinkIntake.length;i++){
@@ -221,7 +221,49 @@ let DataLoadComplete = (startDateStamp) => {
         if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]};
     }
     //console.log(weeklymaxDrink);
+
+        //hourly (normalized)
+        let hourlyPee=count_parse_hourly(UserPeeData, count_Hourly, hours, parsed_hours);
+        let hourlyPeeCount=hourlyPee[0];
+        let parsedHours_Pee=hourlyPee[1];
+    
+        hourlyPeeCount.unshift("배뇨 횟수");
+        //console.log(hourlyPeeCount, parsedHours_Pee);
   
+
+
+
+//-----------------------------------------------Pee(daily, weekly, hourly)-----------------------------------//
+    //daily
+let dailyPeeCount=count_Daily(UserPeeData, days);
+dailyPeeCount.unshift("배뇨 횟수")
+//console.log(dailyPeeCount);
+
+let dailyMaxPee=0;
+let total=0;
+for(let i=1; i<dailyPeeCount.length; i++){
+    if(dailyMaxPee<dailyPeeCount[i]){dailyMaxPee=dailyPeeCount[i]}
+    total+=dailyPeeCount[i];
+}
+let avg_Pee=total/14;
+//console.log(dailyMaxPee, avg_Pee);
+
+    //weekly
+let weeklyPeeCount=["배뇨 횟수", 0, 0, 0, 0, 0, 0, 0, 0]
+let week1_Pee=0;
+let week2_Pee=0;
+
+for(let i=1; i<dailyPeeCount.length; i++){
+    if(i<8){week1_Pee+=dailyPeeCount[i]}
+    else{week2_Pee+=dailyPeeCount[i]}
+}
+weeklyPeeCount[week1]=Math.round((week1_Pee/7) * 100) / 100 //.toFixed(2);
+weeklyPeeCount[week2]=Math.round((week2_Pee/7) * 100) / 100//.toFixed(2);
+
+let weeklyMaxPee=weeklyPeeCount[week1];
+if(weeklyPeeCount[week2]>weeklyPeeCount[week1]){weeklyMaxPee=weeklyPeeCount[week2]}
+//console.log(weeklyPeeCount, week1_Pee, week2_Pee, weeklyMaxPee)
+
 
 
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
@@ -236,11 +278,13 @@ maxWater=1500;
 minWater=0;*/
 
 let P1DG_maxY=dailymaxDrink+(300-(dailymaxDrink%300));
+if(1200>P1DG_maxY){P1DG_maxY=1200;}
+
 let P1DG_grid=[];
 for(let i=0; i<=P1DG_maxY/300; i++){
     P1DG_grid.push({"value":i*300})
 }
-console.log(P1DG_grid);
+//console.log(P1DG_grid);
 
 
     var P1_DailyGraph = bb.generate({
@@ -392,14 +436,14 @@ console.log(P1DG_grid);
                     y: {
                         show:true,
  
-                        //default: [0, 1200],
-                        default: [0, P1DG_maxY],
+                        default: [0, 1200],
+                        //default: [0, P1DG_maxY],
                         tick:{
                             //values: [300, 600, 900, 1200],
                             stepSize: 300,
                         },
                         max:P1DG_maxY,
-                        padding:0,
+                        //padding:0,
                     },
                     
                     y2:{
@@ -435,14 +479,6 @@ console.log(P1DG_grid);
             y:{
                 show:false,
                 lines:P1DG_grid,
-                /*lines:[
-                    {value: 0, },
-                    {value: 300, },
-                    {value: 600, },
-                    {value: 900, },
-                    {value: 1200,},
-                    {value: 1500,},
-                 ],*/
             },
             lines:{front: false}
         },
@@ -559,7 +595,7 @@ console.log(P1DG_grid);
     for(let i=0; i<=P1WG_maxY/300; i++){
         P1WG_grid.push({"value":i*300})
     }
-    console.log(P1WG_grid);
+    //console.log(P1WG_grid);
 
  
     var P1_WeeklyGraph = bb.generate({
@@ -629,7 +665,7 @@ console.log(P1DG_grid);
                             tick:{
                                 stepSize: 300
                             },
-                            padding:0,
+                            //padding:0,
                         
                         },
             },
@@ -719,22 +755,6 @@ console.log(P1DG_grid);
         .style('font-size', '100%')
         .style('font-weight','bold')
 
-
-        /*setTimeout(function(){ //data label on svg 
-            let chartTransForm = $("#P1_weeklyGraph svg g").first().attr("transform");
-    
-            let htmlText = "";
-            $("#P1_weeklyGraph .bb-texts text").each(function(){
-                htmlText += $(this).clone().wrapAll("<text/>").parent().html();
-                //$(this).remove();
-            });
-    
-            htmlText = '<g class="bb-texts" transform="' + chartTransForm +'">' + htmlText + '</g>';
-            $("#P1_weeklyGraph svg").append(htmlText);
-            $("#P1_weeklyGraph").html($("#P1_weeklyGraph").html());
-    
-        }, 100);*/
-
   
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -752,7 +772,8 @@ console.log(P1DG_grid);
             P1HG_grid.push({"value":i});
         }
 
-        testHour3=["물"];
+
+        let testHour3=["물"];
         for(let i=0; i<parsedHours_water.length; i++){
             if(i%3==0){
                 testHour3.push(200)} 
@@ -765,7 +786,7 @@ console.log(P1DG_grid);
     var P1_TimezoneGraph = bb.generate({
         size:{
             //width:width2,
-            height:270
+            height:height2
 
         },
         padding:{
@@ -775,8 +796,8 @@ console.log(P1DG_grid);
         data:{
             columns:[
                 ["cheating", 50, 100, 150], 
-                //testWater,
-                hourlyWaterIntake 
+                testHour3,
+                //hourlyWaterIntake 
             ],
             type: "bubble",
             colors:{
@@ -806,12 +827,12 @@ console.log(P1DG_grid);
                 }
              })
 
-             console.log(P1HG_legendCircle);
+             //console.log(P1HG_legendCircle);
 
         },
 
         bubble: {
-            maxR: 9
+            maxR: 8
           },
 
         axis:{
@@ -831,8 +852,11 @@ console.log(P1DG_grid);
                     show:false,
                     min:0,
                     max:150,
-                    padding:0
+                    //padding:0
                 },
+
+
+
         },
 
         grid:{
@@ -857,6 +881,7 @@ console.log(P1DG_grid);
                 }
             }
         },
+
 
         svg: {
             classname: 'P1_TG_SVG'
@@ -900,7 +925,7 @@ console.log(P1DG_grid);
         .attr('y', 75)
         .attr('fill', 'black')
         .text('150ml')
-        .style('font-size', '7px')
+        .style('font-size', '9px')
 
         svg.append("circle") // 원형
         .attr("r", P1HG_legendCircle[1])
@@ -914,7 +939,7 @@ console.log(P1DG_grid);
         .attr('y', 75)
         .attr('fill', 'black')
         .text('100ml')
-        .style('font-size', '7px')
+        .style('font-size', '9px')
         
         svg.append("circle") // 원형
         .attr("r", P1HG_legendCircle[0])
@@ -928,15 +953,619 @@ console.log(P1DG_grid);
         .attr('y', 75)
         .attr('fill', 'black')
         .text('50ml')
-        .style('font-size', '7px')
+        .style('font-size', '9px')
         }, 100)
         
 //------------------------------------------------------------------------------------------------------------------------------//
 
+
+    let P2DG_maxY=dailyMaxPee+(5-dailyMaxPee%5)
+    if(20>P2DG_maxY){P2DG_maxY=20;}
+
+    let P2DG_grid=[];
+    for(let i=0; i<=P2DG_maxY/5; i++){
+        P2DG_grid.push({"value":i*5})
+    }
+    //console.log(P2DG_grid);
+
+    let goal_pee1=[];
+    for(let i=0; i<14; i++){
+        goal_pee1.push(4)
+    }
+    let goal_pee2=[];
+    for(let i=0; i<14; i++){
+        goal_pee2.push(7)
+    }
+    let avgPee=[];
+    for(let i=0; i<14; i++){
+        avgPee.push(avg_Pee);
+    }
+
+    goal_pee1.unshift("목표1");
+    goal_pee2.unshift("목표2");
+    avgPee.unshift("평균")
+
+    let goal_rect={};
+
+
+    let P2_dailyGraph=bb.generate({
+
+    size:{
+        width: width1,
+        height: height1,
+    },
+    padding:{
+        top:30,
+        right:30,
+    },
+    data: {
+      columns: [
+      dailyPeeCount,
+      goal_pee1,
+      goal_pee2,
+      avgPee,
+      ],
+      type: "line", // for ESM specify as: line()
+      colors:{
+          "배뇨 횟수":"#F2C94C",
+          "목표1":"#03C52E",
+          "목표2":"#03C52E",
+          "평균":"#F2C94C",
+      }
+    },
+  
+    onrendered: function() {
+
+                
+        console.log(document.getElementById("P2_DailyGraph"));
+
+        /*-----------------------------------y2 axis design------------------------------------------------ */
+        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+                
+                if(i!=1){$(this).remove()}
+                else{
+                    
+                    let text=$(this).find("text").each(function(i){
+                        d3.select(this).attr("fill","#F2C94C").attr("font-weight", "bold").style("borderColor", "#F2C94C")
+
+                    })
+                    
+                    let line=$(this).find("line").each(function(i){
+                        d3.select(this).style("stroke", "#F2C94C")
+                        //console.log(this);
+
+                    })
+                    
+                }
+        })
+
+        let elem3=$(".P2_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+            if(i==0){ //change opacity of Y2
+                test=this;
+                d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
+            }
+            else{
+                //d3.select(this).style('stroke-opacity', 0.5);
+            }
+        })
+        let temp_height=0;
+        /*-----------------------------------Drawing "goal rectangle"------------------------------------------------ */
+        let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
+            console.log(this);
+            let path=$(this).attr("d");
+            let parsedPath=path.split(/M|,|L/);
+            parsedPath=parsedPath.splice(1)
+            temp_height=parsedPath[1];
+        })
+
+        let elem5=$(".P2_DailyGraph").find(".bb-line-목표2").each(function(i){
+            console.log(this);
+            let path=$(this).attr("d");
+            let parsedPath=path.split(/M|,|L/);
+            parsedPath=parsedPath.splice(1)
+            console.log(parsedPath);
+            goal_rect["시작 좌표"]={"x":parsedPath[0], "y":parsedPath[1]}
+            goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]}
+            goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
+            console.log(goal_rect);
+
+        })
+
+        let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
+            console.log(this);
+            
+            let rect=d3.select(this).append("svg").attr("class","사각형")
+            rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]).attr("y", goal_rect["시작 좌표"]["y"])
+            .attr("height", goal_rect["높이"]["높이"])
+            .attr("width", goal_rect["가로"]["가로"])
+            .attr("fill","#03C52E")
+            .style("opacity", "0.13")
+            
+
+        })
+         
+
+        
+  
+    },
+    axis:{
+        x:{
+            type: "category",
+            categories:days,
+            width:10,
+            tick:{
+                text:{
+                    show:true,
+                    },
+                width: 50,
+                },
+        },
+            y: {
+                show:true,
+                default: [0, 20],
+
+                //default: [0, P2DG_maxY],
+                tick:{
+                    //values: [300, 600, 900, 1200],
+                    stepSize: 5,
+                },
+                max:P2DG_maxY,
+                padding:0,
+            },
+            y2:{
+                show:true,
+                tick: {
+                    stepSize: avg_Pee,
+                    format:function(d){
+                        if(d==avg_Pee){
+                            return "평균";
+                            
+                        }
+                    }
+                        
+
+                },
+                
+                
+                
+            }
+    },
+    legend:{
+        show:false
+    },
+    grid:{
+        y: {
+            show: false,
+            lines:P2DG_grid
+              },
+    },
+    tooltip:{
+        format:{
+            value: function(value, ratio, id){
+                if(id=="배뇨 횟수") 
+                {return value;}
+            }
+        }
+
+    },
+    
+    svg:{classname:"P2_DG"},
+    bindto: "#P2_DailyGraph"
+  });
+  
+
+  setTimeout(function(){
+        let elem0=$(".P2_DailyGraph").find(".bb-target-목표1").find("path").each(function(i){ //circle centering
+            d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
+            //console.log($(this));
+        })
+        let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ //circle centering
+            $(this).remove();
+        })
+    
+        let elem2=$(".P2_DailyGraph").find(".bb-target-목표2").find("path").each(function(i){ //circle centering
+            d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
+            //console.log($(this));
+        })
+        let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){ //circle centering
+            $(this).remove();
+        })
+        let elem4=$(".P2_DailyGraph").find(".bb-target-평균").find("path").each(function(i){ //circle centering
+            d3.select(this).style("opacity","0.8" ).attr("stroke-dasharray", "3 3")
+            //console.log($(this));
+        })
+
+        let elem5=$(".P2_DailyGraph").find(".bb-circles-평균").each(function(i){ //circle centering
+            $(this).remove();
+        })
+
+
+  })
+  //legend
+
+  setTimeout(function(){
+
+    const svg=d3.select(".P2_DG")
+
+    //d3.select(".P1_WG")
+    svg.append("rect")
+    .attr('x', 170)
+    .attr('y',11)
+    .attr('width','8')
+    .attr('height','8')
+    .attr("fill","#F2C94C")
+
+    //d3.select(".P1_WG")
+    svg.append("line")
+    .attr('x1', 165)
+    .attr('y1',15)
+    .attr('x2', 183)
+    .attr('y2', 15)
+    .style("stroke-width", 3)
+    .style("stroke", "#F2C94C");   
+
+    //d3.select(".P1_WG")
+    svg.append("text")
+    .attr('x', 185)
+    .attr('y',19)
+    .text("배뇨 횟수")
+    .style('font-size', '100%')
+
+    //d3.select(".P1_WG")
+    svg.append("rect")
+    .attr('x', 240)
+    .attr('y',11)
+    .attr('width','8')
+    .attr('height','8')
+    .attr("fill","#03C52E")
+    .style("opacity", 0.7)
+  
+
+    //d3.select(".P1_WG")
+    svg.append("text")
+    .attr('x', 250)
+    .attr('y',19)
+    .text("배뇨 정상범위 4-7회")
+    .style('font-size', '100%')
+
+    //labels
+    //d3.select(".P1_WG")
+    svg.append("text")
+    .attr('x', 23)
+    .attr('y',20)
+    .text("회")
+    .style('font-size', '100%')
+    .style('font-weight','bold')
+
+  })
+
+
+
+let P2WG_maxY=weeklyMaxPee+(5-weeklyMaxPee%5);
+//console.log(P2WG_maxY);
+let P2WG_grid=[];
+for(let i=0; i<=P2WG_maxY/5; i++){
+    P2WG_grid.push({"value":i*5})
+}
+//console.log(P2DG_grid);
+
+
+
+  let P2_WeeklyGraph=bb.generate({
+      size:{
+          width:width1-30,
+          height:height1,
+      },
+      padding:{
+          top:30
+      },
+      data:{
+          columns:[
+              weeklyPeeCount,
+          ],
+          type:"line",
+          labels:true,
+          colors:{
+              "배뇨 횟수": "#EBC747"
+
+          },
+      },
+
+      onrendered:function(){
+        console.log(document.getElementById("P2_weeklyGraph"));
+      },
+
+      axis:{
+        x:{
+            type: "category",
+            categories:weeks,
+            width:10,
+            tick:{
+                text:{
+                    show:true,
+                    },
+                width: 50,
+                },
+        },
+
+        y: {
+            show:true,
+            default: [0, 20],
+
+            //default: [0, P2DG_maxY],
+            tick:{
+                //values: [300, 600, 900, 1200],
+                stepSize: 5,
+            },
+            max:P2WG_maxY,
+            padding:0,
+        },
+    },
+      legend:{
+          show:false
+      },
+      grid:{
+        y: {
+            show: false,
+            lines:P2DG_grid
+              },
+    },
+      svg:{classname:"P2_WG"},
+      bindto: "#P2_weeklyGraph"
+      
+  })
+
+  setTimeout(function(){
+
+    const svg=d3.select(".P2_WG")
+
+    //d3.select(".P1_WG")
+    svg.append("rect")
+    .attr('x', 250)
+    .attr('y',11)
+    .attr('width','8')
+    .attr('height','8')
+    .attr("fill","#F2C94C")
+
+    //d3.select(".P1_WG")
+    svg.append("line")
+    .attr('x1', 245)
+    .attr('y1',15)
+    .attr('x2', 263)
+    .attr('y2', 15)
+    .style("stroke-width", 3)
+    .style("stroke", "#F2C94C");   
+
+    //d3.select(".P1_WG")
+    svg.append("text")
+    .attr('x', 265)
+    .attr('y',19)
+    .text("배뇨 횟수")
+    .style('font-size', '100%')
+
+    
+    //labels
+    //d3.select(".P1_WG")
+    svg.append("text")
+    .attr('x', 18)
+    .attr('y',20)
+    .text("회")
+    .style('font-size', '100%')
+    .style('font-weight','bold')
+
+  })
+
+
+
+  let P2HG_legendCircle=[];
+
+  let P2HG_grid=[];
+  for(let i=0; i<parsedHours_Pee.length; i++){
+      P2HG_grid.push({"value":i});
+  }
+
+  
+  let testPee3=["배뇨 횟수"];
+  for(let i=0; i<parsedHours_Pee.length; i++){
+      if(i%3==0){
+          testPee3.push(20)} 
+      else if(i%2==0){
+          testPee3.push(5)}
+      else{
+          testPee3.push(0)}
+      }
+  
+  var P2_TimezoneGraph = bb.generate({
+    size:{
+        //width:width2,
+        height:height2
+
+    },
+    padding:{
+        bottom:0,
+        right: 30
+    },
+    data:{
+        columns:[
+            ["cheating", 5, 10, 15], 
+            testPee3,
+            //hourlyPeeCount
+        ],
+        type: "bubble",
+        colors:{
+            "배뇨 횟수":"#FFDB5B",
+            "cheating":"rgb(247, 247, 247)"
+
+        },
+    
+    },
+
+    onrendered: function() {
+
+            
+        console.log(document.getElementById("P2_TimezoneGraph"));
+
+        /*-----------------------------------circle design------------------------------------------------ */
+
+        let elem0=$(".P2_TimezoneGraph").find(".bb-circles-배뇨-횟수").find("circle").each(function(i){ //circle centering
+            $(this).attr("cx", 35)
+            //console.log($(this))
+        })
+
+         /*-----------------------------------Legend design------------------------------------------------ */
+         //let P1HG_legendCircle=[];
+         let elem1=$(".P2_TimezoneGraph").find(".bb-circles-cheating").find("circle").each(function(i){ //circle centering
+            if(i==0||i==1||i==2){
+                P2HG_legendCircle.push($(this).attr("r"))
+            }
+         })
+
+         //console.log(P2HG_legendCircle);
+
+    },
+
+    bubble: {
+        maxR: 8
+      },
+
+    axis:{
+        rotated:true,
+            x: {
+                padding:0,
+                type: "category",
+                categories: parsedHours_Pee,
+                tick:{
+                    show:false
+            
+                }
+                
+                
+             },
+            y: {
+                show:false,
+                min:0,
+                max:150,
+                //padding:0
+            },
+
+    },
+
+    grid:{
+        x: {
+          show: false,
+          lines:P2HG_grid
+            },
+        }
+    ,
+
+
+    legend:{
+        show:false,
+    },
+
+    tooltip:{
+        format:{
+            value: function(value, ratio, id){
+                if(id=="배뇨 횟수") 
+                {return value;}
+                else{return}
+            }
+        }
+    },
+
+
+    svg: {
+        classname: 'P2_TG_SVG'
+      },
+
+
+    bindto:"#P2_TimezoneGraph"
+})
+
+  
+        //Drawing Legends
+        setTimeout(function(){
+
+            const legend=d3.select("#P2_TimezoneGraph")
+            const svg=legend.append("svg")
+            .attr("class", "lgd")
+            .attr("heigt", "90")
+            .attr("width", width2)
+            //.append("g").attr("class", "lgd")
+    
+            svg.append("text")
+            .attr('x', 35)
+            .attr('y', 25)
+            .attr('fill', 'black')
+            .text('배뇨 횟수')
+            .style('font-size', "9px")
+            .style('font-weight', 'bold')
+    
+            svg.append("circle") // 원형
+            .attr("r", P2HG_legendCircle[2])
+            .attr("cx", 45)
+            .attr("cy", 50)
+            .attr("fill", "#FFDB5B")
+            .style("opacity", 0.5)
+    
+            svg.append("text") // text
+            .attr('x', 35)
+            .attr('y', 75)
+            .attr('fill', 'black')
+            .text('15회')
+            .style('font-size', '9px')
+    
+            svg.append("circle") // 원형
+            .attr("r", P2HG_legendCircle[1])
+            .attr("cx", 95)
+            .attr("cy", 50)
+            .attr("fill", "#FFDB5B")
+            .style("opacity", 0.5)
+            
+            svg.append("text") // text
+            .attr('x', 85)
+            .attr('y', 75)
+            .attr('fill', 'black')
+            .text('10회')
+            .style('font-size', '9px')
+            
+            svg.append("circle") // 원형
+            .attr("r", P2HG_legendCircle[0])
+            .attr("cx", 142)
+            .attr("cy", 50)
+            .attr("fill", "#FFDB5B")
+            .style("opacity", 0.5)
+    
+            svg.append("text") // text
+            .attr('x', 135)
+            .attr('y', 75)
+            .attr('fill', 'black')
+            .text('5회')
+            .style('font-size', '9px')
+            }, 100)
        
 }   
 
-    //Arrange the water intake and pee logs by days and hours
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Arrange the water intake and pee logs by days
     function count_Daily(Data, days){
 
         let dailyData=new Array(14);
@@ -963,7 +1592,7 @@ console.log(P1DG_grid);
             if(checkDay==false){console.log("ERROR!!")}
     
         }
-        console.log(dailyData);
+        //console.log(dailyData);
         return dailyData;
 
 
@@ -992,13 +1621,13 @@ console.log(P1DG_grid);
             if(checkHour==false){console.log("ERROR!!");}
 
         }
-        //console.log(hourlyData);
+
         return hourlyData;
 
 
     }
 
-    //for drawing hourly graph, parse the data and find the start, last index of data(not zero) and axis 
+    //for drawing hourly graph, parse the data and find the start, last index of recorded data(not zero) and hour axis 
     function count_parse_hourly(UserData, count_Hourly, hours, parsedHours){
         //make a new array that contains only values (for drawing graph)
        let originalHourData=count_Hourly(UserData, hours);
@@ -1024,7 +1653,7 @@ console.log(P1DG_grid);
        parsedHourData=parsedHourData.slice(startIdx, lastIdx+1);
        parsedHours=parsedHours.slice(startIdx, lastIdx+1);
 
-       console.log(parsedHourData, parsedHours);
+       //console.log(parsedHourData, parsedHours);
 
        return [parsedHourData, parsedHours];
     }
