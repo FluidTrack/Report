@@ -346,10 +346,6 @@ body{
 
 /*-----------------basic setting for graph------------------------------*/
 
-.bb-chart-bars{
-  opacity:1.0;
-}
-
 
 
 .bb-axis.bb-axis-x path {
@@ -680,7 +676,7 @@ body{
   height: 140px;
   left: 37px;
   top: 372px;
-  background-color: rgb(247, 247, 247);
+  background-color: white;
 }
 
 .P3_CommentBG{

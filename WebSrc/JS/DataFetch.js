@@ -102,7 +102,7 @@ let loadData = () => {
             success: function(msg) {			// 성공시
               //console.log(`Poop : ${msg}`)
               if (msg != "null") {
-                UserPoopData = JSON.parse(msg).PoopLogs[0];
+                UserPoopData = JSON.parse(msg).PoopLogs; //선영: Data array components 전부를 가져오도록 수정함
               } else {
                 UserPoopData = null
               }
