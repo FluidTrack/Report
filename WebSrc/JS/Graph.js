@@ -263,7 +263,7 @@ let DataLoadComplete = (startDateStamp) => {
             if(dailyMaxPee<dailyPeeCount[i]){dailyMaxPee=dailyPeeCount[i]}
             total+=dailyPeeCount[i];
         }
-        let avg_Pee=total/14;
+        let avg_Pee=(total/14).toFixed(2);
         console.log(dailyMaxPee, avg_Pee);
 
 
@@ -658,37 +658,31 @@ let DataLoadComplete = (startDateStamp) => {
                 d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
                 d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
 
+                if(Math.abs(avgWater-1000)<100 && avgWater<1000){
+                    console.log("START")
+                    d3.select(this).select("text").select("tspan").attr("dy","20")
+                }
+
             }
             if(i==1){
                 test=this;
+                
                 d3.select(this).select("line").style("stroke", "#03C52E")
                 d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
-                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 15).attr("dy", "-7").text("목표");
+                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("목표");
+                //
+                //console.log(Math.abs(avgWater-1000))
+                if(Math.abs(avgWater-1000)<100 && avgWater>1000){
+                    console.log("START")
+                    d3.select(this).select("text").select("tspan").attr("dy","20")
+                }
+                console.log(this)
+                
 
             }
         }, 100);
 
       })
-
-/*-----------------------------------DATA LABEL DESIGN--------------------------------------------------------- */
-     /*setTimeout(function(){ //data label on svg 
-        let chartTransForm = $("#P1_DailyGraph svg g").first().attr("transform");
-
-        let htmlText = "";
-        $("#P1_DailyGraph .bb-texts text").each(function(){
-            htmlText += $(this).clone().wrapAll("<text/>").parent().html();
-            $(this).remove();
-        });
-
-        htmlText = '<g class="bb-texts" transform="' + chartTransForm +'">' + htmlText + '</g>';
-        $("#P1_DailyGraph svg").append(htmlText);
-        $("#P1_DailyGraph").html($("#P1_DailyGraph").html());
-
-    });
-
-  */
-
-
  
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -901,16 +895,6 @@ let DataLoadComplete = (startDateStamp) => {
             P1HG_grid.push({"value":i});
         }
 
-
-        let testHour3=["물"];
-        for(let i=0; i<parsedHours_water.length; i++){
-            if(i%3==0){
-                testHour3.push(200)} 
-            else if(i%2==0){
-                testHour3.push(150)}
-            else{
-                testHour3.push(0)}
-            }
 
         var P1_TimezoneGraph = bb.generate({
     size:{
@@ -1128,8 +1112,10 @@ let DataLoadComplete = (startDateStamp) => {
         height: height1,
     },
     padding:{
-        top:30,
-        right:30,
+        top: 30,
+        right: 40,
+        bottom: 0,
+        left: 30
     },
     data: {
       columns: [
@@ -1165,35 +1151,6 @@ let DataLoadComplete = (startDateStamp) => {
                 
         console.log(document.getElementById("P2_DailyGraph"));
 
-        /*-----------------------------------y2 axis design------------------------------------------------ */
-        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
-                
-                if(i!=1){$(this).remove()}
-                else{
-                    
-                    let text=$(this).find("text").each(function(i){
-                        d3.select(this).attr("fill","#F2C94C").attr("font-weight", "bold").style("borderColor", "#F2C94C")
-
-                    })
-                    
-                    let line=$(this).find("line").each(function(i){
-                        d3.select(this).style("stroke", "#F2C94C")
-                        //console.log(this);
-
-                    })
-                    
-                }
-        })
-
-        let elem3=$(".P2_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
-            if(i==0){ //change opacity of Y2
-                test=this;
-                d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
-            }
-            else{
-                //d3.select(this).style('stroke-opacity', 0.5);
-            }
-        })
         let temp_height=0;
         /*-----------------------------------Drawing "goal rectangle"------------------------------------------------ */
         let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
@@ -1262,10 +1219,10 @@ let DataLoadComplete = (startDateStamp) => {
         y2:{
             show:true,
             tick: {
-                stepSize: avg_Pee,
+                values: avgPee,
                 format:function(d){
                     if(d==avg_Pee){
-                        return "평균";
+                        return d;
                         
                     }
                 }
@@ -1299,6 +1256,42 @@ let DataLoadComplete = (startDateStamp) => {
     svg:{classname:"P2_DG"},
     bindto: "#P2_DailyGraph"
   });
+
+  //y2 axis design
+  setTimeout(function(){
+      
+        /*-----------------------------------y2 axis design------------------------------------------------ */
+        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+                
+            if(i!=1){$(this).remove()}
+            else{
+
+                d3.select(this).append("text").text("평균").attr("dx", 12).attr("dy",-7)
+                
+                let text=$(this).find("text").each(function(i){
+                    d3.select(this).attr("fill","#F2C94C").attr("font-weight", "bold").style("borderColor", "#F2C94C")
+
+                })
+                
+                let line=$(this).find("line").each(function(i){
+                    d3.select(this).style("stroke", "#F2C94C")
+                    //console.log(this);
+
+                })
+                
+            }
+    })
+
+    let elem3=$(".P2_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+        if(i==0){ //change opacity of Y2
+            test=this;
+            d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
+        }
+        else{
+            //d3.select(this).style('stroke-opacity', 0.5);
+        }
+    })
+  })
 
     setTimeout(function(){
 
@@ -1389,7 +1382,7 @@ let DataLoadComplete = (startDateStamp) => {
         //labels
         //d3.select(".P1_WG")
         svg.append("text")
-        .attr('x', 23)
+        .attr('x', 12)
         .attr('y',20)
         .text("회")
         .style('font-size', '100%')
@@ -1416,8 +1409,10 @@ let DataLoadComplete = (startDateStamp) => {
             height:height1,
         },
         padding:{
-            top:30,
-            right:30,
+            top: 30,
+            right: 40,
+            //bottom: 30,
+            left: 30
 
         },
         data:{
@@ -1475,7 +1470,7 @@ let DataLoadComplete = (startDateStamp) => {
         bindto: "#P2_weeklyGraph"
         
     })
-
+      //LEGEND
     setTimeout(function(){
 
         const svg=d3.select(".P2_WG")
@@ -1508,7 +1503,7 @@ let DataLoadComplete = (startDateStamp) => {
         //labels
         //d3.select(".P1_WG")
         svg.append("text")
-        .attr('x', 22)
+        .attr('x', 12)
         .attr('y',20)
         .text("회")
         .style('font-size', '100%')
@@ -1516,9 +1511,9 @@ let DataLoadComplete = (startDateStamp) => {
 
     })
 
+        //data label modification
     setTimeout(function(){
 
-        //data label modification
 
         let elem0=$(".P2_weeklyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ //circle centering
             d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
@@ -1814,7 +1809,7 @@ let DataLoadComplete = (startDateStamp) => {
             const svg=d3.select(".P3_DG_SVG").append("g").attr("class", "legend_P3DG")
 
             svg.append('image')
-            .attr('xlink:href', "../IMG/normal.png")
+            .attr('xlink:href', "../IMG/poo/normal.png")
             .attr('width', 13)
             .attr('height', 13)
             .attr("x", "295")
@@ -1830,7 +1825,7 @@ let DataLoadComplete = (startDateStamp) => {
  
 
             svg.append('image')
-            .attr('xlink:href', "../IMG/hard.png")
+            .attr('xlink:href', "../IMG/poo/hard.png")
             .attr('width', 18)
             .attr('height', 18)
             .attr("x", "370")
@@ -1845,7 +1840,7 @@ let DataLoadComplete = (startDateStamp) => {
 
             
             svg.append('image')
-            .attr('xlink:href', "../IMG/liquid.png")
+            .attr('xlink:href', "../IMG/poo/liquid.png")
             .attr('width', 18)
             .attr('height', 18)
             .attr("x", "455")
@@ -1913,7 +1908,7 @@ let DataLoadComplete = (startDateStamp) => {
                     if(temp==0){
                         //console.log("START")
                         mainChart.append('image')
-                        .attr('xlink:href', "../IMG/unknown_poop.png")
+                        .attr('xlink:href', "../IMG/poo/unknown_poop.png")
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
@@ -1924,7 +1919,7 @@ let DataLoadComplete = (startDateStamp) => {
                     else if(temp>0 && temp<3){
                         //console.log("START")
                         mainChart.append('image')
-                        .attr('xlink:href', "../IMG/hard.png")
+                        .attr('xlink:href', "../IMG/poo/hard.png")
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
@@ -1934,7 +1929,7 @@ let DataLoadComplete = (startDateStamp) => {
                     else if(temp==3 || temp==4){
                         //console.log("START")
                         mainChart.append('image')
-                        .attr('xlink:href', "../IMG/normal.png")
+                        .attr('xlink:href', "../IMG/poo/normal.png")
                         .attr('width', size-3)
                         .attr('height', size-3)
                         .attr("x", x_loc[i])
@@ -1944,7 +1939,7 @@ let DataLoadComplete = (startDateStamp) => {
                     else if(temp>4 && temp<=7){
                         //console.log("START")
                         mainChart.append('image')
-                        .attr('xlink:href', "../IMG/liquid.png")
+                        .attr('xlink:href', "../IMG/poo/liquid.png")
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
