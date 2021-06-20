@@ -3,14 +3,21 @@ let UserDrinkData = []
 let UserPoopData = []
 let UserPeeData = []
 
+let UserTotalWaterData = []
+let UserTotalDrinkData = []
+let UserTotalPoopData = []
+let UserTotalPeeData = []
+
 let DataLoadComplete = (startDateStamp) => {
-
- 
-
     if(UserWaterData==null){UserWaterData=[]}
     if(UserDrinkData==null){UserDrinkData=[]}
     if(UserPeeData==null){UserPeeData=[]}
     if(UserPoopData==null){UserPoopData=[]}
+
+    if(UserTotalWaterData==null){UserTotalWaterData=[]}
+    if(UserTotalDrinkData==null){UserTotalDrinkData=[]}
+    if(UserTotalPoopData==null){UserTotalPoopData=[]}
+    if(UserTotalPeeData==null){UserTotalPeeData=[]}
 
     /* ===============================================================================================================
         Water Log Object
@@ -28,6 +35,8 @@ let DataLoadComplete = (startDateStamp) => {
     console.log(`----------------------------------------------------------`);
     console.log(`▼ User Water Data`)
     console.log(UserWaterData)
+    console.log(`▼ User Total Water Data`)
+    console.log(UserTotalWaterData)
 
     /* ===============================================================================================================
         Drink Log Object
@@ -45,9 +54,9 @@ let DataLoadComplete = (startDateStamp) => {
     =============================================================================================================== */
     console.log(`----------------------------------------------------------`);
     console.log(`▼ User Drink Data`)
-    
-    
     console.log(UserDrinkData)
+    console.log(`▼ User Total Drink Data`)
+    console.log(UserTotalDrinkData)
 
     /* ===============================================================================================================
         Poop Log Object
@@ -65,6 +74,9 @@ let DataLoadComplete = (startDateStamp) => {
     console.log(`----------------------------------------------------------`);
     console.log(`▼ User Poop Data`)
     console.log(UserPoopData)
+    console.log(`▼ User Total Poop Data`)
+    console.log(UserTotalPoopData)
+
 
     /* ===============================================================================================================
         Pee Log Object
@@ -80,10 +92,10 @@ let DataLoadComplete = (startDateStamp) => {
     =============================================================================================================== */
     console.log(`----------------------------------------------------------`);
     console.log(`▼ User Pee Data`)
-
     console.log(UserPeeData)
-
-
+    console.log(`▼ User Total Pee Data`)
+    console.log(UserTotalPeeData)
+    console.log(`==========================================================\n`);
 
     //===============================================================================================================
     // To - Do Section
@@ -95,6 +107,10 @@ let DataLoadComplete = (startDateStamp) => {
     //     > UserDrinkData : 음료 섭취 기록 모음
     //     > UserPoopData  : 대변 활동 기록 모음
     //     > UserPeeData   : 소변 활동 기록 모음
+    //     > UserTotalWaterData : 물 섭취 전체 기록 모음
+    //     > UserTotalDrinkData : 음료 섭취 전체 기록 모음
+    //     > UserTotalPoopData  : 대변 활동 전체 기록 모음
+    //     > UserTotalPeeData   : 소변 활동 전체 기록 모음
     //===============================================================================================================
     let start=startDateStamp
     let height1=142;

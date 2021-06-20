@@ -122,7 +122,83 @@ let loadData = () => {
                     UserPeeData = null
                   }
 
-                  DataLoadComplete(startDateStamp);
+                  let str6 = `${targetURL}read_Water_logs?id=${targetID}`
+                  //console.log(`total water url : ${str6}`)
+                  jQuery.ajax({
+                    type:'GET',						// POST 방식으로
+                    url: `${str6}`,
+                    processData:false,					// 기본 설정
+                    contentType: false,					// 기본 설정
+                    success: function(msg) {			// 성공시
+                      //console.log(`Water Total : ${msg}`)
+                      if (msg != "null") {
+                        UserTotalWaterData = JSON.parse(msg).WaterLogs; 
+                      } else {
+                        UserTotalWaterData = null
+                      }
+
+                      let str7 = `${targetURL}read_Drink_logs`
+                      //console.log(`total drink url : ${str7}`)
+                      jQuery.ajax({
+                        type:'GET',						// POST 방식으로
+                        url: `${str7}`,
+                        processData:false,					// 기본 설정
+                        contentType: false,					// 기본 설정
+                        success: function(msg) {			// 성공시
+                          //console.log(`Drink Total : ${msg}`)
+                          if (msg != "null") {
+                            UserTotalDrinkData = JSON.parse(msg).DrinkLogs; //선영: Data array components 전부를 가져오도록 수정함 
+                          } else {
+                            UserTotalDrinkData = null
+                          }
+
+                          let str8 = `${targetURL}read_Pee_logs`
+                          //console.log(`total pee url : ${str8}`)
+                          jQuery.ajax({
+                            type:'GET',						// POST 방식으로
+                            url: `${str8}`,
+                            processData:false,					// 기본 설정
+                            contentType: false,					// 기본 설정
+                            success: function(msg) {			// 성공시
+                              //console.log(`Pee Total : ${msg}`)
+                              if (msg != "null") {
+                                UserTotalPeeData = JSON.parse(msg).PeeLogs; //선영: Data array components 전부를 가져오도록 수정함 
+                              } else {
+                                UserTotalPeeData = null
+                              }
+
+                              let str9 = `${targetURL}read_Poop_logs`
+                              //console.log(`total poop url : ${str9}`)
+                              jQuery.ajax({
+                                type:'GET',						// POST 방식으로
+                                url: `${str9}`,
+                                processData:false,					// 기본 설정
+                                contentType: false,					// 기본 설정
+                                success: function(msg) {			// 성공시
+                                  //console.log(`Poop Total : ${msg}`)
+                                  if (msg != "null") {
+                                    UserTotalPoopData = JSON.parse(msg).PoopLogs; //선영: Data array components 전부를 가져오도록 수정함 
+                                  } else {
+                                    UserTotalPoopData = null
+                                  }
+
+                                  DataLoadComplete(startDateStamp);
+                                },error: function(msg) {			// 실패시
+                                  location.href=`/ConnectFail`;
+                                }
+                              });
+                            },error: function(msg) {			// 실패시
+                              location.href=`/ConnectFail`;
+                            }
+                          });
+                        },error: function(msg) {			// 실패시
+                          location.href=`/ConnectFail`;
+                        }
+                      });
+                    },error: function(msg) {			// 실패시
+                      location.href=`/ConnectFail`;
+                    }
+                  });
                 },error: function(msg) {			// 실패시
                   location.href=`/ConnectFail`;
                 }
