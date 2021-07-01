@@ -182,7 +182,7 @@ let loadData = () => {
                                     UserTotalPoopData = null
                                   }
 
-                                  DataLoadComplete(startDateStamp);
+                                  DataLoadComplete(startDateStamp, rangeInt, userData.creation_date, userData.id);
                                 },error: function(msg) {			// 실패시
                                   location.href=`/ConnectFail`;
                                 }
