@@ -120,6 +120,15 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     let height2=270;
     let width2=195;
 
+    //find current week's index
+    let lastidx=-1;
+    switch(rangeInt){
+        case 0: lastidx=1; break;
+        case 1: lastidx=3; break;
+        case 2: lastidx=5; break;
+        case 3: lastidx=7; break;
+    }
+
     let W0=new Date(creation);
     W0.setHours(0, 0, 0);
     let W1=week(W0, 1);
@@ -198,25 +207,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<weeklyWaterIntake.length; i++){
             weeklyWaterIntake[i]=parseInt(weeklyWaterIntake[i]*100/7)
         }
+
+        for(let i=lastidx+1; i<weeklyWaterIntake.length; i++){
+            weeklyWaterIntake[i]=null;
+        }
         weeklyWaterIntake.unshift("물")
         
         console.log(weeklyWaterIntake)
 
-        /*let week1_Water=0;
-        let week2_Water=0;
-    
-        for(let i=1; i<dailyWaterIntake.length; i++){
-            if(i<8){
-                week1_Water+=dailyWaterIntake[i];
-            }
-            else{
-                week2_Water+=dailyWaterIntake[i];
-            }
-        }
-
-        weeklyWaterIntake[week1]=parseInt(week1_Water/7);
-        weeklyWaterIntake[week2]=parseInt(week2_Water/7);
-        //console.log(week1_Water, week2_Water, weeklyWaterIntake);*/
 
 
 
@@ -272,8 +270,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 //weekly (normalized)
-    //******************추후 다른 주 데이터도 받아와야함 *************************
-        //let weeklyDrinkIntake=["총 수분 (물+음료)", 0, 0, 0, 0, 0, 0, 0, 0];
         let weeklyDrinkIntake=[0, 0, 0, 0, 0, 0, 0, 0];
 
         for(let i=0; i<UserTotalDrinkData.length; i++){
@@ -293,17 +289,24 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyDrinkIntake[i]=parseInt(weeklyDrinkIntake[i]*100/7)
         }
 
-        let weeklymaxDrink=0;
-        for(let i=0; i<weeklyDrinkIntake.length; i++){
-            if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]}
-        }
-        console.log(weeklymaxDrink);
+        
 
         weeklyDrinkIntake.unshift("총 수분 (물+음료)")
 
         console.log(weeklyDrinkIntake)
         for(let i=1; i<weeklyDrinkIntake.length; i++){
             weeklyDrinkIntake[i]=weeklyDrinkIntake[i]+weeklyWaterIntake[i];
+        }
+
+        console.log(weeklyDrinkIntake)
+        for(let i=lastidx+2; i<weeklyDrinkIntake.length; i++){
+            weeklyDrinkIntake[i]=null
+        }
+
+        
+        let weeklymaxDrink=0;
+        for(let i=1; i<weeklyDrinkIntake.length; i++){
+            if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]}
         }
         
         console.log(weeklyDrinkIntake)
@@ -360,16 +363,21 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<weeklyPeeCount.length; i++){
             weeklyPeeCount[i]=(weeklyPeeCount[i]/7).toFixed(2);
         }
-        weeklyPeeCount.unshift("배뇨 횟수")
 
-        console.log(weeklyPeeCount)
+        for(let i=lastidx+1; i<weeklyPeeCount.length; i++){
+            weeklyPeeCount[i]=null;
+        }
+
 
         let weeklyMaxPee=0;
-        for(let i=0; i<8; i++){
+        for(let i=0; i<=lastidx; i++){
             if(weeklyPeeCount[i]>weeklyMaxPee){
                 weeklyMaxPee=weeklyPeeCount[i];}
-            else{}
         }
+
+        weeklyPeeCount.unshift("배뇨 횟수")
+
+        console.log(weeklyPeeCount, weeklyMaxPee)
 
 
 
@@ -427,61 +435,13 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyHealthyPoopCount[i]=weeklyHealthyPoopCount[i-1]+weeklyHealthyPoopCount[i]
         }
 
-        let lastidx=-1;
-        switch(rangeInt){
-            case 0: lastidx=1; break;
-            case 1: lastidx=3; break;
-            case 2: lastidx=5; break;
-            case 3: lastidx=7; break;
-        }
+
         for(let i=lastidx+1; i<weeklyPoopCount.length; i++){
             weeklyPoopCount[i]=null;
             weeklyHealthyPoopCount[i]=null;
         }
         console.log(weeklyPoopCount)
         let weeklyMaxPoop=weeklyPoopCount[lastidx];
-
-        /*let week1_Poop=0;
-        let week1_healthyPoop=0;
-        let week2_Poop=0;
-        let week2_healthyPoop=0;
-
-        // [ [*count] [] *14]
-        for(let i=0; i<dailyPoopCount.length; i++){
-            if(i<7){
-                week1_Poop+=dailyPoopCount[i]
-                for(let j=0; j<dailyPoopArray[i].length; j++){
-                    if(dailyPoopArray[i][j]==3||dailyPoopArray[i][j]==4)
-                    {
-                        week1_healthyPoop++
-                    }
-                }
-            }
-            else{
-                week2_Poop+=dailyPoopCount[i]
-                for(let j=0; j<dailyPoopArray[i].length; j++){
-                    if(dailyPoopArray[i][j]==3||dailyPoopArray[i][j]==4)
-                    {
-                        week2_healthyPoop++
-                    }
-                }
-            }
-        }
-
-        console.log(week1_Poop, week2_Poop)
-
-
-        accumulated_Poop=accumulated_Poop+week1_Poop
-        accumulated_healthyPoop=accumulated_healthyPoop+week1_healthyPoop
-        weeklyPoopCount[week1-1]=accumulated_Poop
-        weeklyHealthyPoopCount[week1-1]=accumulated_healthyPoop
-
-        accumulated_Poop=accumulated_Poop+week2_Poop
-        accumulated_healthyPoop=accumulated_healthyPoop+week2_healthyPoop
-        weeklyPoopCount[week2-1]=accumulated_Poop
-        weeklyHealthyPoopCount[week2-1]=accumulated_healthyPoop
-        //console.log(week1_Water, week2_Water, weeklyWaterIntake);*/
-
 
         
         dailyPoopCount.unshift("대변")
@@ -496,27 +456,33 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 
-        /*testWater=['물'];
-        testDrink=["총 수분 (물+음료)"];
-        for(let i=0; i<14; i++){if(i%3==0){testWater.push(1500);}else if(i%2==0){testWater.push(0);}else{testWater.push(700);}}
-        for(let i=0; i<14; i++){if(i%3==0){testDrink.push(1800);}else if(i%2==0){testDrink.push(100);}else{testDrink.push(700);}}
-        maxDrink=1500
-        maxWater=1500;
-        minWater=0;*/
 
         let P1DG_maxY;
-        if(dailymaxDrink%300==0){P1DG_maxY=dailymaxDrink}
+        //if(dailymaxDrink%300==0){P1DG_maxY=dailymaxDrink}
+        if(dailymaxDrink>=3000){P1DG_maxY=dailymaxDrink+(600-(dailymaxDrink%600))}
         else{
             P1DG_maxY=dailymaxDrink+(300-(dailymaxDrink%300));
         }
+        console.log(P1DG_maxY)
+
         if(1200>P1DG_maxY){P1DG_maxY=1200;}
 
         let P1DG_grid=[];
         let P1DG_Y=[];
-        for(let i=0; i<=P1DG_maxY/300; i++){
+        if(P1DG_maxY<3000){        
+            for(let i=0; i<=P1DG_maxY/300; i++){
             P1DG_grid.push({"value":i*300})
             P1DG_Y.push(i*300)
+                }
         }
+        else if(P1DG_maxY>3000){
+            for(let i=0; i<=P1DG_maxY/600; i++){
+                P1DG_grid.push({"value":i*600})
+                P1DG_Y.push(i*600)
+                    }
+
+        }
+
 
 
     var P1_DailyGraph = bb.generate({
@@ -525,7 +491,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 width: width1,
         },
         padding: {
-                top: 30,
+                top: 20,
                 right: 40,
                 bottom: 0,
                 left: 30
@@ -578,62 +544,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
                 
                 console.log(document.getElementById("P1_DailyGraph"));
-                let test=0; 
-
-
-                /*-----------------------------------Y2 Think Domain Design --------------------------------------------*/
-
-                let elem1=$(".P1_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
-                    if(i==0){ //change opacity of Y2
-                        test=this;
-                        d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
-                    }
-                    else{
-                        //d3.select(this).style('stroke-opacity', 0.5);
-                    }
-                })
-
-
-                /*-----------------------------------Water Data label Design --------------------------------------------*/
-                let elem2=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
-                    d3.select(this).style("font-size", "8px")//.style("font-weight", "bold"); //modify font size
-
-                    originalY=parseFloat($(this).attr("y"));  
-                    Y=originalY//+10
-                    if($(this).text()==maxWater+""){
-                        d3.select(this).attr("y", Y)
-                    }
-
-                })
-
-
-                /*-----------------------------------Bar Design--------------------------------------------------------- */
-
-                let elem3=$(".P1_DailyGraph").find(".bb-bars-총-수분--물-음료-").find("path").each(function(i){
-                    test=this;
-                    //console.log(this);
-
-                    let thisD=$(this).attr("d");
-                    //console.log(thisD);
-                    let start_M=1;
-                    let start_V1 = parseInt(thisD.indexOf('V', 1)) + 1;
-
-                    let M=thisD.slice(start_M, parseInt(thisD.indexOf('V', 1)));
-                    let V1=thisD.slice(start_V1, parseInt(thisD.indexOf('V', 2)));
-                    //console.log(M, V1);
-
-                    //let start = parseInt(thisD.indexOf(thisD, 'Z', 0))
-                    //console.log(start);
-
-
-                })
-
-                /*-----------------------------------X axis Design--------------------------------------------------------- */
-                let elem4=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
-                    d3.select(this).style("font-size", "8px");
-
-                })                
-
 
         
             },
@@ -714,7 +624,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 show:false,
                 lines:P1DG_grid
             },
-            //lines:{front: false}
+            lines:{front: false}
         },
         svg:{classname:"P1_DG"},
         bindto: "#P1_DailyGraph",
@@ -723,6 +633,63 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 /*---------------------------------------------LEGEND DESIGN--------------------------------------------------------- */
+
+    setTimeout(function(){
+        
+                /*-----------------------------------Y2 Think Domain Design --------------------------------------------*/
+
+                let elem1=$(".P1_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+                    if(i==0){ //change opacity of Y2
+
+                        d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
+                    }
+                    else{
+                        //d3.select(this).style('stroke-opacity', 0.5);
+                    }
+                })
+
+
+                /*-----------------------------------Water Data label Design --------------------------------------------*/
+                let elem2=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
+                    d3.select(this).style("font-size", "8px")//.style("font-weight", "bold"); //modify font size
+
+                    originalY=parseFloat($(this).attr("y"));  
+                    Y=originalY//+10
+                    if($(this).text()==maxWater+""){
+                        d3.select(this).attr("y", Y)
+                    }
+
+                })
+
+
+                /*-----------------------------------Bar Design--------------------------------------------------------- */
+
+                let elem3=$(".P1_DailyGraph").find(".bb-bars-총-수분--물-음료-").find("path").each(function(i){
+  
+                    //console.log(this);
+
+                    let thisD=$(this).attr("d");
+                    //console.log(thisD);
+                    let start_M=1;
+                    let start_V1 = parseInt(thisD.indexOf('V', 1)) + 1;
+
+                    let M=thisD.slice(start_M, parseInt(thisD.indexOf('V', 1)));
+                    let V1=thisD.slice(start_V1, parseInt(thisD.indexOf('V', 2)));
+                    //console.log(M, V1);
+
+                    //let start = parseInt(thisD.indexOf(thisD, 'Z', 0))
+                    //console.log(start);
+
+
+                })
+
+                /*-----------------------------------X axis Design--------------------------------------------------------- */
+                let elem4=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
+                    d3.select(this).style("font-size", "8px");
+
+                })                
+
+    })
  
      setTimeout(function(){
 
@@ -776,7 +743,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
    
         let elem0=$(".P1_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
             if(i==0){  //평균 1000ml의 tick index
-                test=this;
+        
                 d3.select(this).select("line").style("stroke", "#56A4FF")
                 d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
                 d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
@@ -788,7 +755,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             }
             if(i==1){
-                test=this;
+       
                 
                 d3.select(this).select("line").style("stroke", "#03C52E")
                 d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
@@ -803,9 +770,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
 
             }
-        }, 100);
 
-      })
+
+        });
+
+        let temp=$(".P1_DailyGraph").find(".bb-main")
+        let $elem1=$(".P1_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+
+      }, 1000)
  
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -824,6 +796,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             let P1WG_grid=[];
             let P1WG_Y=[];
+            
             for(let i=0; i<=P1WG_maxY/300; i++){
                 P1WG_grid.push({"value":i*300})
                 P1WG_Y.push(i*300);
@@ -838,7 +811,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         },
         padding: {
-            top: 30,
+            top: 10,
             right: 40,
             bottom: 30,
             left: 30
@@ -872,7 +845,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                    // -----------------------------------Data Label position Design------------------------------------------------ */
 
                     let elem0=$(".P1_weeklyGraph").find(".bb-chart-texts").find("text").each(function(i){ //Label Position
-                        d3.select(this).style("font-size", "7px").style("font-weight", "bold");                    
+                        d3.select(this).style("font-size", "9px").style("font-weight", "bold");                    
 
 
                     })
@@ -988,10 +961,17 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             
             let elem0=$(".P1_weeklyGraph").find(".bb-texts-물").find("text").each(function(i){ //Label Position
-                d3.select(this).attr("dy", "20")                  
+                d3.select(this).attr("dy", "20")  
+                let temp=Number($(this).text())
+                if(temp<=150){
+                    d3.select(this).attr("dy", "0")  
+                }        
 
 
             })
+
+            let temp=$(".P1_weeklyGraph").find(".bb-main")
+            let $elem1=$(".P1_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
         })
 
   
@@ -1093,6 +1073,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         show: false,
         lines:P1HG_grid
             },
+        //lines:{front: false}
         }
     ,
 
@@ -1189,14 +1170,31 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
         let P2DG_maxY=dailyMaxPee+(5-dailyMaxPee%5)
+        if(dailyMaxPee>30){
+            P2DG_maxY=dailyMaxPee+(10-dailyMaxPee%10)
+        }
+
         if(20>P2DG_maxY){P2DG_maxY=20;}
+        console.log(P2DG_maxY)
 
         let P2DG_grid=[];
         let P2DG_Y=[];
-        for(let i=0; i<=P2DG_maxY/5; i++){
-            P2DG_grid.push({"value":i*5})
-            P2DG_Y.push(i*5)
+
+        if(P2DG_maxY<=30){
+            for(let i=0; i<=P2DG_maxY/5; i++){
+                P2DG_grid.push({"value":i*5})
+                P2DG_Y.push(i*5)
+            }
+
         }
+        else{
+            for(let i=0; i<=P2DG_maxY/10; i++){
+                P2DG_grid.push({"value":i*10})
+                P2DG_Y.push(i*10)
+            }
+
+        }
+
         console.log(P2DG_grid);
 
         let goal_pee1=[];
@@ -1267,44 +1265,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
         console.log(document.getElementById("P2_DailyGraph"));
 
-        let temp_height=0;
-        /*-----------------------------------Drawing "goal rectangle"------------------------------------------------ */
-        let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
-            //console.log(this);
-            let path=$(this).attr("d");
-            let parsedPath=path.split(/M|,|L/);
-            parsedPath=parsedPath.splice(1)
-            temp_height=parsedPath[1];
-        })
-
-        let elem5=$(".P2_DailyGraph").find(".bb-line-목표2").each(function(i){
-            //console.log(this);
-            let path=$(this).attr("d");
-            let parsedPath=path.split(/M|,|L/);
-            parsedPath=parsedPath.splice(1)
-            //console.log(parsedPath);
-            goal_rect["시작 좌표"]={"x":parsedPath[0], "y":parsedPath[1]}
-            goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]}
-            goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
-            console.log(goal_rect);
-
-        })
-
-        let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
-            console.log(this);
-            
-            let rect=d3.select(this).append("svg").attr("class","사각형")
-            rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]).attr("y", goal_rect["시작 좌표"]["y"])
-            .attr("height", goal_rect["높이"]["높이"])
-            .attr("width", goal_rect["가로"]["가로"])
-            .attr("fill","#03C52E")
-            .style("opacity", "0.13")
-            
-
-        })
-         
-
-        
   
     },
     axis:{
@@ -1358,6 +1318,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             show: false,
             lines:P2DG_grid
               },
+        lines:{front: false}
     },
     tooltip:{
         format:{
@@ -1373,19 +1334,70 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     bindto: "#P2_DailyGraph"
   });
 
+  //Data Label Design
+  setTimeout(function(){
+    let elem4=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
+        let temp=Number($(this).text())
+        if(temp>=4 && temp<=7){
+            d3.select(this).style("fill", "#03C52E")
+        }
+
+
+    })
+  })
+
+  setTimeout(function(){
+
+    
+    let temp_height=0;
+    /*-----------------------------------Drawing "goal rectangle"------------------------------------------------ */
+    let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
+        //console.log(this);
+        let path=$(this).attr("d");
+        let parsedPath=path.split(/M|,|L/);
+        parsedPath=parsedPath.splice(1)
+        temp_height=parsedPath[1];
+    })
+
+    let elem5=$(".P2_DailyGraph").find(".bb-line-목표2").each(function(i){
+        //console.log(this);
+        let path=$(this).attr("d");
+        let parsedPath=path.split(/M|,|L/);
+        parsedPath=parsedPath.splice(1)
+        //console.log(parsedPath);
+        goal_rect["시작 좌표"]={"x":parsedPath[0], "y":parsedPath[1]}
+        goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]}
+        goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
+        console.log(goal_rect);
+
+    })
+
+    let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
+        //console.log(this);
+        
+        let rect=d3.select(this).append("svg").attr("class","사각형")
+        rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]).attr("y", goal_rect["시작 좌표"]["y"])
+        .attr("height", goal_rect["높이"]["높이"])
+        .attr("width", goal_rect["가로"]["가로"])
+        .attr("fill","#03C52E")
+        .style("opacity", "0.13")
+        
+
+    })
+  })
+
   //y2 axis design
   setTimeout(function(){
       
-        /*-----------------------------------y2 axis design------------------------------------------------ */
         let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
                 
-            if(i!=1){$(this).remove()}
-            else{
 
-                d3.select(this).append("text").text("평균").attr("dx", 12).attr("dy",-7)
+            if(i==1){
+
+                d3.select(this).append("text").text("평균").attr("dx", 9).attr("dy",-7)
                 
                 let text=$(this).find("text").each(function(i){
-                    d3.select(this).attr("fill","#F2C94C").attr("font-weight", "bold").style("borderColor", "#F2C94C")
+                    d3.select(this).attr("font-weight", "bold").attr("fill","#F2C94C")//.style("borderColor", "#F2C94C")
 
                 })
                 
@@ -1394,13 +1406,17 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     //console.log(this);
 
                 })
+
                 
+            }
+            else{
+                {$(this).remove()}
             }
     })
 
     let elem3=$(".P2_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
         if(i==0){ //change opacity of Y2
-            test=this;
+   
             d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
         }
         else{
@@ -1409,45 +1425,54 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     })
   })
 
+
+
+//data label design
     setTimeout(function(){
 
-        //data label modification
-
-        let elem0=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ //circle centering
-            d3.select(this).attr("dy", "20").style("font-weight", "bold")
+        let elem0=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ 
+            d3.select(this).style("font-size","9px").attr("dy", "2").style("font-weight", "bold")
             //console.log($(this));
         })
 
+        let temp=$(".P2_DailyGraph").find(".bb-main")
+        let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+
+        //elem0.remove()
+
+        
+
     })
   
-
+//Goal, Average Path Design
     setTimeout(function(){
-            let elem0=$(".P2_DailyGraph").find(".bb-target-목표1").find("path").each(function(i){ //circle centering
+            let elem0=$(".P2_DailyGraph").find(".bb-target-목표1").find("path").each(function(i){ 
                 d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
                 //console.log($(this));
             })
-            let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ //circle centering
+            let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ 
                 $(this).remove();
             })
         
-            let elem2=$(".P2_DailyGraph").find(".bb-target-목표2").find("path").each(function(i){ //circle centering
+            let elem2=$(".P2_DailyGraph").find(".bb-target-목표2").find("path").each(function(i){ 
                 d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
                 //console.log($(this));
             })
-            let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){ //circle centering
+            let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){
                 $(this).remove();
             })
-            let elem4=$(".P2_DailyGraph").find(".bb-target-평균").find("path").each(function(i){ //circle centering
+            let elem4=$(".P2_DailyGraph").find(".bb-target-평균").find("path").each(function(i){ 
                 d3.select(this).style("opacity","0.8" ).attr("stroke-dasharray", "3 3")
                 //console.log($(this));
             })
 
-            let elem5=$(".P2_DailyGraph").find(".bb-circles-평균").each(function(i){ //circle centering
+            let elem5=$(".P2_DailyGraph").find(".bb-circles-평균").each(function(i){ 
                 $(this).remove();
             })
 
 
     })
+
     //legend
 
     setTimeout(function(){
@@ -1512,10 +1537,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         if(20>P2WG_maxY){P2WG_maxY=20;}
         //console.log(P2WG_maxY);
         let P2WG_grid=[];
+        let P2WG_y=[];
         for(let i=0; i<=P2WG_maxY/5; i++){
             P2WG_grid.push({"value":i*5})
+            P2WG_y.push(i*5)
         }
-        console.log(weeklyMaxPee, P2WG_maxY, P2WG_grid);
+        //console.log(P2WG_y, P2WG_maxY, P2WG_grid);
 
 
 
@@ -1542,6 +1569,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             },
         },
+        line:{
+            zerobased: true,
+        },
 
         onrendered:function(){
             console.log(document.getElementById("P2_weeklyGraph"));
@@ -1562,12 +1592,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             y: {
                 show:true,
-                default: [0, 20],
+                //default: [0, 20],
 
                 //default: [0, P2DG_maxY],
                 tick:{
-                    //values: [300, 600, 900, 1200],
-                    stepSize: 5,
+                    values: P2WG_y,
+                    tick:5
                 },
                 max:P2WG_maxY,
                 padding:0,
@@ -1579,8 +1609,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         grid:{
             y: {
                 show: false,
-                lines:P2DG_grid
+                lines:P2WG_grid
                 },
+            lines:{front: false}
         },
         svg:{classname:"P2_WG"},
         bindto: "#P2_weeklyGraph"
@@ -1631,10 +1662,13 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     setTimeout(function(){
 
 
-        let elem0=$(".P2_weeklyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ //circle centering
-            d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
+        let elem0=$(".P2_weeklyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ 
+            d3.select(this).style("font-size", "8px").style("font-weight", "bold")//.attr("dy", "20")
             //console.log($(this));
         })
+
+        let temp=$(".P2_weeklyGraph").find(".bb-main")
+        let $elem1=$(".P2_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
 
     })
 
@@ -1672,7 +1706,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         },
         data:{
             columns:[
-                ["cheating", 5, 10, 15], 
+                ["cheating", 0.5, 1, 1.5], 
                 //testPee3,
                 hourlyPeeCount
             ],
@@ -1737,9 +1771,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         grid:{
             x: {
-            show: false,
-            lines:P2HG_grid
-                },
+                show: false,
+                lines:P2HG_grid
+                    },
+            //lines:{front: false}
             }
         ,
 
@@ -1797,7 +1832,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('x', 35)
             .attr('y', 75)
             .attr('fill', 'black')
-            .text('15회')
+            .text('1.5회')
             .style('font-size', '9px')
     
             svg.append("circle") // 원형
@@ -1811,7 +1846,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('x', 85)
             .attr('y', 75)
             .attr('fill', 'black')
-            .text('10회')
+            .text('1회')
             .style('font-size', '9px')
             
             svg.append("circle") // 원형
@@ -1825,7 +1860,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('x', 135)
             .attr('y', 75)
             .attr('fill', 'black')
-            .text('5회')
+            .text('0.5회')
             .style('font-size', '9px')
             }, 100)
 
@@ -1833,13 +1868,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         
         let P3DG_maxY=dailyMaxPoop;
         if(P3DG_maxY<=4){P3DG_maxY=4}
-        let testPoop1=["배변", 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         
         console.log(P3DG_maxY)
         let P3DG_grid=[];
         for(let i=0; i<=P3DG_maxY/1; i++){
-            P3DG_grid.push({"value":i})
+                P3DG_grid.push({"value":i})
         }
+
+
+
+ 
         console.log(P3DG_grid)
 
 
@@ -1901,7 +1939,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             y:{
                 show:false,
                 lines:P3DG_grid,
-                front:false,
+            },
+            lines:{
+                front:false
             }
 
         },
@@ -1928,12 +1968,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('xlink:href', "../IMG/poo/normal.png")
             .attr('width', 13)
             .attr('height', 13)
-            .attr("x", "295")
+            .attr("x", "205")
             .attr("y", "8")
     
             //d3.select(".P1_WG")
             svg.append("text")
-            .attr('x', 310)
+            .attr('x', 220)
             .attr('y',19)
             .text("건강한 대변")
             .style('font-size', '100%')
@@ -1944,12 +1984,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('xlink:href', "../IMG/poo/hard.png")
             .attr('width', 18)
             .attr('height', 18)
-            .attr("x", "370")
+            .attr("x", "290")
             .attr("y", "5")
     
             //d3.select(".P1_WG")
             svg.append("text")
-            .attr('x', 390)
+            .attr('x', 310)
             .attr('y',19)
             .text("딱딱한 대변")
             .style('font-size', '100%')
@@ -1959,13 +1999,26 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .attr('xlink:href', "../IMG/poo/liquid.png")
             .attr('width', 18)
             .attr('height', 18)
-            .attr("x", "455")
+            .attr("x", "380")
+            .attr("y", "5")
+
+            svg.append("text")
+            .attr('x', 400)
+            .attr('y',19)
+            .text("묽은 대변")
+            .style('font-size', '100%')
+
+            svg.append('image')
+            .attr('xlink:href', "../IMG/poo/unknown_poop.png")
+            .attr('width', 18)
+            .attr('height', 18)
+            .attr("x", "460")
             .attr("y", "5")
 
             svg.append("text")
             .attr('x', 480)
             .attr('y',19)
-            .text("묽은 대변")
+            .text("상태 모름")
             .style('font-size', '100%')
     
             //labels
@@ -1992,12 +2045,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let grid_height0=0;
             let grid_height1=0;
             let size=0;
+            let y_start=0;
 
             let elem0=$(".P3_DailyGraph").find(".bb-ygrid-lines").find("line").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
                 //console.log(this);
                 if(i==0){grid_height1=$(this).attr("y2")}
-                if(i==1){grid_height0=$(this).attr("y2")}
+                if(i==1){
+                    grid_height0=$(this).attr("y2")
+                    y_start=Number($(this).attr("y2"))
+                }
                 //console.log(grid_height1, grid_height0)
             })
             size=grid_height1-grid_height0
@@ -2017,7 +2074,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             for(let i=0; i<dailyPoopArray.length; i++){
 
-                let y=50;
+                let y=y_start
+ 
                 for(let j=0; j<dailyPoopArray[i].length; j++){
 
                     let temp=dailyPoopArray[i][j]
@@ -2029,6 +2087,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('height', size)
                         .attr("x", x_loc[i])
                         .attr("y", y)//y)
+                        
                         y=y-size
 
                     }
@@ -2048,7 +2107,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('xlink:href', "../IMG/poo/normal.png")
                         .attr('width', size-3)
                         .attr('height', size-3)
-                        .attr("x", x_loc[i])
+                        .attr("x", x_loc[i]+2)
                         .attr("y", y+1)//y)
                         y=y-size
                     }
@@ -2059,8 +2118,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y)//y)
-                        y=y-size
+                        .attr("y", y-1)//y)
+                        y=y-(size+1)
                     }
                     else{console.log("(POOP) TYPE INPUT ERROR!!!!!")}
                 }
@@ -2088,7 +2147,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         padding:{
             top:20,
             bottom:0,
-            right:20
+            //right:20
         },
 
         data: {
@@ -2143,7 +2202,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             y:{
                 show:false,
                 lines:P3WG_grid,
+            },
+            lines:{
+                front:false
             }
+        
 
         },
         svg: {
@@ -2159,7 +2222,20 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //data label modification
 
         let elem0=$(".P3_weeklyGraph").find(".bb-texts-건강한-배변-횟수").find("text").each(function(i){ //circle centering
-            d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
+            d3.select(this).attr("dy", "18").style("font-weight", "bold").style("font-size", "9")
+            temp=Number($(this).text())
+            if(temp<=2){
+                d3.select(this).attr("dy", "0")
+            }
+            //console.log($(this));
+        })
+
+        let elem1=$(".P3_weeklyGraph").find(".bb-texts-총-배변-횟수").find("text").each(function(i){ //circle centering
+            d3.select(this).attr("dy", "2").style("font-weight", "bold").style("font-size", "9")
+            temp=Number($(this).text())
+            if(temp<=2){
+                d3.select(this).attr("dy", "0")
+            }
             //console.log($(this));
         })
 
@@ -2219,7 +2295,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 //labels
                 //d3.select(".P1_WG")
                 svg.append("text")
-                .attr('x', 15)
+                .attr('x', 22)
                 .attr('y',15)
                 .text("회")
                 .style('font-size', '100%')
