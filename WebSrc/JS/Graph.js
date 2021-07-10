@@ -2079,7 +2079,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 for(let j=0; j<dailyPoopArray[i].length; j++){
 
                     let temp=dailyPoopArray[i][j]
-                    if(temp==0){
+                    if(temp==0 || temp == 8){
                         //console.log("START")
                         mainChart.append('image')
                         .attr('xlink:href', "../IMG/poo/unknown_poop.png")
