@@ -139,17 +139,17 @@ body{
 .Footer_Logo{
   /* yonsei symbol */
   position: absolute;
-  width: 37px;
-  height: 37px;
+  width: 60px;
+  height: 30px;
   left: 38px;
-  top: 797px;
+  top: 800px;
 }
 
 .Footer_Organization{
   position: absolute;
-  width: 72px;
+  width: 144px;
   height: 15px;
-  left: 80px;
+  left: 110px;
   top: 808px;
 
   font-family: 'Gothic A1';
