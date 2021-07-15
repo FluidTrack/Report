@@ -412,6 +412,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<UserTotalPoopData.length; i++){
             valid=false;
             idx=-1;
+            if(UserTotalPoopData[i].type>8 || UserTotalPoopData[i].type<0){
+                console.log("WRONG POOP TYPE INPUT!!");
+                continue;
+            }
             if(UserTotalPoopData[i].id==id){
                 let time=new Date(UserTotalPoopData[i].timestamp)
                 if(W0<=time && time<W1){weeklyPoopCount[0]++; valid=true; idx=0;}
@@ -970,6 +974,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             })
 
+            //라벨 잘림 방지
             let temp=$(".P1_weeklyGraph").find(".bb-main")
             let $elem1=$(".P1_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
         })
@@ -2239,6 +2244,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //console.log($(this));
         })
 
+
     })
     setTimeout(function(){
 
@@ -2300,6 +2306,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 .text("회")
                 .style('font-size', '100%')
                 .style('font-weight','bold')
+
+                
+                let temp0=$(".P3_weeklyGraph").find(".bb-main")
+                let $elem1=$(".P3_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp0);
             
               })
             
@@ -2393,8 +2403,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
    //Arrange the water intake and pee logs by days
    function count_daily_Poop(Data, days){
 
-
-
     let dailyData=[]
     for(let i=0; i<days.length; i++){
         dailyData[i]=[]
@@ -2403,20 +2411,23 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     
     //Count by day
     for(let i=0; i<Data.length; i++){
-        let temp=Data[i];
-        let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/');
+        if(Data[i].type>8 || Data[i].type<0){console.log("WRONG POO TYPE INPUT")}
+        else{
+            let temp=Data[i];
+            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/');
 
-        let checkDay=false;
-        //let checkHour=false;
-        for(let j=0; j<days.length; j++){
-            if(temp_day==days[j]){
-                dailyData[j].push(Data[i].type)
- 
-                checkDay=true;
-                break;
+            let checkDay=false;
+            //let checkHour=false;
+            for(let j=0; j<days.length; j++){
+                if(temp_day==days[j]){
+                    dailyData[j].push(Data[i].type)
+    
+                    checkDay=true;
+                    break;
+                }
             }
-        }
-        if(checkDay==false){console.log("ERROR!!")}
+            if(checkDay==false){console.log("ERROR!!")}
+    }
 
     }
     //console.log(dailyData);
