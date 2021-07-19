@@ -18,7 +18,7 @@ FluidTrack report tamplate auto generator based on web server
 
 - ✔️ Auto tamplate creating
 - ✔️ PDF converting
-- 🛠️ Auto graph drawing
+- ✔️ Auto graph drawing
 
 ## 2. Development Environment
 
