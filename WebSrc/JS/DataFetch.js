@@ -36,7 +36,7 @@ let endDate = new Date();
 let loadData = () => {
   console.log(`User ID ${targetID} / User Name :${targetName}`);
   P1_Name.innerHTML = `${targetName} 어린이`
-  P1_IdNum.innerHTML = `등록 번호 :${userData.creation_date.split('-')[0]}_${targetID}`
+  P1_IdNum.innerHTML = `등록 번호 : ${userData.creation_date.split('-')[0]}_${targetID}`
 
   let rangeInt = parseInt(range)
   startDate = new Date(userData.creation_date)
