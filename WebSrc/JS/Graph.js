@@ -361,7 +361,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         }
         for(let i=0; i<weeklyPeeCount.length; i++){
-            weeklyPeeCount[i]=(weeklyPeeCount[i]/7).toFixed(2);
+            weeklyPeeCount[i]=parseInt(weeklyPeeCount[i]/7)//.toFixed(0);
         }
 
         for(let i=lastidx+1; i<weeklyPeeCount.length; i++){
@@ -456,36 +456,50 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 
+//-------------------------------------------------Basic Tick Design (remove)----------------------------------------------------------//
+        setTimeout(function(){
+
+            let elem1=$(".bb-axis-y").find(".tick").find("line").each(function(i){
+                $(this).remove()
+            })
+    
+        })
 
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 
 
         let P1DG_maxY;
-        //if(dailymaxDrink%300==0){P1DG_maxY=dailymaxDrink}
-        if(dailymaxDrink>=3000){P1DG_maxY=dailymaxDrink+(600-(dailymaxDrink%600))}
+
+            //for calculating Y axis max value 
+        if(dailymaxDrink>=2000){P1DG_maxY=dailymaxDrink+(600-(dailymaxDrink%600))}
+        else if(dailymaxDrink%300==0){
+            P1DG_maxY=P1DG_maxY=dailymaxDrink
+        }
         else{
             P1DG_maxY=dailymaxDrink+(300-(dailymaxDrink%300));
         }
-        console.log(P1DG_maxY)
-
         if(1200>P1DG_maxY){P1DG_maxY=1200;}
 
+
+            //grid, Y axis label
         let P1DG_grid=[];
         let P1DG_Y=[];
-        if(P1DG_maxY<3000){        
-            for(let i=0; i<=P1DG_maxY/300; i++){
+        if(P1DG_maxY<2000){        
+            for(let i=0; i<=(P1DG_maxY/300); i++){
             P1DG_grid.push({"value":i*300})
             P1DG_Y.push(i*300)
                 }
         }
-        else if(P1DG_maxY>3000){
-            for(let i=0; i<=P1DG_maxY/600; i++){
+        else if(P1DG_maxY>2000){
+            for(let i=0; i<=(P1DG_maxY/600); i++){
                 P1DG_grid.push({"value":i*600})
                 P1DG_Y.push(i*600)
                     }
 
         }
+
+        console.log(P1DG_maxY/300+1, P1DG_maxY, P1DG_grid, P1DG_Y)
 
 
 
@@ -546,9 +560,41 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             },
         onrendered: function() {
 
-                
-                console.log(document.getElementById("P1_DailyGraph"));
-
+            console.log(document.getElementById("P1_DailyGraph"));
+   
+            let elem0=$(".P1_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+                if(i==0){  //평균 1000ml의 tick index
+            
+                    d3.select(this).select("line").style("stroke", "#56A4FF")
+                    d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
+                    d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
+    
+                    if(Math.abs(avgWater-1000)<100 && avgWater<=1000){
+                        console.log("START")
+                        d3.select(this).select("text").select("tspan").attr("dy","20")
+                    }
+    
+                }
+                if(i==1){
+           
+                    
+                    d3.select(this).select("line").style("stroke", "#03C52E")
+                    d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
+                    d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("목표");
+                    //
+                    //console.log(Math.abs(avgWater-1000))
+                    if(Math.abs(avgWater-1000)<100 && avgWater>1000){
+                        console.log("START")
+                        d3.select(this).select("text").select("tspan").attr("dy","20")
+                    }
+                    console.log(this)
+                    
+    
+                }
+    
+    
+            });
+    
         
             },
 
@@ -636,9 +682,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 
+
 /*---------------------------------------------LEGEND DESIGN--------------------------------------------------------- */
 
     setTimeout(function(){
+
+   
         
                 /*-----------------------------------Y2 Think Domain Design --------------------------------------------*/
 
@@ -740,48 +789,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
       }, 100)
 
-     /*-----------------------------------TICK Design--------------------------------------------------------- */
+     /*-----------------------------------solution of hidden label, grid--------------------------------------------------------- */
      
-      setTimeout(function(){
+     setTimeout(function(){
 
-   
-        let elem0=$(".P1_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
-            if(i==0){  //평균 1000ml의 tick index
-        
-                d3.select(this).select("line").style("stroke", "#56A4FF")
-                d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
-                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
-
-                if(Math.abs(avgWater-1000)<100 && avgWater<1000){
-                    console.log("START")
-                    d3.select(this).select("text").select("tspan").attr("dy","20")
-                }
-
-            }
-            if(i==1){
-       
-                
-                d3.select(this).select("line").style("stroke", "#03C52E")
-                d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
-                d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("목표");
-                //
-                //console.log(Math.abs(avgWater-1000))
-                if(Math.abs(avgWater-1000)<100 && avgWater>1000){
-                    console.log("START")
-                    d3.select(this).select("text").select("tspan").attr("dy","20")
-                }
-                console.log(this)
-                
-
-            }
-
-
-        });
-
-        let temp=$(".P1_DailyGraph").find(".bb-main")
+            
+        let temp=$(".P1_DailyGraphDiv").find(".bb-main")
         let $elem1=$(".P1_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+        let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
-      }, 1000)
+    })
  
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -793,19 +810,32 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 //Y axis, grid array setting
             let P1WG_maxY;
+
+
             if(weeklymaxDrink%300==0){P1WG_maxY=weeklymaxDrink;}
             else{P1WG_maxY=weeklymaxDrink+(300-(weeklymaxDrink%300));}
             if(P1WG_maxY<1200){P1WG_maxY=1200}
+
             console.log(P1WG_maxY)
 
             let P1WG_grid=[];
             let P1WG_Y=[];
             
-            for(let i=0; i<=P1WG_maxY/300; i++){
-                P1WG_grid.push({"value":i*300})
-                P1WG_Y.push(i*300);
+            if(P1WG_maxY>1200){
+                for(let i=0; i<=(P1WG_maxY/600); i++){
+                    P1WG_grid.push({"value":i*600})
+                    P1WG_Y.push(i*600);
+                }
             }
-            console.log(P1WG_grid);
+            else{
+                for(let i=0; i<=(P1WG_maxY/300); i++){
+                    P1WG_grid.push({"value":i*300})
+                    P1WG_Y.push(i*300);
+                }
+
+            }
+
+            console.log(P1WG_maxY ,P1WG_grid, P1WG_Y);
 
  //console.log(P1WG_maxY)
     var P1_WeeklyGraph = bb.generate({
@@ -906,11 +936,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         setTimeout(function(){
                     //Legend
             d3.select(".P1_WG")
-            .append("rect")
-            .attr('x', 200)
-            .attr('y',11)
-            .attr('width','8')
-            .attr('height','8')
+            .append("circle")
+            .attr('cx', 204)
+            .attr('cy',15)
+            .attr('r', 4)
             .attr("fill","#56A4FF")
 
             d3.select(".P1_WG")
@@ -930,11 +959,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             .style('font-size', '100%')
     
             d3.select(".P1_WG")
-            .append("rect")
-            .attr('x', 240)
-            .attr('y',11)
-            .attr('width','8')
-            .attr('height','8')
+            .append("circle")
+            .attr('cx', 244)
+            .attr('cy',15)
+            .attr('r', 4)
             .attr("fill","#DEDEDE")
 
             
@@ -974,9 +1002,15 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             })
 
-            //라벨 잘림 방지
-            let temp=$(".P1_weeklyGraph").find(".bb-main")
+        })
+
+        setTimeout(function(){
+
+            
+            let temp=$(".P1_weeklyGraphDiv").find(".bb-main")
             let $elem1=$(".P1_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+            let $elem2=$(".P1_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+    
         })
 
   
@@ -1030,8 +1064,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         /*-----------------------------------circle design------------------------------------------------ */
 
         let elem0=$(".P1_TimezoneGraph").find(".bb-circles-물").find("circle").each(function(i){ //circle centering
-            $(this).attr("cx", 35)
+            $(this).attr("cx", 45)
         })
+
 
         /*-----------------------------------Legend design------------------------------------------------ */
         //let P1HG_legendCircle=[];
@@ -1041,7 +1076,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         })
 
-        //console.log(P1HG_legendCircle);
 
     },
 
@@ -1052,7 +1086,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     axis:{
         rotated:true,
             x: {
-                padding:0,
+                //padding:0,
                 type: "category",
                 categories: parsedHours_water,
                 tick:{
@@ -1174,33 +1208,41 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 //------------------------------------------------------------------------------------------------------------------------------//
 
 
-        let P2DG_maxY=dailyMaxPee+(5-dailyMaxPee%5)
+        let P2DG_maxY;
+        
+        if(dailyMaxPee%5==0){
+            P2DG_maxY=dailyMaxPee;
+        }
+        else{
+            P2DG_maxY=dailyMaxPee+(5-dailyMaxPee%5)
+        }
+
         if(dailyMaxPee>30){
             P2DG_maxY=dailyMaxPee+(10-dailyMaxPee%10)
         }
 
         if(20>P2DG_maxY){P2DG_maxY=20;}
-        console.log(P2DG_maxY)
 
         let P2DG_grid=[];
         let P2DG_Y=[];
 
+
         if(P2DG_maxY<=30){
-            for(let i=0; i<=P2DG_maxY/5; i++){
+            for(let i=0; i<=(P2DG_maxY/5); i++){
                 P2DG_grid.push({"value":i*5})
                 P2DG_Y.push(i*5)
             }
 
         }
         else{
-            for(let i=0; i<=P2DG_maxY/10; i++){
+            for(let i=0; i<=(P2DG_maxY/10); i++){
                 P2DG_grid.push({"value":i*10})
                 P2DG_Y.push(i*10)
             }
 
         }
 
-        console.log(P2DG_grid);
+        console.log(P2DG_grid, P2DG_Y, P2DG_maxY);
 
         let goal_pee1=[];
         for(let i=0; i<14; i++){
@@ -1231,7 +1273,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         height: height1,
     },
     padding:{
-        top: 30,
+        top: 20,
         right: 40,
         bottom: 0,
         left: 30
@@ -1264,14 +1306,22 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     }
     
     },
-  
-    onrendered: function() {
 
-                
+    onrendered: function(){
+
         console.log(document.getElementById("P2_DailyGraph"));
+        
+        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
 
-  
+            d3.select(this).select("line").style("stroke", "#F2C94C")
+            d3.select(this).select("text").attr("fill", "#F2C94C").attr("font-weight", "bold");
+            d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
+        
+        })
+
     },
+  
+
     axis:{
         x:{
             type: "category",
@@ -1294,19 +1344,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
             },
             max:P2DG_maxY,
-            padding:0,
+            //padding:0,
             zerobased:true,
         },
         y2:{
             show:true,
             tick: {
-                values: avgPee,
-                format:function(d){
-                    if(d==avg_Pee){
-                        return d;
-                        
-                    }
-                }
+                values: [avg_Pee],
+
                     
 
             },
@@ -1394,31 +1439,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
   //y2 axis design
   setTimeout(function(){
       
-        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
-                
-
-            if(i==1){
-
-                d3.select(this).append("text").text("평균").attr("dx", 9).attr("dy",-7)
-                
-                let text=$(this).find("text").each(function(i){
-                    d3.select(this).attr("font-weight", "bold").attr("fill","#F2C94C")//.style("borderColor", "#F2C94C")
-
-                })
-                
-                let line=$(this).find("line").each(function(i){
-                    d3.select(this).style("stroke", "#F2C94C")
-                    //console.log(this);
-
-                })
-
-                
-            }
-            else{
-                {$(this).remove()}
-            }
-    })
-
     let elem3=$(".P2_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
         if(i==0){ //change opacity of Y2
    
@@ -1440,14 +1460,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //console.log($(this));
         })
 
-        let temp=$(".P2_DailyGraph").find(".bb-main")
-        let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
-
-        //elem0.remove()
-
-        
-
     })
+
+
   
 //Goal, Average Path Design
     setTimeout(function(){
@@ -1485,11 +1500,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         const svg=d3.select(".P2_DG")
 
         //d3.select(".P1_WG")
-        svg.append("rect")
-        .attr('x', 170)
-        .attr('y',11)
-        .attr('width','8')
-        .attr('height','8')
+        svg.append("circle")
+        .attr('cx', 174)
+        .attr('cy',15)
+        .attr("r", 4)
         .attr("fill","#F2C94C")
 
         //d3.select(".P1_WG")
@@ -1536,17 +1550,47 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     })
 
+    setTimeout(function(){
+
+            
+        let temp=$(".P2_DailyGraphDiv").find(".bb-main")
+        let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+        let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+
+    })
 
 
-        let P2WG_maxY=Number(weeklyMaxPee)+Number(5-weeklyMaxPee%5);
+
+        let P2WG_maxY;
+        
+        if(P2WG_maxY%5==0){
+            P2WG_maxY=weeklyMaxPee
+
+        }
+        else{
+            P2WG_maxY=Number(weeklyMaxPee)+Number(5-weeklyMaxPee%5);
+        }
+
         if(20>P2WG_maxY){P2WG_maxY=20;}
         //console.log(P2WG_maxY);
         let P2WG_grid=[];
         let P2WG_y=[];
-        for(let i=0; i<=P2WG_maxY/5; i++){
-            P2WG_grid.push({"value":i*5})
-            P2WG_y.push(i*5)
+
+        if(P2WG_maxY>25){
+
+            for(let i=0; i<=(P2WG_maxY/10); i++){
+                P2WG_grid.push({"value":i*10})
+                P2WG_y.push(i*10)
+            }
+
         }
+        else{
+            for(let i=0; i<=(P2WG_maxY/5); i++){
+                P2WG_grid.push({"value":i*5})
+                P2WG_y.push(i*5)
+            }
+        }
+
         //console.log(P2WG_y, P2WG_maxY, P2WG_grid);
 
 
@@ -1554,7 +1598,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     let P2_WeeklyGraph=bb.generate({
         size:{
             width:width1,
-            height:height1,
+            height:height1+30,
         },
         padding:{
             top: 30,
@@ -1605,7 +1649,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     tick:5
                 },
                 max:P2WG_maxY,
-                padding:0,
+                //padding:0,
             },
         },
         legend:{
@@ -1628,11 +1672,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         const svg=d3.select(".P2_WG")
 
         //d3.select(".P1_WG")
-        svg.append("rect")
-        .attr('x', 280)
-        .attr('y',11)
-        .attr('width','8')
-        .attr('height','8')
+        svg.append("circle")
+        .attr('cx', 284)
+        .attr('cy',15)
+        .attr('r', 4)
         .attr("fill","#F2C94C")
 
         //d3.select(".P1_WG")
@@ -1656,7 +1699,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 12)
-        .attr('y',20)
+        .attr('y',40)
         .text("회")
         .style('font-size', '100%')
         .style('font-weight','bold')
@@ -1672,8 +1715,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //console.log($(this));
         })
 
-        let temp=$(".P2_weeklyGraph").find(".bb-main")
+    })
+
+    setTimeout(function(){
+
+            
+        let temp=$(".P2_weeklyGraphDiv").find(".bb-main")
         let $elem1=$(".P2_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+        let $elem2=$(".P2_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
     })
 
@@ -1732,7 +1781,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             /*-----------------------------------circle design------------------------------------------------ */
 
             let elem0=$(".P2_TimezoneGraph").find(".bb-circles-배뇨-횟수").find("circle").each(function(i){ //circle centering
-                $(this).attr("cx", 35)
+                $(this).attr("cx", 45)
                 //console.log($(this))
             })
 
@@ -1755,7 +1804,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         axis:{
             rotated:true,
                 x: {
-                    padding:0,
+                    //padding:0,
                     type: "category",
                     categories: parsedHours_Pee,
                     tick:{
@@ -1872,7 +1921,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         
         let P3DG_maxY=dailyMaxPoop;
-        if(P3DG_maxY<=4){P3DG_maxY=4}
+        if(P3DG_maxY<=2){P3DG_maxY=2}
         
         console.log(P3DG_maxY)
         let P3DG_grid=[];
@@ -1892,7 +1941,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             height:140
         },
         padding:{
-            top:20,
+            top:40,
             bottom:20,
         },
         data: {
@@ -1932,7 +1981,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 //default: [0, P2DG_maxY],
                 tick:{
                     //values: [0, 1, 2, 3, 4, 5],
-                    stepSize: 1,
+                    stepSize: 2,
                 },
                 max:P3DG_maxY,
                 padding:0,
@@ -1964,6 +2013,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         bindto: "#P3_DailyGraph"
         });     
         
+        setTimeout(function(){
+
+            
+            let temp=$(".P3_DailyGraphDiv").find(".bb-main")
+            let $elem1=$(".P3_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+            let $elem2=$(".P3_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+    
+        })
         
         setTimeout(function(){
 
@@ -2030,7 +2087,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //d3.select(".P1_WG")
             svg.append("text")
             .attr('x', 15)
-            .attr('y',15)
+            .attr('y',20)
             .text("회")
             .style('font-size', '100%')
             .style('font-weight','bold')
@@ -2050,36 +2107,40 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let grid_height0=0;
             let grid_height1=0;
             let size=0;
-            let y_start=0;
+            //let y_start=0
+            let y_loc=[]
 
             let elem0=$(".P3_DailyGraph").find(".bb-ygrid-lines").find("line").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
                 //console.log(this);
                 if(i==0){grid_height1=$(this).attr("y2")}
-                if(i==1){
+                else if(i==1){
                     grid_height0=$(this).attr("y2")
-                    y_start=Number($(this).attr("y2"))
+                    y_loc.push(Number($(this).attr("y2"))+3)
+                }
+                else{
+                    y_loc.push(Number($(this).attr("y2")))
                 }
                 //console.log(grid_height1, grid_height0)
             })
-            size=grid_height1-grid_height0
+            size=(grid_height1-grid_height0)*0.75
             console.log(size)
 
 
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
-                x_loc.push($(this).attr("cx")-5)
+                x_loc.push($(this).attr("cx")-10)
                 $(this).remove()
                 //console.log(this);
             })
-            console.log(x_loc)
+            console.log("P3DG X, Y loc", x_loc, y_loc)
 
             const mainChart=d3.select(".P3_DG_SVG").select(".bb-chart")
             console.log(mainChart)
 
             for(let i=0; i<dailyPoopArray.length; i++){
 
-                let y=y_start
+
  
                 for(let j=0; j<dailyPoopArray[i].length; j++){
 
@@ -2091,9 +2152,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y)//y)
+                        .attr("y", y_loc[j])//y)
                         
-                        y=y-size
 
                     }
                     else if(temp>0 && temp<3){
@@ -2103,18 +2163,17 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y)//y)
-                        y=y-size
+                        .attr("y", y_loc[j])//y)
                     }
                     else if(temp==3 || temp==4){
                         //console.log("START")
                         mainChart.append('image')
                         .attr('xlink:href', "../IMG/poo/normal.png")
-                        .attr('width', size-3)
-                        .attr('height', size-3)
-                        .attr("x", x_loc[i]+2)
-                        .attr("y", y+1)//y)
-                        y=y-size
+                        .attr('width', size)
+                        .attr('height', size)
+                        .attr("x", x_loc[i])
+                        .attr("y", y_loc[j])
+
                     }
                     else if(temp>4 && temp<=7){
                         //console.log("START")
@@ -2123,8 +2182,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y-1)//y)
-                        y=y-(size+1)
+                        .attr("y", y_loc[j])//y)
+
                     }
                     else{console.log("(POOP) TYPE INPUT ERROR!!!!!")}
                 }
@@ -2138,21 +2197,45 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         if(4>P3WG_maxY){P3WG_maxY=4;}
 
         let P3WG_grid=[];
-        for(let i=0; i<=P3WG_maxY/2; i++){
-            P3WG_grid.push({"value":i*2})
+        let P3WG_Y=[];
+
+        if(P3WG_maxY>20){
+            for(let i=0; i<=(P3WG_maxY/10+1); i++){
+                P3WG_grid.push({"value":i*10})
+                P3WG_Y.push(i*10)
+            }
         }
-        console.log(P3WG_maxY, P3WG_grid)
+        else if(P3WG_maxY>10){
+            for(let i=0; i<=(P3WG_maxY/4+1); i++){
+                P3WG_grid.push({"value":i*4})
+                P3WG_Y.push(i*4)
+            }
+        }
+        else{
+            for(let i=0; i<=P3WG_maxY/2; i++){
+                P3WG_grid.push({"value":i*2})
+                P3WG_Y.push(i*2)
+            }
+        }
+
+        console.log(P3WG_maxY, P3WG_grid, P3WG_Y)
 
     let P3_weeklyGraph=bb.generate({
 
         size:{
-            height: 150,
+            height: 140,
             width: 523
         },
         padding:{
-            top:20,
-            bottom:0,
+            top:40,
+            bottom:20,
             //right:20
+        },
+
+        onrendered: function(){
+
+            console.log(document.getElementById("P3_weeklyGraph"));
+
         },
 
         data: {
@@ -2181,8 +2264,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 width:10,
                 tick:{
                     text:{
-                        show:true,
-                        },
+                        show:true
+                    },
                     width: 50,
                     },
             },
@@ -2193,8 +2276,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     
                 //default: [0, P2DG_maxY],
                 tick:{
-                    //values: [300, 600, 900, 1200],
-                    stepSize: 2,
+                    values:P3WG_Y
                 },
                 max:P3WG_maxY,
                 padding:0,
@@ -2244,6 +2326,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //console.log($(this));
         })
 
+        setTimeout(function(){
+
+            let temp=$(".P3_weeklyGraphDiv").find(".bb-main")
+            let $elem1=$(".P3_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+            let $elem2=$(".P3_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+    
+          })
+
 
     })
     setTimeout(function(){
@@ -2251,11 +2341,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 const svg=d3.select(".P3_WG")
             
                 //d3.select(".P1_WG")
-                svg.append("rect")
-                .attr('x', 340)
-                .attr('y',11)
-                .attr('width','8')
-                .attr('height','8')
+                svg.append("circle")
+                .attr('cx', 344)
+                .attr('cy', 15)
+                .attr("r", 4)
                 .attr("fill","#8B5A3C")
             
                 //d3.select(".P1_WG")
@@ -2275,11 +2364,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 .style('font-size', '100%')
             
                 //d3.select(".P1_WG")
-                svg.append("rect")
-                .attr('x', 440)
-                .attr('y',11)
-                .attr('width','8')
-                .attr('height','8')
+                svg.append("circle")
+                .attr('cx', 444)
+                .attr('cy',15)
+                .attr("r", 4)
                 .attr("fill","#C4C4C4")
                 .style("opacity", 0.7)
 
@@ -2301,8 +2389,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 //labels
                 //d3.select(".P1_WG")
                 svg.append("text")
-                .attr('x', 22)
-                .attr('y',15)
+                .attr('x', 23)
+                .attr('y',18)
                 .text("회")
                 .style('font-size', '100%')
                 .style('font-weight','bold')

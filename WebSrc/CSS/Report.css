@@ -1,3 +1,50 @@
+/*-----------------basic setting for graph------------------------------*/
+
+
+
+.bb-axis.bb-axis-x path {
+  stroke-width: 0.5px;
+  stroke: #000;
+  fill: none;
+}
+
+.bb-axis.bb-axis-y path {
+  stroke-width: 0.5px;
+  stroke:white;
+  fill: none;
+}
+
+.bb-grid bb-grid-lines path{
+  stroke:#D3D3D3
+}
+
+.P2_DailyGraph bb bb-tooltip-container{
+  /*display:none;*/
+  width:100px;
+  height:30px;
+}
+
+.bb-texts-물{
+  font-size:6px
+}
+.line-class-목표{
+  stroke-dasharray: 3 3;
+}
+
+.svg{
+  height:20px;
+  background-color: #c04627;
+}
+
+.bb-ygrid-lines{
+  opacity:0.1
+}
+
+
+/*-------------------------------------------------*/
+
+
+
 /*============================================================================================
 
     BASIC CSS
@@ -337,51 +384,7 @@ body{
   height: 122px;
 }
 
-.legend{
-  position: relative;
-  bottom: 140px;
-  left: 175px;
-  font-size: 5px;
-}
 
-/*-----------------basic setting for graph------------------------------*/
-
-
-
-.bb-axis.bb-axis-x path {
-  stroke-width: 0.5px;
-  stroke: #000;
-  fill: none;
-}
-
-.bb-axis.bb-axis-y path {
-  stroke-width: 0.5px;
-  stroke:white;
-  fill: none;
-}
-
-.bb-grid bb-grid-lines path{
-  stroke:#D3D3D3
-}
-
-.P2_DailyGraph bb bb-tooltip-container{
-  /*display:none;*/
-  width:100px;
-  height:30px;
-}
-
-.bb-texts-물{
-  font-size:6px
-}
-.line-class-목표{
-  stroke-dasharray: 3 3;
-}
-
-
-
-
-
-/*-------------------------------------------------*/
 
 
 
@@ -675,10 +678,10 @@ body{
 .P3_weeklyGraphDiv{
   position: absolute;
   width: 523px;
-  height: 140px;
+  height: 142px;
   left: 37px;
   top: 372px;
-  background-color: white;
+  background-color: white
 }
 
 .P3_CommentBG{
