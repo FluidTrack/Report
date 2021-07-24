@@ -1,6 +1,8 @@
 /*-----------------basic setting for graph------------------------------*/
 
-
+.bb-axis-x{
+  opacity: 0.5
+}
 
 .bb-axis.bb-axis-x path {
   stroke-width: 0.5px;
@@ -38,6 +40,13 @@
 
 .bb-ygrid-lines{
   opacity:0.1
+}
+
+.P2_DailyGraph bb bb-tooltip-container{
+
+  width:200px;
+  height:30px;
+
 }
 
 
@@ -439,16 +448,6 @@ body{
   
 }
 
-/*#TimeLegend{
-  position: absolute;
-  width: 165px;
-  height: 70px;
-  left:396px;
-  top: 527px;
-  background-color: rgb(247, 247, 247);
-  font-size:5px;
-}*/
-
 
 
 
@@ -527,15 +526,7 @@ body{
 
 }
 
-/*------------------------------------*/
-.P2_DailyGraph bb bb-tooltip-container{
 
-  width:200px;
-  height:30px;
-
-}
-
-/*------------------------------------*/
 
 .P2_weeklyTitle{
   position: absolute;

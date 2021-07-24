@@ -456,11 +456,15 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 
-//-------------------------------------------------Basic Tick Design (remove)----------------------------------------------------------//
+//-------------------------------------------------Basic Tick Design----------------------------------------------------------//
         setTimeout(function(){
 
-            let elem1=$(".bb-axis-y").find(".tick").find("line").each(function(i){
+            let elem0=$(".bb-axis-y").find(".tick").find("line").each(function(i){
                 $(this).remove()
+            })
+
+            let elem1=$(".bb-axis-x").find(".tick").find("line").each(function(i){
+                d3.select(this).style("opacity", 0.5)
             })
     
         })
@@ -558,6 +562,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 }
                         
             },
+ 
         onrendered: function() {
 
             console.log(document.getElementById("P1_DailyGraph"));
@@ -568,9 +573,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     d3.select(this).select("line").style("stroke", "#56A4FF")
                     d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
                     d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
+
+                    
     
                     if(Math.abs(avgWater-1000)<100 && avgWater<=1000){
-                        console.log("START")
+                        //console.log("START")
                         d3.select(this).select("text").select("tspan").attr("dy","20")
                     }
     
@@ -584,7 +591,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     //
                     //console.log(Math.abs(avgWater-1000))
                     if(Math.abs(avgWater-1000)<100 && avgWater>1000){
-                        console.log("START")
+                        //console.log("START")
                         d3.select(this).select("text").select("tspan").attr("dy","20")
                     }
                     console.log(this)
@@ -680,18 +687,26 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         bindto: "#P1_DailyGraph",
     });
 
+    //MODIFY
+
+
+
 
 
 
 /*---------------------------------------------LEGEND DESIGN--------------------------------------------------------- */
 
-    setTimeout(function(){
+
+ 
+
+
+
 
    
         
                 /*-----------------------------------Y2 Think Domain Design --------------------------------------------*/
 
-                let elem1=$(".P1_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+                let elem0_P1DG=$(".P1_DailyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
                     if(i==0){ //change opacity of Y2
 
                         d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
@@ -702,8 +717,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 })
 
 
+
+
                 /*-----------------------------------Water Data label Design --------------------------------------------*/
-                let elem2=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
+                let elem1_P1DG=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
                     d3.select(this).style("font-size", "8px")//.style("font-weight", "bold"); //modify font size
 
                     originalY=parseFloat($(this).attr("y"));  
@@ -715,9 +732,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 })
 
 
+
                 /*-----------------------------------Bar Design--------------------------------------------------------- */
 
-                let elem3=$(".P1_DailyGraph").find(".bb-bars-총-수분--물-음료-").find("path").each(function(i){
+                let elem2_P1DG=$(".P1_DailyGraph").find(".bb-bars-총-수분--물-음료-").find("path").each(function(i){
   
                     //console.log(this);
 
@@ -735,6 +753,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
                 })
+                                      
 
                 /*-----------------------------------X axis Design--------------------------------------------------------- */
                 let elem4=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
@@ -742,7 +761,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
                 })                
 
-    })
+
+
  
      setTimeout(function(){
 
@@ -789,16 +809,21 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
       }, 100)
 
+
      /*-----------------------------------solution of hidden label, grid--------------------------------------------------------- */
      
      setTimeout(function(){
 
             
-        let temp=$(".P1_DailyGraphDiv").find(".bb-main")
-        let $elem1=$(".P1_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
-        let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+        //let temp=$(".P1_DailyGraphDiv").find(".bb-main")
+        //let $elem1=$(".P1_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+        //let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
     })
+
+
+
+
  
 
  //------------------------------------------------------------------------------------------------------------------------------//
@@ -837,7 +862,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             console.log(P1WG_maxY ,P1WG_grid, P1WG_Y);
 
- //console.log(P1WG_maxY)
+
     var P1_WeeklyGraph = bb.generate({
         size:{
             height:height1,
@@ -876,7 +901,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
                     console.log(document.getElementById("P1_weeklyGraph"));
 
-                   // -----------------------------------Data Label position Design------------------------------------------------ */
+                   // -----------------------------------Data Label position Design------------------------------------------------
 
                     let elem0=$(".P1_weeklyGraph").find(".bb-chart-texts").find("text").each(function(i){ //Label Position
                         d3.select(this).style("font-size", "9px").style("font-weight", "bold");                    
@@ -929,6 +954,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             svg:{classname:"P1_WG"},
             bindto: "#P1_weeklyGraph",
         });
+
 
 
  
@@ -1004,6 +1030,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         })
 
+        
+
+
         setTimeout(function(){
 
             
@@ -1012,6 +1041,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let $elem2=$(".P1_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
     
         })
+
+
+
 
   
 
@@ -1061,14 +1093,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             
         console.log(document.getElementById("P1_TimezoneGraph"));
 
-        /*-----------------------------------circle design------------------------------------------------ */
+        //-----------------------------------circle design------------------------------------------------ 
 
         let elem0=$(".P1_TimezoneGraph").find(".bb-circles-물").find("circle").each(function(i){ //circle centering
             $(this).attr("cx", 45)
         })
 
 
-        /*-----------------------------------Legend design------------------------------------------------ */
+        //-----------------------------------Legend design------------------------------------------------ 
         //let P1HG_legendCircle=[];
         let elem1=$(".P1_TimezoneGraph").find(".bb-circles-cheating").find("circle").each(function(i){ //circle centering
             if(i==0||i==1||i==2){
@@ -1078,6 +1110,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
     },
+    
 
     bubble: {
         maxR: 8
@@ -1204,6 +1237,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     .text('50ml')
     .style('font-size', '9px')
     }, 100)
+
         
 //------------------------------------------------------------------------------------------------------------------------------//
 
@@ -1307,6 +1341,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     
     },
 
+
+
     onrendered: function(){
 
         console.log(document.getElementById("P2_DailyGraph"));
@@ -1384,9 +1420,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     bindto: "#P2_DailyGraph"
   });
 
+
+
+
+
+
   //Data Label Design
-  setTimeout(function(){
-    let elem4=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
+  //setTimeout(function(){
+    let elem0_P2DG=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
         let temp=Number($(this).text())
         if(temp>=4 && temp<=7){
             d3.select(this).style("fill", "#03C52E")
@@ -1394,7 +1435,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
     })
-  })
+ // })
+
+
 
   setTimeout(function(){
 
@@ -1422,6 +1465,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     })
 
+  
+
     let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
         //console.log(this);
         
@@ -1435,7 +1480,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     })
   })
-
+ 
   //y2 axis design
   setTimeout(function(){
       
@@ -1553,12 +1598,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     setTimeout(function(){
 
             
-        let temp=$(".P2_DailyGraphDiv").find(".bb-main")
-        let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
-        let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+        //let temp=$(".P2_DailyGraphDiv").find(".bb-main")
+        //let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
+        //let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
     })
-
 
 
         let P2WG_maxY;
@@ -1717,6 +1761,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     })
 
+
     setTimeout(function(){
 
             
@@ -1778,14 +1823,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
             console.log(document.getElementById("P2_TimezoneGraph"));
 
-            /*-----------------------------------circle design------------------------------------------------ */
+            //-----------------------------------circle design------------------------------------------------ 
 
             let elem0=$(".P2_TimezoneGraph").find(".bb-circles-배뇨-횟수").find("circle").each(function(i){ //circle centering
                 $(this).attr("cx", 45)
                 //console.log($(this))
             })
 
-            /*-----------------------------------Legend design------------------------------------------------ */
+            //-----------------------------------Legend design------------------------------------------------ 
             //let P1HG_legendCircle=[];
             let elem1=$(".P2_TimezoneGraph").find(".bb-circles-cheating").find("circle").each(function(i){ //circle centering
                 if(i==0||i==1||i==2){
@@ -1796,6 +1841,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //console.log(P2HG_legendCircle);
 
         },
+        
 
         bubble: {
             maxR: 8
@@ -1954,6 +2000,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 "대변":"#C4C4C4"
             }
         },
+
+        
         onrendered: function() {
 
                 
@@ -2098,7 +2146,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             svg.append('img').attr('src', normal);
 
     
-        })
+        }, 1000)
 
         setTimeout(function(){
 
@@ -2231,12 +2279,13 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             bottom:20,
             //right:20
         },
-
+        
         onrendered: function(){
 
             console.log(document.getElementById("P3_weeklyGraph"));
 
         },
+        
 
         data: {
             columns: [
