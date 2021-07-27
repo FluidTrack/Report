@@ -469,6 +469,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     
         })
 
+        setTimeout(function(){
+
+            let test00=[]
+            let test01=[]
+            test00=$(".P1_TimezoneGraph").find(".bb-circles-물").find("circle")
+            test01=$(".P2_TimezoneGraph").find(".bb-circles-배뇨-횟수").find("circle")
+            console.log("P!", test00, "P2",test01)
+        })
+
+
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 
@@ -815,9 +825,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
      setTimeout(function(){
 
             
-        //let temp=$(".P1_DailyGraphDiv").find(".bb-main")
+        let temp=$(".P1_DailyGraphDiv").find(".bb-main")
         //let $elem1=$(".P1_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
-        //let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+        let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
     })
 
@@ -1598,9 +1608,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     setTimeout(function(){
 
             
-        //let temp=$(".P2_DailyGraphDiv").find(".bb-main")
+        let temp=$(".P2_DailyGraphDiv").find(".bb-main")
         //let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").clone().appendTo(temp);
-        //let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+        let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
     })
 
@@ -1967,7 +1977,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         
         let P3DG_maxY=dailyMaxPoop;
-        if(P3DG_maxY<=2){P3DG_maxY=2}
+        if(P3DG_maxY<=3){P3DG_maxY=3}
         
         console.log(P3DG_maxY)
         let P3DG_grid=[];
@@ -2024,12 +2034,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             },
             y: {
                 show:true,
-                default: [0, 4],
+                default: [0, 3],
     
                 //default: [0, P2DG_maxY],
                 tick:{
                     //values: [0, 1, 2, 3, 4, 5],
-                    stepSize: 2,
+                    stepSize: 1,
                 },
                 max:P3DG_maxY,
                 padding:0,
@@ -2146,7 +2156,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             svg.append('img').attr('src', normal);
 
     
-        }, 1000)
+        })
 
         setTimeout(function(){
 
@@ -2172,7 +2182,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 //console.log(grid_height1, grid_height0)
             })
             size=(grid_height1-grid_height0)*0.75
-            console.log(size)
 
 
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
@@ -2238,6 +2247,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
 
         })
+
+       
 
 
             
