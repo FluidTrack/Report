@@ -2253,7 +2253,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             
         let P3WG_maxY=Number(weeklyMaxPoop)+Number(2-(weeklyMaxPoop%2))
-        if(4>P3WG_maxY){P3WG_maxY=4;}
+        if(8>P3WG_maxY){P3WG_maxY=8;}
 
         let P3WG_grid=[];
         let P3WG_Y=[];
@@ -2265,9 +2265,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         }
         else if(P3WG_maxY>10){
-            for(let i=0; i<=(P3WG_maxY/4+1); i++){
-                P3WG_grid.push({"value":i*4})
-                P3WG_Y.push(i*4)
+            for(let i=0; i<=(P3WG_maxY/5+1); i++){
+                P3WG_grid.push({"value":i*5})
+                P3WG_Y.push(i*5)
             }
         }
         else{
