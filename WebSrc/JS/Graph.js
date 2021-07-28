@@ -1352,7 +1352,6 @@ hourlyPeeCount.unshift("배뇨 횟수");
                 if(v==dailyMaxPee){return v};
                
             }
-            return;
         },
     }
     
@@ -1395,7 +1394,8 @@ hourlyPeeCount.unshift("배뇨 횟수");
                 values: P2DG_Y
                 
             },
-            max:P2DG_maxY,
+            max:P2DG_maxY+5,
+            min:0,
             zerobased:true,
             padding:0
 
@@ -1438,9 +1438,18 @@ hourlyPeeCount.unshift("배뇨 횟수");
   });
 
 
-  P2_dailyGraph.axis.min({
-    y:0
-  });
+
+  
+  setTimeout(function(){
+
+            
+    let temp=$(".P2_DailyGraphDiv").find(".bb-main")
+    //let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").find(".bb-target-배뇨-횟수").clone()//.unwrap().appendTo(temp);
+    //console.log($elem1)
+    let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+
+  })
+
 
 
   //Data Label Design
@@ -1612,16 +1621,6 @@ hourlyPeeCount.unshift("배뇨 횟수");
         .style('font-weight','bold')
 
     })
-
-    setTimeout(function(){
-
-            
-        let temp=$(".P2_DailyGraphDiv").find(".bb-main")
-        let $elem1=$(".P2_DailyGraph").find(".bb-chart-texts").find(".bb-target-배뇨-횟수").clone()//.appendTo(temp);
-        console.log($elem1.html())
-        let $elem2=$(".P2_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
-
-    }, 500)
 
 
 

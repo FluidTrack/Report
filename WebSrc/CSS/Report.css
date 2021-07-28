@@ -1,10 +1,12 @@
 /*-----------------basic setting for graph------------------------------*/
-
+.domain{ /*Timezone graph x domain opacity */
+  opacity: 0.3
+}
 .bb-grid{ /*P2DG grid opacity*/
   opacity:0.3
 }
 
-.bb-xgrid-lines{
+.bb-xgrid-lines{ /*Timezone graph x grid opacity*/
   opacity: 0.5
 }
 
