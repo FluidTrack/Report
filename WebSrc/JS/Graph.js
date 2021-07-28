@@ -231,7 +231,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             hourlyWaterIntake[i]=parseInt(hourlyWaterIntake[i]*100);
         }
         hourlyWaterIntake.unshift("물");
-        //console.log(hourlyWaterIntake, parsedHours_water);
+        console.log(hourlyWaterIntake, parsedHours_water);
 
 
 
@@ -315,13 +315,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 
-//hourly (normalized)
-        let hourlyPee=count_parse_hourly(UserPeeData, count_Hourly, hours, parsed_hours);
-        let hourlyPeeCount=hourlyPee[0];
-        let parsedHours_Pee=hourlyPee[1];
-    
-        hourlyPeeCount.unshift("배뇨 횟수");
-        //console.log(hourlyPeeCount, parsedHours_Pee);
+
   
 
 
@@ -339,7 +333,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             if(dailyMaxPee<dailyPeeCount[i]){dailyMaxPee=dailyPeeCount[i]}
             total+=dailyPeeCount[i];
         }
-        let avg_Pee=(total/14).toFixed(2);
+        let avg_Pee=parseInt(total/14);
         console.log(dailyMaxPee, avg_Pee);
 
 
@@ -380,7 +374,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         console.log(weeklyPeeCount, weeklyMaxPee)
 
 
+//hourly (normalized)
+let hourlyPee=count_parse_hourly(UserPeeData, count_Hourly, hours, parsed_hours);
+let hourlyPeeCount=hourlyPee[0];
+for(let i=0; i<hourlyPeeCount.length; i++){
+    hourlyPeeCount[i]=parseInt(hourlyPeeCount[i])
+}
+let parsedHours_Pee=hourlyPee[1];
 
+hourlyPeeCount.unshift("배뇨 횟수");
+//console.log(hourlyPeeCount, parsedHours_Pee);
 
 //-----------------------------------------------Poop(daily, weekly)-----------------------------------//
 
@@ -477,6 +480,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             test01=$(".P2_TimezoneGraph").find(".bb-circles-배뇨-횟수").find("circle")
             console.log("P!", test00, "P2",test01)
         })
+
+
 
 
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
@@ -766,10 +771,12 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                                       
 
                 /*-----------------------------------X axis Design--------------------------------------------------------- */
-                let elem4=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
+                let elem3=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
                     d3.select(this).style("font-size", "8px");
 
-                })                
+                }) 
+                
+
 
 
 
@@ -2425,16 +2432,16 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             
                 //d3.select(".P1_WG")
                 svg.append("circle")
-                .attr('cx', 444)
+                .attr('cx', 449)
                 .attr('cy',15)
                 .attr("r", 4)
                 .attr("fill","#C4C4C4")
                 .style("opacity", 0.7)
 
                 svg.append("line")
-                .attr('x1', 435)
+                .attr('x1', 440)
                 .attr('y1',15)
-                .attr('x2', 453)
+                .attr('x2', 458)
                 .attr('y2', 15)
                 .style("stroke-width", 3)
                 .style("stroke", "#C4C4C4");                 
@@ -2589,6 +2596,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     function count_parse_hourly(UserData, count_Hourly, hours, parsedHours){
         //make a new array that contains only values (for drawing graph)
        let originalHourData=count_Hourly(UserData, hours);
+       console.log(originalHourData)
        let parsedHourData=[];
        for(let i=0; i<originalHourData.length; i++){
             parsedHourData.push((originalHourData[i]/14).toFixed(2)); //normalization by 2 weeks

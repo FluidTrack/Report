@@ -1,5 +1,9 @@
 /*-----------------basic setting for graph------------------------------*/
 
+.bb-xgrid-lines{
+  opacity: 0.5
+}
+
 .bb-axis-x{
   opacity: 0.5
 }
