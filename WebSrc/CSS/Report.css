@@ -124,15 +124,15 @@ body{
 .Header_Title{
   /* FluidTrack Report */
   position: absolute;
-  width: 152px;
+  width: 250px;
   height: 15px;
   left: 35px;
-  top: 35px;
+  top: 36px;
 
   font-family: 'Gothic A1';
   font-style: normal;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 15px;
 
   /* yonsei blue */
@@ -252,7 +252,7 @@ body{
 .P1_Title{
   /* FluidTrack Report */
   position: absolute;
-  width: 300px;
+  width: 527px;
   height: 39px;
   left: 33px;
   top: 46px;
@@ -330,9 +330,9 @@ body{
 
 .P1_Notification{
   position: absolute;
-  width: 280px;
+  width: 400px;
   height: 24px;
-  left: 274px;
+  left: 154px;
   top: 116px;
 
   font-style: normal;
@@ -735,12 +735,16 @@ body{
   ============================================================================================*/
 .UI_Button{
   position: fixed;
-  width: 100px;
-  height: 80px;
+  width: 5vw;
+  height: 9vh;
+  max-width: 100px;
+  max-height: 80px;
+  min-width: 20px;
+  min-height: 16px;
   color:white;
-  border-radius: 10px;
+  border-radius: 1vh;
   margin-right :10px;
-  bottom: 35px;
+  bottom: 4vh;
   text-align: center;
   cursor:pointer;
   transition: 0.2s;
@@ -748,12 +752,16 @@ body{
 
 .UI_NotificationBG, .UI_PrintBG, .UI_GitBG, .UI_HomeBG {
   position: fixed;
-  width: 100px;
-  height: 80px;
+  width: 5vw;
+  height: 9vh;
+  max-width: 100px;
+  max-height: 80px;
+  min-width: 20px;
+  min-height: 16px;
   color:white;
-  border-radius: 10px;
+  border-radius: 1vh;
   margin-right :10px;
-  bottom: 20px;
+  bottom: 2vh;
   text-align: center;
   cursor:pointer;
   transition: 0.2s;
@@ -786,7 +794,7 @@ body{
 }
 
 .UI_Button:hover {
-  bottom:30px;
+  bottom: 3vh;
 }
 
 .UI_Print {
@@ -887,4 +895,90 @@ body{
 
 .OkButton:hover{
   bottom:15px;
+}
+
+@media all and (max-width:1600px) {
+  .buttonLabel{
+    display: none;
+  }
+
+  .UI_Button i {
+    margin-top: 2vh;
+    font-size: 5vh;
+    line-height: 5vh;
+  }
+
+  .UI_PrintBG {
+    right:0.5vw;
+  }
+  
+  .UI_NotificationBG {
+    right:6vw;
+  }
+  
+  .UI_GitBG {
+    left:0.5vw;
+  }
+  
+  .UI_HomeBG {
+    right:11.5vw;
+  }
+  
+  .UI_Print {
+    right:0.5vw;
+  }
+  
+  .UI_Notification {
+    right:6vw;
+  }
+  
+  .UI_Git {
+    left:0.5vw;
+  }
+  
+  .UI_Home {
+    right:11.5vw;
+  }
+}
+
+@media all and (max-width:400px) {
+  .UI_Button i {
+    display: block;
+    position: relative;
+    top:0vh;
+    font-size: 5vh;
+    line-height: 5vh;
+  }
+
+  .UI_PrintBG {
+    right:0.5vw;
+  }
+  
+  .UI_NotificationBG {
+    right:6.5vw;
+  }
+  
+  .UI_GitBG {
+    left:0.5vw;
+  }
+  
+  .UI_HomeBG {
+    right:12.5vw;
+  }
+  
+  .UI_Print {
+    right:0.5vw;
+  }
+  
+  .UI_Notification {
+    right:6.5vw;
+  }
+  
+  .UI_Git {
+    left:0.5vw;
+  }
+  
+  .UI_Home {
+    right:12.5vw;
+  }
 }
