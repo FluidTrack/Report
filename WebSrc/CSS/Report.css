@@ -1,5 +1,9 @@
 /*-----------------basic setting for graph------------------------------*/
 
+.bb-grid{ /*P2DG grid opacity*/
+  opacity:0.3
+}
+
 .bb-xgrid-lines{
   opacity: 0.5
 }
@@ -532,7 +536,7 @@ body{
 .P2_DailyGraphDiv{
   position: absolute;
   width: 345px;
-  height: 142px;
+  height: 160px;
   left: 37px;
   top: 153px;
   background-color: white
