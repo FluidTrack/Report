@@ -43,7 +43,7 @@ let agent = navigator.userAgent.toLowerCase();
 
 if(!isMobile()) {
   if (agent.indexOf("chrome") != -1) {
-    //noti.classList.add('noShow');
+    noti.classList.add('noShow');
   }
 }
 
