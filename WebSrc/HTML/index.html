@@ -54,12 +54,31 @@
   <div class="DB_Button" id="DB_Button" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
     <i class="fas fa-server"></i>공식 DB 접속</div>
 
+  <div class="UI_NotificationBG"></div>
+  <div class="UI_Notification" id="notiButton" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    <i class="fas fa-exclamation-triangle"></i>주의사항</div>
 
   <div class="noti" id="noti" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
     <i class="fas fa-exclamation-triangle"></i> PC / ( Chrome , Whale ) 환경에서 실행해주세요</div>
-  <div class="footer" id="footer" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
-    2021. Team FluidTrack</div>
 
+
+  <div class="blind noPrint" id="blind">
+    <div class="UI_Popup noPrint" id="popupUI">
+      <div class="Popup_Title">
+        사용 주의사항
+      </div>
+      <img src="../IMG/PrintSetting.png" alt="print setting" class="PrintSetting">
+      <div class="description">
+        인쇄시 반드시 위와 같은 설정으로 PDF로 인쇄하여야 합니다. <br />
+        <span>특히, 옵션에서 배경 그래픽을 반드시 체크하세요.</span><br />
+        <span2>FluidTrack Report는</span2> <span>PC/(Chrome,Whale)환경</span>에서 동작합니다.
+      </div>
+      <div class="OkButton" id="OkButton">
+        확인
+      </div>
+    </div>
+  </div>
+  
   <script language="javascript" src="../JS/index.js"></script>
 </body>
 </html>
