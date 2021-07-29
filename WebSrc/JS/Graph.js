@@ -1371,6 +1371,16 @@ hourlyPeeCount.unshift("배뇨 횟수");
         
         })
 
+          //Data Label Design
+        let elem0_P2DG=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
+            let temp=Number($(this).text())
+            if(temp>=4 && temp<=7){
+                d3.select(this).style("fill", "#03C52E")
+            }
+
+
+    })
+
     },
   
 
@@ -1452,17 +1462,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
 
 
 
-  //Data Label Design
-  //setTimeout(function(){
-    let elem0_P2DG=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
-        let temp=Number($(this).text())
-        if(temp>=4 && temp<=7){
-            d3.select(this).style("fill", "#03C52E")
-        }
 
-
-    })
- // })
 
 
 
@@ -2195,7 +2195,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
 
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
-                x_loc.push($(this).attr("cx")-10)
+                x_loc.push($(this).attr("cx")-5)
                 $(this).remove()
                 //console.log(this);
             })
