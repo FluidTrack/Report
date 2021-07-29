@@ -8,10 +8,7 @@ let serverPort = document.getElementById('serverPort');
 let noti = document.getElementById('noti');
 let DB_Button = document.getElementById('DB_Button');
 let searchButton = document.getElementById('searchButton');
-let notiButton = document.getElementById('notiButton');
-let blind = document.getElementById('blind');
 let pop = document.getElementById('popupUI');
-let OkButton = document.getElementById('OkButton');
 
 window.onpageshow = function (event) {
   if(advance.checked) {
@@ -46,7 +43,7 @@ let agent = navigator.userAgent.toLowerCase();
 
 if(!isMobile()) {
   if (agent.indexOf("chrome") != -1) {
-    noti.classList.add('noShow');
+    //noti.classList.add('noShow');
   }
 }
 
@@ -66,20 +63,3 @@ searchButton.addEventListener('click',() => {
   }
 });
 
-notiButton.addEventListener('click',() => {
-  var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-  var screenWidth = window.screen.width
-  var viewportScale = screenWidth / viewportWidth
-  console.log(`value : ${viewportScale}`)
-
-  if(!blind.classList.contains('showing')) {
-    blind.classList.add('showing')
-    pop.style.zoom = 1 / viewportScale;
-  }
-})
-
-OkButton.addEventListener('click',() => {
-  if(blind.classList.contains('showing')) {
-    blind.classList.remove('showing')
-  }
-})

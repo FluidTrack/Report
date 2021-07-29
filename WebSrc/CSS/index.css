@@ -36,7 +36,7 @@ body{
   height: 185px;
   transform: translate(-50%,-50%);
   left:50%;
-  top:50%;
+  top: calc(50% - 260px);
   background-color: white;
   border-radius: 10px;
   position: absolute;
@@ -200,8 +200,8 @@ body{
 .searchButtonBG{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:calc(50% - 155px);
-  top:calc(50% + 170px);
+  left:calc(50% - 100px);
+  top:calc(50% + 390px);
   width: 330px;
   height: 60px;
   background-color: rgb(0, 53, 79);
@@ -215,8 +215,8 @@ body{
 .searchButton{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:calc(50% - 155px);
-  top:calc(50% + 160px);
+  left:calc(50% - 100px);
+  top:calc(50% + 370px);
   width: 330px;
   height: 60px;
   background-color: rgb(0, 73, 108);
@@ -230,7 +230,7 @@ body{
 }
 
 .searchButton:hover{
-  top:calc(50% + 163px);
+  top:calc(50% + 380px);
 }
 
 
@@ -238,8 +238,8 @@ body{
 .DB_ButtonBG{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:calc(50% + 100px);
-  top:calc(50% + 170px);
+  left:calc(50% + 170px);
+  top:calc(50% + 390px);
   width: 140px;
   height: 80px;
   background-color: hsl(118, 100%, 25%);
@@ -253,8 +253,8 @@ body{
 .DB_Button{
   position: absolute;
   transform: translate(-50%,-50%);
-  left:calc(50% + 100px);
-  top:calc(50% + 160px);
+  left:calc(50% + 170px);
+  top:calc(50% + 370px);
   width: 140px;
   height: 80px;
   background-color: #00c22a;
@@ -275,53 +275,7 @@ body{
 }
 
 .DB_Button:hover{
-  top:calc(50% + 163px);
-}
-
-
-
-
-.UI_NotificationBG{
-  position: absolute;
-  transform: translate(-50%,-50%);
-  left:calc(50% + 250px);
-  top:calc(50% + 170px);
-  width: 140px;
-  height: 80px;
-  background-color: rgb(177, 117, 0);
-  line-height: 60px;
-  font-size: 24px;
-  border-radius: 7px;
-  text-align: center;
-  color:white;
-}
-
-.UI_Notification{
-  position: absolute;
-  transform: translate(-50%,-50%);
-  left:calc(50% + 250px);
-  top:calc(50% + 160px);
-  width: 140px;
-  height: 80px;
-  background-color: rgb(233, 154, 0);
-  line-height: 50px;
-  font-size: 16px;
-  border-radius: 7px;
-  text-align: center;
-  color:white;
-  transition: 0.1s;
-  cursor: pointer;
-}
-
-.UI_Notification i{
-  display: block;
-  font-size: 40px;
-  line-height: 20px;
-  margin-top:20px;
-}
-
-.UI_Notification:hover{
-  top:calc(50% + 163px);
+  top:calc(50% + 380px);
 }
 
 
@@ -332,7 +286,7 @@ body{
   position: absolute;
   transform: translate(-50%,-50%);
   left:50%;
-  top:calc(50% - 170px);
+  top:calc(50% - 400px);
   width: 600px;
   height: 50px;
   background-color: rgb(255, 184, 0);
@@ -390,11 +344,11 @@ body{
 }
 
 .UI_Popup {
-  width: 500px;
-  height: 620px;
+  width: 600px;
+  height: 450px;
   transform: translate(-50%,-50%);
   left:50%;
-  top:45%;
+  top:calc(50% + 80px);
   position: absolute;
   overflow: hidden;
   background-color: white;
@@ -410,8 +364,8 @@ body{
 }
 
 .PrintSetting {
-  width: calc(100% - 80px);
-  margin: 20px 40px;
+  width: calc(70% - 80px);
+  margin: 10px calc(15% + 40px);
 }
 
 .description {
@@ -428,25 +382,5 @@ body{
 .description span2 {
   font-weight: bold;
   color:rgb(0, 68, 218);
-}
-
-.OkButton {
-  position: absolute;
-  left:50%;
-  transform: translate(-50%,-50%);
-  bottom:10px;
-  height: 40px;
-  width: 100px;
-  background-color: rgb(71, 71, 71);
-  color:white;
-  border-radius:4px;
-  cursor:pointer;
-  text-align: center;
-  line-height: 40px;
-  transition: 0.2s;
-}
-
-.OkButton:hover{
-  bottom:15px;
 }
 
