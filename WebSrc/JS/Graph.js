@@ -378,7 +378,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 let hourlyPee=count_parse_hourly(UserPeeData, count_Hourly, hours, parsed_hours);
 let hourlyPeeCount=hourlyPee[0];
 for(let i=0; i<hourlyPeeCount.length; i++){
-    hourlyPeeCount[i]=parseInt(hourlyPeeCount[i])
+    hourlyPeeCount[i]=Number(hourlyPeeCount[i]).toFixed(1)
 }
 let parsedHours_Pee=hourlyPee[1];
 
@@ -518,8 +518,6 @@ hourlyPeeCount.unshift("배뇨 횟수");
 
         }
 
-        console.log(P1DG_maxY/300+1, P1DG_maxY, P1DG_grid, P1DG_Y)
-
 
 
     var P1_DailyGraph = bb.generate({
@@ -590,10 +588,15 @@ hourlyPeeCount.unshift("배뇨 횟수");
                     d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
 
                     
+                    /*MODIFY: 평균을 위아래로 바꾸는 것으로 */
     
                     if(Math.abs(avgWater-1000)<100 && avgWater<=1000){
                         //console.log("START")
                         d3.select(this).select("text").select("tspan").attr("dy","20")
+                    }
+                    else if(Math.abs(avgWater-1000)<300 && avgWater<=1000){
+                        d3.select(this).select("text").select("tspan").attr("dy","10")
+
                     }
     
                 }
@@ -608,6 +611,10 @@ hourlyPeeCount.unshift("배뇨 횟수");
                     if(Math.abs(avgWater-1000)<100 && avgWater>1000){
                         //console.log("START")
                         d3.select(this).select("text").select("tspan").attr("dy","20")
+                    }
+                    else if(Math.abs(avgWater-1000)<300 && avgWater>1000){
+                        d3.select(this).select("text").select("tspan").attr("dy","10")
+
                     }
                     console.log(this)
                     
@@ -863,7 +870,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             let P1WG_grid=[];
             let P1WG_Y=[];
             
-            if(P1WG_maxY>1200){
+            if(P1WG_maxY>2000){
                 for(let i=0; i<=(P1WG_maxY/600); i++){
                     P1WG_grid.push({"value":i*600})
                     P1WG_Y.push(i*600);
@@ -1093,7 +1100,6 @@ hourlyPeeCount.unshift("배뇨 횟수");
     data:{
         columns:[
             ["cheating", 50, 100, 150], 
-            //testHour3,
             hourlyWaterIntake 
         ],
         type: "bubble",
@@ -1112,9 +1118,12 @@ hourlyPeeCount.unshift("배뇨 횟수");
 
         //-----------------------------------circle design------------------------------------------------ 
 
+
+
         let elem0=$(".P1_TimezoneGraph").find(".bb-circles-물").find("circle").each(function(i){ //circle centering
             $(this).attr("cx", 45)
         })
+        
 
 
         //-----------------------------------Legend design------------------------------------------------ 
@@ -1130,7 +1139,8 @@ hourlyPeeCount.unshift("배뇨 횟수");
     
 
     bubble: {
-        maxR: 8
+        /* MODIFY: Grid Height 따라서 유동적으로 버블 크기 조정하기 */
+        maxR: 9
     },
 
     axis:{
@@ -1149,7 +1159,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             y: {
                 show:false,
                 min:0,
-                max:150,
+                //max:55,
                 //padding:0
             },
 
@@ -1213,7 +1223,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
     .style('font-weight', 'bold')
 
     svg.append("circle") // 원형
-    .attr("r", P1HG_legendCircle[2])
+    .attr("r", P1HG_legendCircle[2]*1.25)
     .attr("cx", 45)
     .attr("cy", 50)
     .attr("fill", "#56A4FF")
@@ -1227,7 +1237,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
     .style('font-size', '9px')
 
     svg.append("circle") // 원형
-    .attr("r", P1HG_legendCircle[1])
+    .attr("r", P1HG_legendCircle[1]*1.25)
     .attr("cx", 95)
     .attr("cy", 50)
     .attr("fill", "#56A4FF")
@@ -1241,7 +1251,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
     .style('font-size', '9px')
     
     svg.append("circle") // 원형
-    .attr("r", P1HG_legendCircle[0])
+    .attr("r", P1HG_legendCircle[0]*1.25)
     .attr("cx", 142)
     .attr("cy", 50)
     .attr("fill", "#56A4FF")
@@ -1272,7 +1282,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             P2DG_maxY=dailyMaxPee+(10-dailyMaxPee%10)
         }
 
-        if(20>P2DG_maxY){P2DG_maxY=20;}
+        if(20>=P2DG_maxY){P2DG_maxY=20;}
 
         let P2DG_grid=[];
         let P2DG_Y=[];
@@ -1624,7 +1634,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
 
 
 
-        let P2WG_maxY;
+        let P2WG_maxY=weeklyMaxPee;
         
         if(P2WG_maxY%5==0){
             P2WG_maxY=weeklyMaxPee
@@ -1634,12 +1644,12 @@ hourlyPeeCount.unshift("배뇨 횟수");
             P2WG_maxY=Number(weeklyMaxPee)+Number(5-weeklyMaxPee%5);
         }
 
-        if(20>P2WG_maxY){P2WG_maxY=20;}
+        if(20>=P2WG_maxY){P2WG_maxY=20;}
         //console.log(P2WG_maxY);
         let P2WG_grid=[];
         let P2WG_y=[];
 
-        if(P2WG_maxY>25){
+        if(P2WG_maxY>20){
 
             for(let i=0; i<=(P2WG_maxY/10); i++){
                 P2WG_grid.push({"value":i*10})
@@ -1654,7 +1664,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             }
         }
 
-        //console.log(P2WG_y, P2WG_maxY, P2WG_grid);
+        console.log(weeklyMaxPee, P2WG_maxY, P2WG_y, P2WG_grid);
 
 
 
@@ -1941,7 +1951,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             .style('font-weight', 'bold')
     
             svg.append("circle") // 원형
-            .attr("r", P2HG_legendCircle[2])
+            .attr("r", P2HG_legendCircle[2]*1.2)
             .attr("cx", 45)
             .attr("cy", 50)
             .attr("fill", "#FFDB5B")
@@ -1955,7 +1965,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             .style('font-size', '9px')
     
             svg.append("circle") // 원형
-            .attr("r", P2HG_legendCircle[1])
+            .attr("r", P2HG_legendCircle[1]*1.2)
             .attr("cx", 95)
             .attr("cy", 50)
             .attr("fill", "#FFDB5B")
@@ -1969,7 +1979,7 @@ hourlyPeeCount.unshift("배뇨 횟수");
             .style('font-size', '9px')
             
             svg.append("circle") // 원형
-            .attr("r", P2HG_legendCircle[0])
+            .attr("r", P2HG_legendCircle[0]*1.2)
             .attr("cx", 142)
             .attr("cy", 50)
             .attr("fill", "#FFDB5B")
