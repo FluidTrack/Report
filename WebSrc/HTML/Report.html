@@ -11,14 +11,22 @@
   <meta property="og:title" content="FluidTrack Report" />
   <meta property="og:description" content="Auto Report" />
   <meta property="og:image" content="../IMG/metaImage.png" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-
-
+  <script src="../JS/jquery.min.js"></script>
   <title>수분 섭취, 배뇨, 배변 기록 분석 리포트</title>
 </head>
 <body>
+
+  <!--Bilboard chart load-->
+
+  <script src="../JS/d3.v6.min.js"></script>
+
+  <link rel="stylesheet" href="../CSS/billboard.css">
+  <script src="../JS/billboard.js"></script> <!--PATH must be ..//-->
+
+  <link rel="stylesheet" href="../CSS/billboard.css">
+  <script src="../JS/billboard.pkgd.js"></script>
+
+
   <div class="book">
 
   <!--===========================================================================================
@@ -223,15 +231,6 @@
 <script language="javascript" src="../JS/DataFetch.js"></script>
 <script language="javascript" src="../JS/UI.js"></script>
 
-  <!--Bilboard chart load-->
-
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-
-    <link rel="stylesheet" href="../CSS/billboard.css">
-    <script src="../JS/billboard.js"></script> <!--PATH must be ..//-->
-
-    <link rel="stylesheet" href="../CSS/billboard.css">
-    <script src="../JS/billboard.pkgd.js"></script>
 
 
 </body>
