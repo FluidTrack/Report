@@ -1,4 +1,9 @@
 /*-----------------basic setting for graph------------------------------*/
+.bb-ygrid{
+  stroke-dasharray: 3 3;
+
+}
+
 
 .caution_img {
   width:100px;
@@ -149,8 +154,11 @@ body{
 }
 
 .bullet {
+  width: 4px;
+  height: 4px;
   margin-right: 5px;
   line-height: 30px;
+  margin-bottom: 1px;
 }
 
 
@@ -458,12 +466,12 @@ body{
   background-color:white;
 }
 
-.caution_P1 {
+.caution_P1DG {
   position: absolute;
-  left: 270px;
-  top: 575px;
-  max-width:100px;
-  max-height:140px;
+  left: 200px;
+  top: 580px;
+  font-size: 10px;
+  transform: scale(0.5);/*10*0.5=font-size:5px*/
 
 
 }
@@ -494,6 +502,15 @@ body{
   width: 210px;
   height: 360px;
   
+  
+}
+.caution_P1TG{
+
+  position: absolute;
+  left: 390px;
+  top: 580px;
+  font-size: 10px;
+  transform: scale(0.5);/*10*0.5=font-size:5px*/
   
 }
 
@@ -601,12 +618,12 @@ body{
   background-color: white
 }
 
-.caution_P2 {
+.caution_P2DG {
   position: absolute;
-  left: 270px;
-  top: 510px;
-  max-width:100px;
-  max-height:140px;
+  left: 210px;
+  top: 495px;
+  font-size: 10px;
+  transform: scale(0.5);/*10*0.5=font-size:5px*/
 
 
 }
@@ -640,6 +657,14 @@ body{
   height: 360px;
   
   
+}
+
+.caution_P2TG{
+  position: absolute;
+  left: 390px;
+  top: 495px;
+  font-size: 10px;
+  transform: scale(0.5);/*10*0.5=font-size:5px*/
 }
 
 .P2_CommentBG{

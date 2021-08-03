@@ -117,7 +117,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     let height1=142;
     let width1=350;
 
-    let height2=270;
+    let height2=250;
     let width2=195;
 
     //find current week's index
@@ -1206,6 +1206,8 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             }
         })
 
+        
+
 
     },
     
@@ -1241,7 +1243,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
     grid:{
         x: {
-        show: false,
+        show: true,
         lines:P1HG_grid
             },
         //lines:{front: false}
@@ -1273,6 +1275,34 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
     bindto:"#P1_TimezoneGraph"
 })
+
+    //adjusting bubble's R to grid's height 
+    setTimeout(function(){
+
+        let grid_height0;
+        let grid_height1;
+        let height;
+
+        $(".P1_TimezoneGraph").find(".bb-xgrids").find("line").each(function(i){
+            if(i==0){
+                grid_height1=this.getAttribute("y1")
+
+            }
+            else if(i==1){
+                grid_height0=this.getAttribute("y1")
+            }
+
+        })
+        height=grid_height0-grid_height1;
+        console.log(height)
+
+        $(".P1_TimezoneGraph").find(".bb-xgrids").find("line").each(function(i){
+            this.remove()
+
+        })
+
+
+    })
 
 
 
@@ -1342,7 +1372,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         
 //------------------------------------------------------------------------------------------------------------------------------//
 
-
+//P2 Graphs
         //for drawing max Y value, grid lines
         let P2DG_maxY;
         
@@ -1518,6 +1548,18 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
     })*/
 
+    },
+
+    onresize: function(){
+        setTimeout(function(){
+            //increase stroke line's length
+            let temp=document.getElementById("P2_DailyGraph").getElementsByClassName("bb-line-평균") //.find(".bb-line-평균")
+            let text=temp[0].getAttribute("d")
+            let text2 = text.replace('M10', 'M0')
+            let text3 = text2.replace('L270', 'L300')
+            temp[0].setAttribute("d", text3)
+      
+        })
     },
   
 
@@ -1791,7 +1833,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         .attr('y',20)
         .text("회")
         .style('font-size', '100%')
-        .style('font-weight','bold')
+        //.style('font-weight','bold')
 
     })
 
@@ -1802,12 +1844,12 @@ console.log(hourlyPeeCount, hourlyPeeMax)
     let P2_WeeklyGraph=bb.generate({
         size:{
             width:width1,
-            height:height1+30,
+            height:height1,
         },
         padding:{
-            top: 30,
+            top: 10,
             right: 40,
-            //bottom: 30,
+            bottom: 5,
             left: 30
 
         },
@@ -1878,23 +1920,23 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         //d3.select(".P1_WG")
         svg.append("circle")
         .attr('cx', 284)
-        .attr('cy',32)
+        .attr('cy',15)
         .attr('r', 4)
         .attr("fill","#F2C94C")
 
         //d3.select(".P1_WG")
         svg.append("line")
         .attr('x1', 275)
-        .attr('y1',32)
+        .attr('y1',15)
         .attr('x2', 293)
-        .attr('y2', 32)
+        .attr('y2', 15)
         .style("stroke-width", 3)
         .style("stroke", "#F2C94C");   
 
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 295)
-        .attr('y',35)
+        .attr('y',20)
         .text("배뇨 횟수")
         .style('font-size', '100%')
 
@@ -1903,10 +1945,10 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 12)
-        .attr('y',40)
+        .attr('y',20)
         .text("회")
         .style('font-size', '100%')
-        .style('font-weight','bold')
+        //.style('font-weight','bold')
 
     })
 
@@ -1978,7 +2020,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
         },
         padding:{
-            bottom:0,
+            top: 30,
             right: 30,
         
         },
@@ -2086,11 +2128,35 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
 
         svg: {
-            classname: 'P2_TG_SVG'
+            classname: 'P2_TG'
         },
 
 
         bindto:"#P2_TimezoneGraph"
+    })
+
+    setTimeout(function(){
+        d3.select(".P2_TG")
+        .append("rect")
+        .attr('x', 115)
+        .attr('y',10)
+        .attr('width','10')
+        .attr('height','10')
+        .attr("fill","#FFDB5B")
+
+        d3.select(".P2_TG")
+        .append("text")
+        .attr('x', 130)
+        .attr('y',20)
+        .text("배뇨 횟수")
+        .style('font-size', '100%')
+
+        d3.select(".P2_TG")
+        .append("text")
+        .attr('x', 167)
+        .attr('y',316)
+        .text("회")
+        .style('font-size', '100%')
     })
 
     $(".P2_TimezoneGraph").find(".bb-ygrids").attr("opacity", "0.5")
@@ -2464,7 +2530,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             .attr('y',20)
             .text("회")
             .style('font-size', '100%')
-            .style('font-weight','bold')
+            //.style('font-weight','bold')
 
 
 
@@ -2704,7 +2770,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
                 .attr('y',43)
                 .text("회")
                 .style('font-size', '100%')
-                .style('font-weight','bold')
+                //.style('font-weight','bold')
 
                 
                 let temp0=$(".P3_weeklyGraph").find(".bb-main")
