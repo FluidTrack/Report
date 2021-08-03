@@ -152,7 +152,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     let xDays=getXDays(start);
     console.log(xDays);
 
-    let weeks=["1주차", "2주차", "3주차", "4주차", "5주차", "6주차", "7주차", "8주차"]
+    let weeks=["1주차", "2주차", "3주차", "4주차", ] //"5주차", "6주차", "7주차", "8주차"
     let hours=key_hours();
     let parsed_hours=parsing_hours(); //for hourly axis
 
@@ -187,7 +187,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 //weekly (normalized)
 
-        let weeklyWaterIntake=[0, 0, 0, 0, 0, 0, 0, 0] //8 weeks data
+        let weeklyWaterIntake=[0, 0, 0, 0, ] //8 weeks data // 4 weeks data 0, 0, 0, 0
 
         for(let i=0; i<UserTotalWaterData.length; i++){
             if(UserTotalWaterData[i].id==id){
@@ -196,10 +196,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 else if(W1<=time && time<W2){weeklyWaterIntake[1]++}
                 else if(W2<=time && time<W3){weeklyWaterIntake[2]++}
                 else if(W3<=time && time<W4){weeklyWaterIntake[3]++}
-                else if(W4<=time && time<W5){weeklyWaterIntake[4]++}
+                /*else if(W4<=time && time<W5){weeklyWaterIntake[4]++}
                 else if(W5<=time && time<W6){weeklyWaterIntake[5]++}
                 else if(W6<=time && time<W7){weeklyWaterIntake[6]++}
-                else if(W7<=time && time<W8){weeklyWaterIntake[7]++}
+                else if(W7<=time && time<W8){weeklyWaterIntake[7]++}*/
             }
         }
         for(let i=0; i<weeklyWaterIntake.length; i++){
@@ -268,7 +268,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
 //weekly (normalized)
-        let weeklyDrinkIntake=[0, 0, 0, 0, 0, 0, 0, 0];
+        let weeklyDrinkIntake=[0, 0, 0, 0, ]; //0, 0, 0, 0
 
         for(let i=0; i<UserTotalDrinkData.length; i++){
             if(UserTotalDrinkData[i].id==id){
@@ -277,10 +277,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 else if(W1<=time && time<W2){weeklyDrinkIntake[1]++}
                 else if(W2<=time && time<W3){weeklyDrinkIntake[2]++}
                 else if(W3<=time && time<W4){weeklyDrinkIntake[3]++}
-                else if(W4<=time && time<W5){weeklyDrinkIntake[4]++}
+                /*else if(W4<=time && time<W5){weeklyDrinkIntake[4]++}
                 else if(W5<=time && time<W6){weeklyDrinkIntake[5]++}
                 else if(W6<=time && time<W7){weeklyDrinkIntake[6]++}
-                else if(W7<=time && time<W8){weeklyDrinkIntake[7]++}
+                else if(W7<=time && time<W8){weeklyDrinkIntake[7]++}*/
             }
         }
         for(let i=0; i<weeklyDrinkIntake.length; i++){
@@ -339,7 +339,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 //weekly
         //let weeklyPeeCount=["배뇨 횟수", 0, 0, 0, 0, 0, 0, 0, 0]
-        let weeklyPeeCount=[0, 0, 0, 0, 0, 0, 0, 0]
+        let weeklyPeeCount=[0, 0, 0, 0, ] //0, 0, 0, 0
 
         for(let i=0; i<UserTotalPeeData.length; i++){
             if(UserTotalPeeData[i].id==id){
@@ -348,10 +348,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 else if(W1<=time && time<W2){weeklyPeeCount[1]++}
                 else if(W2<=time && time<W3){weeklyPeeCount[2]++}
                 else if(W3<=time && time<W4){weeklyPeeCount[3]++}
-                else if(W4<=time && time<W5){weeklyPeeCount[4]++}
+                /*else if(W4<=time && time<W5){weeklyPeeCount[4]++}
                 else if(W5<=time && time<W6){weeklyPeeCount[5]++}
                 else if(W6<=time && time<W7){weeklyPeeCount[6]++}
-                else if(W7<=time && time<W8){weeklyPeeCount[7]++}
+                else if(W7<=time && time<W8){weeklyPeeCount[7]++}*/
             }
         }
         for(let i=0; i<weeklyPeeCount.length; i++){
@@ -405,12 +405,12 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         console.log(dailyPoopArray, dailyPoopCount, dailyMaxPoop)
 
 //WEEKLY
-        let weeklyPoopCount=[0, 0, 0, 0, 0, 0, 0, 0] //8 weeks data
+        let weeklyPoopCount=[0, 0, 0, 0, ] //8 weeks data //0, 0, 0, 0
         /*for(let i=week2; i<weeklyPoopCount.length; i++){
             weeklyPoopCount[i]=null
         }*/
 
-        let weeklyHealthyPoopCount=[0, 0, 0, 0, 0, 0, 0, 0]
+        let weeklyHealthyPoopCount=[0, 0, 0, 0, ] //0, 0, 0, 0
         /*for(let i=week2; i<weeklyHealthyPoopCount.length; i++){
             weeklyHealthyPoopCount[i]=null
         }*/
@@ -428,10 +428,10 @@ console.log(hourlyPeeCount, hourlyPeeMax)
                 else if(W1<=time && time<W2){weeklyPoopCount[1]++; valid=true; idx=1;}
                 else if(W2<=time && time<W3){weeklyPoopCount[2]++; valid=true; idx=2;}
                 else if(W3<=time && time<W4){weeklyPoopCount[3]++; valid=true; idx=3;}
-                else if(W4<=time && time<W5){weeklyPoopCount[4]++; valid=true; idx=4;}
+                /*else if(W4<=time && time<W5){weeklyPoopCount[4]++; valid=true; idx=4;}
                 else if(W5<=time && time<W6){weeklyPoopCount[5]++; valid=true; idx=5;}
                 else if(W6<=time && time<W7){weeklyPoopCount[6]++; valid=true; idx=6;}
-                else if(W7<=time && time<W8){weeklyPoopCount[7]++; valid=true; idx=7;}
+                else if(W7<=time && time<W8){weeklyPoopCount[7]++; valid=true; idx=7;}*/
 
                 if(valid && (UserTotalPoopData[i].type==3||UserTotalPoopData[i].type==4)){
                     weeklyHealthyPoopCount[idx]++
@@ -486,14 +486,16 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
 
 
-
+//P1 Graphs
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 
 
+        //Y axis, grid array setting
         let P1DG_maxY;
+        let P1DG_grid=[];
+        let P1DG_Y=[];
 
-            //for calculating Y axis max value 
         if(dailymaxDrink>=2000){P1DG_maxY=dailymaxDrink+(600-(dailymaxDrink%600))}
         else if(dailymaxDrink%300==0){
             P1DG_maxY=P1DG_maxY=dailymaxDrink
@@ -505,8 +507,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
 
             //grid, Y axis label
-        let P1DG_grid=[];
-        let P1DG_Y=[];
+
         if(P1DG_maxY<2000){        
             for(let i=0; i<=(P1DG_maxY/300); i++){
             P1DG_grid.push({"value":i*300})
@@ -520,6 +521,52 @@ console.log(hourlyPeeCount, hourlyPeeMax)
                     }
 
         }
+
+        //Y axis, grid array setting
+        let P1WG_maxY;
+        let P1WG_grid=[];
+        let P1WG_Y=[];
+        
+
+
+        if(weeklymaxDrink%300==0){P1WG_maxY=weeklymaxDrink;}
+        else{P1WG_maxY=weeklymaxDrink+(300-(weeklymaxDrink%300));}
+        if(P1WG_maxY<1200){P1WG_maxY=1200}
+
+        console.log(P1WG_maxY)
+
+        if(P1WG_maxY>2000){
+            for(let i=0; i<=(P1WG_maxY/600); i++){
+                P1WG_grid.push({"value":i*600})
+                P1WG_Y.push(i*600);
+            }
+        }
+        else{
+            for(let i=0; i<=(P1WG_maxY/300); i++){
+                P1WG_grid.push({"value":i*300})
+                P1WG_Y.push(i*300);
+            }
+
+        }
+
+        //adjusting the number of two graphs' grid lines
+        if(P1DG_maxY>=P1WG_maxY)
+        {
+            P1WG_maxY=P1DG_maxY;
+            P1WG_grid=P1DG_grid;
+            P1WG_Y=P1DG_Y;
+        }
+        else if(P1DG_maxY<P1WG_maxY){
+            P1DG_maxY=P1WG_maxY;
+            P1DG_grid=P1WG_grid;
+            P1DG_Y=P1DG_Y;
+        }
+        else{
+            console.log("ERROR")
+        }
+
+
+        
 
 
 
@@ -888,43 +935,12 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
 
 
- 
-
- //------------------------------------------------------------------------------------------------------------------------------//
-
 
 
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------// 
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------//
 
-//Y axis, grid array setting
-            let P1WG_maxY;
 
-
-            if(weeklymaxDrink%300==0){P1WG_maxY=weeklymaxDrink;}
-            else{P1WG_maxY=weeklymaxDrink+(300-(weeklymaxDrink%300));}
-            if(P1WG_maxY<1200){P1WG_maxY=1200}
-
-            console.log(P1WG_maxY)
-
-            let P1WG_grid=[];
-            let P1WG_Y=[];
-            
-            if(P1WG_maxY>2000){
-                for(let i=0; i<=(P1WG_maxY/600); i++){
-                    P1WG_grid.push({"value":i*600})
-                    P1WG_Y.push(i*600);
-                }
-            }
-            else{
-                for(let i=0; i<=(P1WG_maxY/300); i++){
-                    P1WG_grid.push({"value":i*300})
-                    P1WG_Y.push(i*300);
-                }
-
-            }
-
-            console.log(P1WG_maxY ,P1WG_grid, P1WG_Y);
 
 
     var P1_WeeklyGraph = bb.generate({
@@ -1327,6 +1343,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 //------------------------------------------------------------------------------------------------------------------------------//
 
 
+        //for drawing max Y value, grid lines
         let P2DG_maxY;
         
         if(dailyMaxPee%5==0){
@@ -1381,6 +1398,58 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         avgPee.unshift("평균")
 
         let goal_rect={};
+
+
+        //for drawing max Y value, grid lines
+        let P2WG_maxY=weeklyMaxPee;
+        
+        if(P2WG_maxY%5==0){
+            P2WG_maxY=weeklyMaxPee
+
+        }
+        else{
+            P2WG_maxY=Number(weeklyMaxPee)+Number(5-weeklyMaxPee%5);
+        }
+
+        if(20>=P2WG_maxY){P2WG_maxY=20;}
+        //console.log(P2WG_maxY);
+        let P2WG_grid=[];
+        let P2WG_Y=[];
+
+        if(P2WG_maxY>20){
+
+            for(let i=0; i<=(P2WG_maxY/10); i++){
+                P2WG_grid.push({"value":i*10})
+                P2WG_Y.push(i*10)
+            }
+
+        }
+        else{
+            for(let i=0; i<=(P2WG_maxY/5); i++){
+                P2WG_grid.push({"value":i*5})
+                P2WG_Y.push(i*5)
+            }
+        }
+
+
+
+
+
+        //adjusting the number of two graphs' grid lines
+        if(P2DG_maxY>=P2WG_maxY)
+        {
+            P2WG_maxY=P2DG_maxY;
+            P2WG_grid=P2DG_grid;
+            P2WG_Y=P2DG_Y;
+        }
+        else if(P2DG_maxY<P2WG_maxY){
+            P2DG_maxY=P2WG_maxY;
+            P2DG_grid=P2WG_grid;
+            P2DG_Y=P2DG_Y;
+        }
+        else{
+            console.log("ERROR")
+        }
 
 
 
@@ -1728,38 +1797,6 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
 
 
-        let P2WG_maxY=weeklyMaxPee;
-        
-        if(P2WG_maxY%5==0){
-            P2WG_maxY=weeklyMaxPee
-
-        }
-        else{
-            P2WG_maxY=Number(weeklyMaxPee)+Number(5-weeklyMaxPee%5);
-        }
-
-        if(20>=P2WG_maxY){P2WG_maxY=20;}
-        //console.log(P2WG_maxY);
-        let P2WG_grid=[];
-        let P2WG_y=[];
-
-        if(P2WG_maxY>20){
-
-            for(let i=0; i<=(P2WG_maxY/10); i++){
-                P2WG_grid.push({"value":i*10})
-                P2WG_y.push(i*10)
-            }
-
-        }
-        else{
-            for(let i=0; i<=(P2WG_maxY/5); i++){
-                P2WG_grid.push({"value":i*5})
-                P2WG_y.push(i*5)
-            }
-        }
-
-        console.log(weeklyMaxPee, P2WG_maxY, P2WG_y, P2WG_grid);
-
 
 
     let P2_WeeklyGraph=bb.generate({
@@ -1812,7 +1849,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
                 //default: [0, P2DG_maxY],
                 tick:{
-                    values: P2WG_y,
+                    values: P2WG_Y,
                     tick:5
                 },
                 max:P2WG_maxY,
@@ -1914,21 +1951,24 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         console.log(P2HG_grid)
 
         let P2HG_Ytick=[];
+        let P2HG_Ygrid=[];
         if(hourlyPeeMax>3){
 
             for(let i=0; i<hourlyPeeMax/1; i++){
                 console.log(hourlyPeeMax + " is over 1.5")
                 P2HG_Ytick.push(i)
+                P2HG_Ygrid.push({value:i, text:""})
             }
         }
         else{
             console.log(hourlyPeeMax + " is less than 1.5")
             for(let i=0; i<hourlyPeeMax/0.5; i++){
                 P2HG_Ytick.push(i*0.5)
+                P2HG_Ygrid.push({value:i*0.5, text:""})
             }
 
         }
-        console.log(P2HG_Ytick)
+        console.log(P2HG_Ytick, P2HG_Ygrid)
 
     
     var P2_TimezoneGraph = bb.generate({
@@ -1973,7 +2013,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
  
             let elem1=$(".P2_TimezoneGraph").find(".bb-bars-cheating").find("path").each(function(i){ 
                 if(i==0||i==1||i==2){
-                    console.log(this)
+                    //console.log(this)
                     //P2HG_legendCircle.push($(this).attr("r"))
                 }
             })
@@ -2018,13 +2058,14 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             x: {
                 show: false,
                 lines:P2HG_grid
-                    },
+                    
             //lines:{front: false}
             },
             y:{
                 show:true,
+                //lines:P2HG_Ygrid,
             }
-
+        }
         ,
 
 
@@ -2052,6 +2093,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         bindto:"#P2_TimezoneGraph"
     })
 
+    $(".P2_TimezoneGraph").find(".bb-ygrids").attr("opacity", "0.5")
   /*
         //Drawing Legends
         setTimeout(function(){
