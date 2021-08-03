@@ -1243,7 +1243,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
     grid:{
         x: {
-        show: true,
+        //show: true,
         lines:P1HG_grid
             },
         //lines:{front: false}
@@ -1277,7 +1277,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 })
 
     //adjusting bubble's R to grid's height 
-    setTimeout(function(){
+    /*setTimeout(function(){
 
         let grid_height0;
         let grid_height1;
@@ -1302,7 +1302,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         })
 
 
-    })
+    })*/
 
 
 
@@ -1872,6 +1872,46 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             console.log(document.getElementById("P2_weeklyGraph"));
         },
 
+        onresize:function(){
+                //move bars upside
+    setTimeout(function(){
+        let regStartY = new RegExp(/\,\d+\.*\d*\w/)
+        let regWidth = new RegExp(/H\d+\.*\d*\b/)
+        let regHeight = new RegExp(/V\d+\.*\d*\b/)
+        let height;
+        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
+            let path = this.getAttribute("d")
+            let MY = path.match(regStartY)[0]
+            MY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
+            let VY = Number(path.match(regHeight)[0].substr(1)) //VY: 수직선 Y 값의 end
+            let H = Number(path.match(regWidth)[0].substr(1)) //H: 수평선 = 데이터 값 
+
+            if(H!=0){ //Data가 0이 아닐 때, 즉 Bar가 있을 경우 
+                height=(VY-MY)/2;
+            }
+        })
+        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
+            let path = this.getAttribute("d");
+            let MY = path.match(regStartY)[0]
+            let VY = path.match(regHeight)[0]
+
+            let modifiedMY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
+            let modifiedVY = Number(VY.substr(1)) //VY: 수직선 Y 값의 end
+            modifiedMY = ","+(modifiedMY-height)+"H";
+            modifiedVY = "V"+(modifiedVY-height);
+
+            let path1 = path.replace(MY, modifiedMY)
+            let path2 = path1.replace(VY, modifiedVY)
+
+            this.setAttribute("d", path2)
+
+
+        })
+
+    })
+
+        },
+
         axis:{
             x:{
                 type: "category",
@@ -1911,6 +1951,43 @@ console.log(hourlyPeeCount, hourlyPeeMax)
         svg:{classname:"P2_WG"},
         bindto: "#P2_weeklyGraph"
         
+    })
+
+    //move bars upside
+    setTimeout(function(){
+        let regStartY = new RegExp(/\,\d+\.*\d*\w/)
+        let regWidth = new RegExp(/H\d+\.*\d*\b/)
+        let regHeight = new RegExp(/V\d+\.*\d*\b/)
+        let height;
+        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
+            let path = this.getAttribute("d")
+            let MY = path.match(regStartY)[0]
+            MY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
+            let VY = Number(path.match(regHeight)[0].substr(1)) //VY: 수직선 Y 값의 end
+            let H = Number(path.match(regWidth)[0].substr(1)) //H: 수평선 = 데이터 값 
+
+            if(H!=0){ //Data가 0이 아닐 때, 즉 Bar가 있을 경우 
+                height=(VY-MY)/2;
+            }
+        })
+        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
+            let path = this.getAttribute("d");
+            let MY = path.match(regStartY)[0]
+            let VY = path.match(regHeight)[0]
+
+            let modifiedMY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
+            let modifiedVY = Number(VY.substr(1)) //VY: 수직선 Y 값의 end
+            modifiedMY = ","+(modifiedMY-height)+"H";
+            modifiedVY = "V"+(modifiedVY-height);
+
+            let path1 = path.replace(MY, modifiedMY)
+            let path2 = path1.replace(VY, modifiedVY)
+
+            this.setAttribute("d", path2)
+
+
+        })
+
     })
       //LEGEND
     setTimeout(function(){
