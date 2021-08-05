@@ -586,10 +586,8 @@ console.log(hourlyPeeCount, hourlyPeeMax)
                 columns: 
 
                     [
-                        //testWater,
-                        //testDrink,
                         goal_water,
-                        avg_water,
+                        //avg_water,
                         dailyWaterIntake,
                         dailyDrinkIntake,
 
@@ -633,11 +631,11 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             //increase stroke line's length
             setTimeout(function(){
 
-                let temp=document.getElementById("P1_DailyGraph").getElementsByClassName("bb-line-평균") //.find(".bb-line-평균")
+                /*let temp=document.getElementById("P1_DailyGraph").getElementsByClassName("bb-line-평균") //.find(".bb-line-평균")
                 let text=temp[0].getAttribute("d")
                 let text2 = text.replace('M10', 'M0')
                 let text3 = text2.replace('L270', 'L300')
-                temp[0].setAttribute("d", text3)
+                temp[0].setAttribute("d", text3)*/
 
 
                 let temp1=document.getElementById("P1_DailyGraph").getElementsByClassName("bb-line-목표") //.find(".bb-line-평균")
@@ -653,14 +651,14 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
    
             let elem0=$(".P1_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
-                if(i==0){  //평균 1000ml의 tick index
+                /*if(i==0){  //평균 1000ml의 tick index
             
                     d3.select(this).select("line").remove()//style("stroke", "#56A4FF")
                     d3.select(this).select("text").attr("fill", "#56A4FF").attr("font-weight", "bold");
                     d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
 
                     
-                    /*MODIFY: 평균을 위아래로 바꾸는 것으로 */
+                    
     
                     if(Math.abs(avgWater-1000)<100 && avgWater<=1000){
                         //console.log("START")
@@ -671,8 +669,8 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
                     }
     
-                }
-                if(i==1){
+                }*/
+                if(i==0){ //originally it was 1
            
                     
                     d3.select(this).select("line").remove()//.style("stroke", "#03C52E")
@@ -744,7 +742,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
                     y2:{
                         show:true,
                         tick: {
-                            values: [avgWater, 1000],
+                            values: [1000], //avgWater, 
                             format: function(data){
                                 return data; 
                             },
@@ -1501,7 +1499,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
       dailyPeeCount,
       goal_pee1,
       goal_pee2,
-      avgPee,
+      //avgPee,
       ],
       type: "line", // for ESM specify as: line()
       colors:{
@@ -1530,13 +1528,14 @@ console.log(hourlyPeeCount, hourlyPeeMax)
 
         console.log(document.getElementById("P2_DailyGraph"));
         
-        let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+        //Y2 평균 디자인 
+        /*let elem2=$(".P2_DailyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
 
             d3.select(this).select("line").style("stroke", "#F2C94C")
             d3.select(this).select("text").attr("fill", "#F2C94C").attr("font-weight", "bold");
             d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 0).attr("dy", "-7").text("평균");
         
-        })
+        })*/
 
           //Data Label Design. Yello To Green if data is between 4 to 7
         /*let elem0_P2DG=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){
@@ -1551,7 +1550,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
     },
 
     onresize: function(){
-        setTimeout(function(){
+        /*setTimeout(function(){
             //increase stroke line's length
             let temp=document.getElementById("P2_DailyGraph").getElementsByClassName("bb-line-평균") //.find(".bb-line-평균")
             let text=temp[0].getAttribute("d")
@@ -1559,7 +1558,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             let text3 = text2.replace('L270', 'L300')
             temp[0].setAttribute("d", text3)
       
-        })
+        })*/
     },
   
 
@@ -1589,7 +1588,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             padding:0
 
         },
-        y2:{
+        /*y2:{
             show:true,
             tick: {
                 values: [avg_Pee],
@@ -1600,7 +1599,7 @@ console.log(hourlyPeeCount, hourlyPeeMax)
             
             
             
-        }
+        }*/
     },
     legend:{
         show:false
