@@ -1,13 +1,11 @@
 /*-----------------basic setting for graph------------------------------*/
+.bb-chart-texts{
+  font-size: 8px;
+}
+
 .bb-ygrid{
   stroke-dasharray: 3 3;
 
-}
-
-
-.caution_img {
-  width:100px;
-  height:5px;
 }
 
 .bb-lines-목표1{
@@ -436,9 +434,7 @@ body{
   background-color: white;
 }
 
-.P1_DailyGraph{
-  height: 122px;
-}
+
 
 
 
@@ -460,7 +456,7 @@ body{
 .P1_weeklyGraphDiv{
   position: absolute;
   width: 345px;
-  height: 140px;
+  height: 142px;
   left: 37px;
   top: 454px;
   background-color:white;
@@ -498,12 +494,6 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.P1_TimezoneGraph{
-  width: 210px;
-  height: 360px;
-  
-  
-}
 .caution_P1TG{
 
   position: absolute;
@@ -612,9 +602,9 @@ body{
 .P2_weeklyGraphDiv{
   position: absolute;
   width: 345px;
-  height: 140px;
+  height: 160px;
   left: 37px;
-  top: 372px;
+  top: 360px;
   background-color: white
 }
 
@@ -652,12 +642,6 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.P2_TimezoneGraph{
-  width: 210px;
-  height: 360px;
-  
-  
-}
 
 .caution_P2TG{
   position: absolute;
@@ -759,7 +743,7 @@ body{
   width: 523px;
   height: 142px;
   left: 37px;
-  top: 372px;
+  top: 368px;
   background-color: white
 }
 
