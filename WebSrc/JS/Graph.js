@@ -1089,6 +1089,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
         let P1HG_Ytick=[];
         let P1HG_grid=[];
+        let P1HG_margin;
         for(let i=0; i<parsedHours_water.length; i++){
             P1HG_grid.push({"value":i});
         }
@@ -1097,11 +1098,13 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             for(let i=0; i<=P1HG_max/100; i++){
                 P1HG_Ytick.push(i*100)
             }
+            P1HG_margin = 15;
         }
         else{
             for(let i=0; i<=P1HG_max/50; i++){
                 P1HG_Ytick.push(i*50)
             }
+            P1HG_margin = 10;
         }
 
         console.log(P1HG_max, P1HG_Ytick)
@@ -1171,7 +1174,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             y: {
                 show:true,
                 //min:0,
-                max: P1HG_max+10,
+                max: P1HG_max+P1HG_margin,
                 tick: {
                     values: P1HG_Ytick,
                     //rotate: 7,
@@ -1219,7 +1222,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     bindto:"#P1_TimezoneGraph"
 })
-
+    $(".P1_TimezoneGraph").find(".bb-ygrids").attr("opacity", "0.5")
 
     setTimeout(function(){
 
@@ -1320,20 +1323,20 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //for drawing max Y value, grid lines
         let P2WG_maxY;
 
-        if(dailyMaxPee>=30){
-            if(dailyMaxPee%10==0){
-                P2WG_maxY = dailyMaxPee;
+        if(weeklyMaxPee>=30){
+            if(weeklyMaxPee%10==0){
+                P2WG_maxY = weeklyMaxPee;
             }
             else{
-                P2WG_maxY = dailyMaxPee+(10-dailyMaxPee%10)
+                P2WG_maxY = weeklyMaxPee+(10-weeklyMaxPee%10)
             }
         }
         else{
-            if(dailyMaxPee%5==0){
-                P2WG_maxY = dailyMaxPee;
+            if(weeklyMaxPee%5==0){
+                P2WG_maxY = weeklyMaxPee;
             }
             else{
-                P2WG_maxY = dailyMaxPee+(5-dailyMaxPee%5)
+                P2WG_maxY = weeklyMaxPee+(5-weeklyMaxPee%5)
             }
         }
         if(20>=P2WG_maxY){P2WG_maxY=20;}
@@ -1369,12 +1372,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         else if(P2DG_maxY<P2WG_maxY){
             P2DG_maxY=P2WG_maxY;
             P2DG_grid=P2WG_grid;
-            P2DG_Y=P2DG_Y;
+            P2DG_Y=P2WG_Y;
         }
         else{
             console.log("ERROR")
         }
-
 
 
 
@@ -1805,8 +1807,10 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         let P2HG_Ytick=[];
         let P2HG_Ygrid=[];
         let P2HG_maxY;
+        let P2HG_margin;
 
         if(hourlyPeeMax>3){
+
             if(hourlyPeeMax%1==0){
                 P2HG_maxY = hourlyPeeMax;
             }
@@ -1819,19 +1823,21 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 P2HG_Ytick.push(i)
                 P2HG_Ygrid.push({value:i, text:""})
             }
+            P2HG_margin = 1;
         }
         else{
             if(hourlyPeeMax%0.5==0){
                 P2HG_maxY = hourlyPeeMax;
             }
             else{
-                P2HG_maxY = hourlyPeeMax+(0.5-hourlyPeeMax)
+                P2HG_maxY = hourlyPeeMax+(0.5-(hourlyPeeMax%0.5))
             }
 
             for(let i=0; i<=P2HG_maxY/0.5; i++){
                 P2HG_Ytick.push(i*0.5)
                 P2HG_Ygrid.push({value:i*0.5, text:""})
             }
+            P2HG_margin = 0.5;
 
         }
         console.log(P2HG_Ytick, P2HG_Ygrid, hourlyPeeMax)
@@ -1944,7 +1950,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         
 
                     },
-                    max: hourlyPeeMax+1,
+                    max: hourlyPeeMax+P2HG_margin,
                     padding:0
                 },
 
@@ -2456,7 +2462,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 tick:{
                     values:P3WG_Y
                 },
-                //max:P3WG_maxY+10,
+                max:P3WG_maxY,
                 min:0,
                 padding:0,
             },
@@ -2487,6 +2493,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     setTimeout(function(){
 
         let temp=$(".P3_weeklyGraphDiv").find(".bb-main")
+        let $elem1=$(".P3_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
         let $elem2=$(".P3_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
       })
@@ -2772,10 +2779,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         let parsed_hours=[];
         for(let i=0; i<24; i++){
             let temp=i%12+"시";
-            if(i==9){temp="아침 9시";}
+            if(i==3){temp="새벽 3시";}
+            else if(i==6){temp="새벽 6시";}
+            else if(i==9){temp="아침 9시";}
             else if(i==12){temp="점심 12시";}
+            else if(i==15){temp="낮 3시";}
             else if(i==18){temp="저녁 6시";}
             else if(i==21){temp="밤 9시";}
+            else if(i==0){temp="밤 12시";}
             parsed_hours.push(temp);
         }
         return parsed_hours;

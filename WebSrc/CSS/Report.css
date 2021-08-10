@@ -1,12 +1,19 @@
 /*-----------------basic setting for graph------------------------------*/
+
+.caution {
+  font-size: 10px;
+  transform: scale(0.5);/*10*0.5=font-size:5px*/
+}
+
+
 .bb-chart-texts{
   font-size: 8px;
 }
 
-.bb-ygrid{
+/*.bb-ygrid{
   stroke-dasharray: 3 3;
 
-}
+}*/
 
 .bb-lines-목표1{
   opacity:0;
@@ -462,15 +469,7 @@ body{
   background-color:white;
 }
 
-.caution_P1DG {
-  position: absolute;
-  left: 200px;
-  top: 580px;
-  font-size: 10px;
-  transform: scale(0.5);/*10*0.5=font-size:5px*/
 
-
-}
 
 .P1_TimezoneTitle{
   position: absolute;
