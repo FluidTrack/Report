@@ -2341,7 +2341,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             //d3.select(".P1_WG")
             svg.append("text")
             .attr('x', 15)
-            .attr('y',23)
+            .attr('y',25)
             .text("회")
             .style('font-size', '9px')
             //.style('font-weight','bold')
@@ -2399,7 +2399,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             width: width_P3
         },
         padding:{
-            top:10,
+            top:30,
             right: 30, 
             bottom:0,
         },
