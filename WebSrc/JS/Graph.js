@@ -997,8 +997,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 },
     
                 width: {
-                    "물": 20,
-                    "총 수분 (물+음료)":20, 
+                    "물": 26,
+                    "총 수분 (물+음료)":26, 
                         },
                 //zerobased: true,
                 },
@@ -2523,8 +2523,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             },
 
             width: {
-                "총 배변 횟수": 20,
-                "건강한 배변 횟수":20, 
+                "총 배변 횟수": 15,
+                "건강한 배변 횟수":15, 
                     },
             //zerobased: true,
          },
