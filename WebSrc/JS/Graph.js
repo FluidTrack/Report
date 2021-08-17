@@ -678,6 +678,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
  
         onrendered: function() {
             console.log(document.getElementById("P1_DailyGraph"));
+
+            
             
             //increase stroke line's length
             setTimeout(function(){
@@ -806,33 +808,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
         }
-        else{
-            //d3.select(this).style('stroke-opacity', 0.5);
-        }
-    })
-
-
-
-
-    //Water Data label Design 
-    let elem1_P1DG=$(".P1_DailyGraph").find(".bb-texts-물").find("text").each(function(i){
-        d3.select(this).style("font-size", "8px")//.style("font-weight", "bold"); //modify font size
-
-        /*originalY=parseFloat($(this).attr("y"));  
-        Y=originalY//+10
-        if($(this).text()==maxWater+""){
-            d3.select(this).attr("y", Y)
-        }*/
-
     })
 
         
-
-    //-----------------------------------X axis Design--------------------------------------------------------- 
-    let elem3=$(".P1_DailyGraph").find(".bb-axis-x").find(".tick").each(function(i){
-        //d3.select(this).style("font-size", "8px");
-
-    }) 
                 
     //-----------------------------------solution of hidden label, grid----------------------------------------
      
@@ -898,7 +876,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------// 
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------//
 
-
+    let goal_water2=["목표", 1000, 1000, 1000, 1000]
 
     var P1_WeeklyGraph = bb.generate({
         size:{
@@ -916,18 +894,21 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             data: {
                     columns: 
                         [
-                        weeklyWaterIntake,
-                        weeklyDrinkIntake,
+                            goal_water2,
+                            weeklyWaterIntake,
+                            weeklyDrinkIntake,
                     ],
                     types: {
                         "물" : "bar",
                         "총 수분 (물+음료)" : "bar",
+                        "목표":"line",
                     
                     }
                         ,
                     colors:{
                             "물": "#56A4FF",
                             "총 수분 (물+음료)": "#C4C4C4",
+                            "목표":"#03C52E",
                         },  
                    labels:{format:function(d,i, j){ //d=value i=dataId j=dataIndex
                     if(i=="물" || i=="총 수분 (물+음료)"){
@@ -941,11 +922,29 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 
                     console.log(document.getElementById("P1_weeklyGraph"));
 
-                   // -----------------------------------Data Label position Design------------------------------------------------
+                    //increase stroke line's length
+                    setTimeout(function(){
+                        let temp1=document.getElementById("P1_weeklyGraph").getElementsByClassName("bb-line-목표") //.find(".bb-line-평균")
+                        let text_1=temp1[0].getAttribute("d")
+                        let text_2 = text_1.replace('M36', 'M0')
+                        let text_3 = text_2.replace('L249', 'L300')
+                        temp1[0].setAttribute("d", text_3)
 
-                    let elem0=$(".P1_weeklyGraph").find(".bb-chart-texts").find("text").each(function(i){ //Label Position
-                        d3.select(this).style("font-size", "8px")//.style("font-weight", "bold");                    
                     })
+
+
+                    //design y2 "목표"
+                    let elem1=$(".P1_weeklyGraph").find(".bb-axis-y2").find(".tick").each(function(i){ 
+
+                        if(i==0){
+                            
+                            d3.select(this).select("line").remove()//.style("stroke", "#03C52E")
+                            d3.select(this).select("text").attr("fill", "#03C52E").attr("font-weight", "bold");
+                            d3.select(this).select("text").append("tspan").attr("x", 8).attr("dx", 1).attr("dy", "-7").text("목표");
+                        }
+    
+    
+            });
 
                 },
             axis: {
@@ -970,6 +969,25 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                             //padding:0,
                         
                         },
+                        y2:{
+                            show:true,
+                            tick: {
+                                show: false,
+                                values: [1000], //avgWater, 
+                                format: function(data){
+                                    return data; 
+                                },
+                                
+                            },  
+                            
+                        }
+            },
+
+            line:{
+                point:false,
+                classes: [
+                    "line-class-목표",
+                ]
             },
 
             bar: {
@@ -1003,6 +1021,15 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             bindto: "#P1_weeklyGraph",
         }); 
 
+                
+        //Y2 Think Domain Design --------------------------------------------
+
+        let elem0_P1WG=$(".P1_weeklyGraph").find(".bb-axis-y2").find(".domain").each(function(i){
+            if(i==0){ //change opacity of Y2
+
+                d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
+            }
+        })
  
         setTimeout(function(){
                     //Legend
@@ -1475,7 +1502,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
   });
 
 
-        //fill weekend with red 
+    //fill weekend with red 
     setTimeout(function(){
             let elem0=$(".P2_DailyGraph").find(".bb-axis-x").find("tspan").each(function(i){
     
@@ -1560,33 +1587,17 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
   })
 
 
-/*
-//data label design
-    setTimeout(function(){
 
-        let elem0=$(".P2_DailyGraph").find(".bb-texts-배뇨-횟수").find("text").each(function(i){ 
-            d3.select(this).style("font-size","8px").attr("dy", "2")//.style("font-weight", "bold")
-            //console.log($(this));
-        })
-
-    })
-*/
 
   
 //Goal, Average Path Design
     setTimeout(function(){
-            let elem0=$(".P2_DailyGraph").find(".bb-target-목표1").find("path").each(function(i){ 
-                d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
-                //console.log($(this));
-            })
+            
             let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ 
                 $(this).remove();
             })
         
-            let elem2=$(".P2_DailyGraph").find(".bb-target-목표2").find("path").each(function(i){ 
-                d3.select(this).style("opacity","0.6" ).attr("stroke-dasharray", "3 3")
-                //console.log($(this));
-            })
+            
             let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){
                 $(this).remove();
             })
@@ -1603,30 +1614,30 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //d3.select(".P1_WG")
         svg.append("circle")
         .attr('cx', 174)
-        .attr('cy',20)
+        .attr('cy',15)
         .attr("r", 4)
         .attr("fill","#F2C94C")
 
         //d3.select(".P1_WG")
         svg.append("line")
         .attr('x1', 165)
-        .attr('y1',20)
+        .attr('y1',15)
         .attr('x2', 183)
-        .attr('y2', 20)
+        .attr('y2', 15)
         .style("stroke-width", 3)
         .style("stroke", "#F2C94C");   
 
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 187)
-        .attr('y',25)
+        .attr('y',20)
         .text("배뇨 횟수")
         .style('font-size', '100%')
 
         //d3.select(".P1_WG")
         svg.append("rect")
         .attr('x', 240)
-        .attr('y',17)
+        .attr('y',12)
         .attr('width','8')
         .attr('height','8')
         .attr("fill","#03C52E")
@@ -1636,7 +1647,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 250)
-        .attr('y',25)
+        .attr('y',20)
         .text("배뇨 정상범위 4-7회")
         .style('font-size', '100%')
 
@@ -1645,7 +1656,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 13)
-        .attr('y',30)
+        .attr('y',20)
         .text("회")
         .style('font-size', '9px')
         //.style('font-weight','bold')
@@ -1653,7 +1664,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     })
 
 
-
+    let goal_pee1_2 = ["목표1", 4, 4, 4, 4]
+    let goal_pee2_2 = ["목표2", 7, 7, 7, 7]
 
     let P2_WeeklyGraph=bb.generate({
         size:{
@@ -1670,12 +1682,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         data:{
             columns:[
                 weeklyPeeCount,
+                goal_pee1_2,
+                goal_pee2_2,
                 //twoWeeksPeeAvg
             ],
-            types:{
-                "배뇨 횟수":"line",
-                //"2주평균":"step",
-            },
+            types: "line",
             labels:{format:function(d,i, j){ //d=value i=dataId j=dataIndex
                 if(i=="배뇨 횟수"){
                     return Number(d).toFixed(1); //show only minimum and miximum value of water intake. 
@@ -1684,6 +1695,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         },
             colors:{
                 "배뇨 횟수": "#EBC747",
+                "목표1":"#03C52E",
+                "목표2":"#03C52E",
                 //"2주평균" : "#EBC747"
 
             },
@@ -1735,46 +1748,117 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         
     })
 
+
+    setTimeout(function(){
+        //-----------------------------------Drawing "goal rectangle"------------------------------------------------ 
+    let temp_height=0;
+    let elem4=$(".P2_weeklyGraph").find(".bb-line-목표1").each(function(i){
+        //console.log(this);
+        let path=$(this).attr("d");
+        let parsedPath=path.split(/M|,|L/);
+        parsedPath=parsedPath.splice(1)
+        temp_height=parsedPath[1];
+    })
+
+    let elem5=$(".P2_weeklyGraph").find(".bb-line-목표2").each(function(i){
+        //console.log(this);
+        let path=$(this).attr("d");
+        let parsedPath=path.split(/M|,|L/);
+        parsedPath=parsedPath.splice(1)
+        //console.log(parsedPath);
+        goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
+        goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
+        goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
+        console.log(goal_rect);
+
+    })
+
+  
+
+    let elem6=$(".P2_weeklyGraph").find(".bb-chart-lines").each(function(i){
+        //console.log(this);
+        
+        let rect=d3.select(this).insert("svg",":first-child")//.append("svg").attr("class","사각형")
+        rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]-50).attr("y", goal_rect["시작 좌표"]["y"])
+        .attr("height", goal_rect["높이"]["높이"])
+        .attr("width", goal_rect["가로"]["가로"]+50)
+        .attr("fill","#03C52E")
+        .style("opacity", "0.25")
+        
+
+            })
+    })
+    //Goal, Average Path Design
+    setTimeout(function(){
+        
+        let elem1=$(".P2_weeklyGraph").find(".bb-circles-목표1").each(function(i){ 
+            $(this).remove();
+        })
+
+        
+        let elem3=$(".P2_weeklyGraph").find(".bb-circles-목표2").each(function(i){
+            $(this).remove();
+        })
+
+
+    })
+
     
       //LEGEND
-    setTimeout(function(){
+      setTimeout(function(){
 
         const svg=d3.select(".P2_WG")
-
-        //d3.select(".P1_WG")
         svg.append("circle")
-        .attr('cx', 284)
-        .attr('cy',25)
-        .attr('r', 4)
+        .attr('cx', 174)
+        .attr('cy',20)
+        .attr("r", 4)
         .attr("fill","#F2C94C")
 
         //d3.select(".P1_WG")
         svg.append("line")
-        .attr('x1', 275)
-        .attr('y1',25)
-        .attr('x2', 293)
-        .attr('y2', 25)
+        .attr('x1', 165)
+        .attr('y1',20)
+        .attr('x2', 183)
+        .attr('y2', 20)
         .style("stroke-width", 3)
         .style("stroke", "#F2C94C");   
 
         //d3.select(".P1_WG")
         svg.append("text")
-        .attr('x', 297)
-        .attr('y',30)
+        .attr('x', 187)
+        .attr('y',25)
         .text("배뇨 횟수")
         .style('font-size', '100%')
 
-        
+        //d3.select(".P1_WG")
+        svg.append("rect")
+        .attr('x', 240)
+        .attr('y',17)
+        .attr('width','8')
+        .attr('height','8')
+        .attr("fill","#03C52E")
+        .style("opacity", "0.3")
+    
+
+        //d3.select(".P1_WG")
+        svg.append("text")
+        .attr('x', 250)
+        .attr('y',25)
+        .text("배뇨 정상범위 4-7회")
+        .style('font-size', '100%')
+
+
         //labels
         //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 13)
-        .attr('y',38)
+        .attr('y',30)
         .text("회")
         .style('font-size', '9px')
         //.style('font-weight','bold')
 
     })
+
     
 
 
@@ -1783,7 +1867,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             
         let temp=$(".P2_weeklyGraphDiv").find(".bb-main")
-        //let $elem1=$(".P2_weeklyGraph").find(".bb-chart-texts").clone().appendTo(temp);
         let $elem2=$(".P2_weeklyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
 
 
@@ -2239,7 +2322,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('xlink:href', "../IMG/poo/hard.png")
                         .attr('width', size*1.5)
                         .attr('height', size*1.5)
-                        .attr("x", x_loc[i])
+                        .attr("x", x_loc[i]-2)
                         .attr("y", y_loc[j]*0.95)//y)
                     }
                     else if(temp==3 || temp==4){
@@ -2259,7 +2342,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y_loc[j])//y)
+                        .attr("y", y_loc[j]+2)//y)
 
                     }
                     else{console.log("(POOP) TYPE INPUT ERROR!!!!!")}

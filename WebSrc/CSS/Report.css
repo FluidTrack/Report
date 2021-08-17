@@ -1,13 +1,9 @@
 /*-----------------basic setting for graph------------------------------*/
 
-.caution {
-  font-size: 10px;
-  transform: scale(0.5);/*10*0.5=font-size:5px*/
-}
 
 
 .bb-chart-texts{
-  font-size: 8px;
+  font-size: 6px;
 }
 
 /*.bb-ygrid{
@@ -61,20 +57,7 @@
   stroke:#D3D3D3
 }
 
-.P2_DailyGraph bb bb-tooltip-container{
-  /*display:none;*/
-  width:100px;
-  height:30px;
-}
 
-.bb-texts-물{
-  font-size:6px
-}
-
-.svg{
-  height:20px;
-  background-color: #c04627;
-}
 
 .bb-ygrid-lines{
   opacity:0.1
@@ -493,16 +476,6 @@ body{
   background-color: rgb(247, 247, 247);
 }
 
-.caution_P1TG{
-
-  position: absolute;
-  left: 390px;
-  top: 580px;
-  font-size: 10px;
-  transform: scale(0.5);/*10*0.5=font-size:5px*/
-  
-}
-
 
 
 
@@ -605,16 +578,6 @@ body{
   left: 37px;
   top: 360px;
   background-color: white
-}
-
-.caution_P2DG {
-  position: absolute;
-  left: 210px;
-  top: 495px;
-  font-size: 10px;
-  transform: scale(0.5);/*10*0.5=font-size:5px*/
-
-
 }
 
 
