@@ -146,7 +146,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     let days=key_days(start); //for daily axis and data matching 
     let dates=getDates(start);
     let xDays=getXDays(start);
-    console.log(xDays);
 
     let weeks=["1주차", "2주차", "3주차", "4주차", ] //"5주차", "6주차", "7주차", "8주차"
     let hours=key_hours();
@@ -161,17 +160,17 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<dailyWaterCount.length; i++){
             dailyWaterIntake.push(dailyWaterCount[i]*100)
         }
-        dailyWaterIntake.unshift(["물"]);
+        
 
 
             //calculate the max, min, average value of water intake;
-        let maxWater=dailyWaterIntake[1];
-        let minWater=dailyWaterIntake[1];
+        let maxWater=dailyWaterIntake[0];
+        let minWater=dailyWaterIntake[0];
         let total_water=0;
 
-        for(let i=1; i<dailyWaterIntake.length; i++){
+        for(let i=0; i<dailyWaterIntake.length; i++){
             temp=dailyWaterIntake[i];
-            //console.log(temp, minWater)
+
             total_water+=temp;
             if(temp<minWater){minWater=temp;}
             if(temp>maxWater){maxWater=temp;}
@@ -203,30 +202,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyWaterIntake[i]=weeklyWaterIntake[i]*100/7
         }
 
-           /* for(let i=0; i<weeklyWaterIntake.length; i++){
-                if(i%2==0){
-                    twoWeeksWaterAvg[i]+=weeklyWaterIntake[i]
-                    //console.log(twoWeeksWaterAvg[i], weeklyWaterIntake[i])
-                }
-                else{
-                    twoWeeksWaterAvg[i-1]+=weeklyWaterIntake[i]
-                    //console.log(twoWeeksWaterAvg[i-1], weeklyWaterIntake[i])
-                    twoWeeksWaterAvg[i-1]=parseInt(twoWeeksWaterAvg[i-1]/2)
-                    twoWeeksWaterAvg[i]=twoWeeksWaterAvg[i-1]
-                }
-            }*/
-
-
 
         for(let i=lastidx+1; i<weeklyWaterIntake.length; i++){
             weeklyWaterIntake[i]=null;
             twoWeeksWaterAvg[i]=null;
         }
-        weeklyWaterIntake.unshift("물")
-        //twoWeeksWaterAvg.unshift("2주평균")
-        //console.log(weeklyWaterIntake, twoWeeksWaterAvg)
-
-
 
 
 
@@ -247,7 +227,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 hourlyWaterMax=hourlyWaterIntake[i]
             }
         }
-        hourlyWaterIntake.unshift("물");
+
         //console.log(hourlyWaterIntake, parsedHours_water, hourlyWaterMax);
 
 
@@ -270,12 +250,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 //daily
         let dailyDrinkCount=count_Daily(UserDrinkData, days);
         let dailyDrinkIntake=[]
-        //console.log(dailyDrink);
-            //add water logs to drink logs for drawing a graph (daily)
-        for(let i=0; i<dailyDrinkCount.length; i++){
+            
+        for(let i=0; i<dailyDrinkCount.length; i++){ //add water logs to drink logs for drawing a graph (daily)
                 dailyDrinkIntake.push((dailyDrinkCount[i]+dailyWaterCount[i])*100); 
         }
-        console.log(dailyDrinkIntake)
+        //console.log(dailyDrinkIntake)
 
         let dailymaxDrink=0;
         for(let i=0; i<dailyDrinkIntake.length; i++){
@@ -283,8 +262,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 dailymaxDrink=dailyDrinkIntake[i]
             }
         }
-        dailyDrinkIntake.unshift("총 수분 (물+음료)")
-        console.log(dailymaxDrink)
+
+        //console.log(dailymaxDrink)
 
     
 
@@ -309,34 +288,35 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyDrinkIntake[i]=weeklyDrinkIntake[i]*100/7
         }
 
+
+
+
         
 
-        weeklyDrinkIntake.unshift("총 수분 (물+음료)")
 
-        console.log(weeklyDrinkIntake)
-        for(let i=1; i<weeklyDrinkIntake.length; i++){
+
+        //console.log(weeklyDrinkIntake)
+        for(let i=0; i<weeklyDrinkIntake.length; i++){
             weeklyDrinkIntake[i]=weeklyDrinkIntake[i]+weeklyWaterIntake[i];
         }
-
-        console.log(weeklyDrinkIntake)
-        for(let i=lastidx+2; i<weeklyDrinkIntake.length; i++){
+        
+        console.log(weeklyDrinkIntake, lastidx)
+        for(let i=lastidx+1; i<weeklyDrinkIntake.length; i++){
             weeklyDrinkIntake[i]=null
         }
 
         
         let weeklymaxDrink=0;
-        for(let i=1; i<weeklyDrinkIntake.length; i++){
+        for(let i=0; i<weeklyDrinkIntake.length; i++){
             if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]}
         }
-        
-        console.log(weeklyDrinkIntake)
 
 
-
-
-
-
-  
+        dailyWaterIntake.unshift("물");
+        weeklyWaterIntake.unshift("물")
+        hourlyWaterIntake.unshift("물");
+        dailyDrinkIntake.unshift("총 수분 (물+음료)")
+        weeklyDrinkIntake.unshift("총 수분 (물+음료)")
 
 
 
@@ -380,26 +360,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyPeeCount[i]=weeklyPeeCount[i]/7//.toFixed(0);
         }
 
-        /*let twoWeeksPeeAvg=[0, 0, 0, 0];
-        for(let i=0; i<weeklyPeeCount.length; i++){
-            if(i%2==0){
-                twoWeeksPeeAvg[i]+=weeklyPeeCount[i]
-                console.log(twoWeeksPeeAvg[i], weeklyPeeCount[i], twoWeeksPeeAvg)
-
-            }
-            else{
-                twoWeeksPeeAvg[i-1]+=weeklyPeeCount[i]
-                console.log(twoWeeksPeeAvg[i-1], weeklyPeeCount[i], twoWeeksPeeAvg)
-                twoWeeksPeeAvg[i-1]=parseInt(twoWeeksPeeAvg[i-1]/2)
-                twoWeeksPeeAvg[i]=twoWeeksPeeAvg[i-1]
-  
-            }
-        }
-        console.log(twoWeeksPeeAvg)*/
-
         for(let i=lastidx+1; i<weeklyPeeCount.length; i++){
             weeklyPeeCount[i]=null;
-            //twoWeeksPeeAvg[i]=null;
         }
 
 
@@ -410,9 +372,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         }
 
         weeklyPeeCount.unshift("배뇨 횟수")
-        //twoWeeksPeeAvg.unshift("2주평균")
-
-
 
 
 
@@ -427,7 +386,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         let parsedHours_Pee=hourlyPee[1];
 
         hourlyPeeCount.unshift("배뇨 횟수");
-        console.log(hourlyPeeCount, hourlyPeeMax)
+        //(hourlyPeeCount, hourlyPeeMax)
         //console.log(hourlyPeeCount, parsedHours_Pee);
 
 //-----------------------------------------------Poop(daily, weekly)-----------------------------------//
@@ -444,20 +403,13 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<dailyPoopArray.length; i++){
             dailyPoopCount[i]=dailyPoopArray[i].length
         }
-        console.log(dailyPoopArray, dailyPoopCount, dailyMaxPoop)
+        //console.log(dailyPoopArray, dailyPoopCount, dailyMaxPoop)
 
 //WEEKLY
         let weeklyPoopCount=[0, 0, 0, 0, ] //8 weeks data //0, 0, 0, 0
-        /*for(let i=week2; i<weeklyPoopCount.length; i++){
-            weeklyPoopCount[i]=null
-        }*/
-
         let weeklyHealthyPoopCount=[0, 0, 0, 0, ] //0, 0, 0, 0
-        /*for(let i=week2; i<weeklyHealthyPoopCount.length; i++){
-            weeklyHealthyPoopCount[i]=null
-        }*/
 
-        for(let i=0; i<UserTotalPoopData.length; i++){
+        for( let i=0; i<UserTotalPoopData.length; i++){
             valid=false;
             idx=-1;
             if(UserTotalPoopData[i].type>8 || UserTotalPoopData[i].type<0){
@@ -481,18 +433,11 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         }
 
-        console.log(weeklyPoopCount, weeklyHealthyPoopCount)
-        /*(for(let i=1; i<weeklyPoopCount.length; i++){
-            weeklyPoopCount[i]=weeklyPoopCount[i-1]+weeklyPoopCount[i]
-            weeklyHealthyPoopCount[i]=weeklyHealthyPoopCount[i-1]+weeklyHealthyPoopCount[i]
-        }*/
-
-
         for(let i=lastidx+1; i<weeklyPoopCount.length; i++){
             weeklyPoopCount[i]=null;
             weeklyHealthyPoopCount[i]=null;
         }
-        console.log(weeklyPoopCount)
+        //console.log(weeklyPoopCount)
         let weeklyMaxPoop=Math.max.apply(null, weeklyPoopCount)
 
         
@@ -500,9 +445,58 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         weeklyPoopCount.unshift('총 배변 횟수')
         weeklyHealthyPoopCount.unshift('건강한 배변 횟수')
 
-        //console.log(dailyPoopArray, dailyPoopCount, weeklyPoopCount, weeklyHealthyPoopCount)
+ //------------------------------------------Post doctor's opinion to html page------------------------------------------------// 
+        let P1_comment = $("#P1_CommentTextArea")
+        let P2_comment = $("#P2_CommentTextArea")
+        let P3_comment = $("#P3_CommentTextArea")
+        let P1_text = ""
+        let P2_text = ""
+        let P3_text = ""
+
+        //P1 comment
+        {
+            //일일 목표 달성 여부 
+            let numWaterGoal=0;
+
+            for( let i=1; i<dailyWaterIntake.length; i++){
+                if(dailyWaterIntake[i]>=1000){numWaterGoal++}
+            }
+
+            if(numWaterGoal==0){
+                P1_text+="물 일일 섭취량 목표 1000ml를 달성한 날이 없습니다."
+            }
+            else{
+                P1_text+="물 일일 섭취량 목표 1000ml를 달성한 날이 "+numWaterGoal+"일 있습니다."
+            }
+
+            //2주 평균 섭취량 코멘트
+            if(avgWater>1000){
+                P1_text+=days[0]+"~"+days[13]+" 동안의 물 일일 평균 섭취량이 목표 1000ml보다 "+(avgWater-1000)+"ml 많습니다. <br>"
+            }
+            else if(avgWater==1000){
+                P1_text+=days[0]+"~"+days[13]+" 동안의 물 일일 평균 섭취량이 목표 1000ml와 동일합니다."
+            }
+            else{
+                P1_text+=days[0]+"~"+days[13]+" 동안의 물 일일 평균 섭취량이 목표 1000ml보다 "+(1000-avgWater)+"ml 적습니다. "
+            }
+
+            //2주 평균 섭취량 평균 코멘트
+            let lastWeek1 = (rangeInt-1)*2+1
+            let lastWeek2 = (rangeInt-1)*2+2
+            let curWeek1 = (rangeInt)*2+1
+            let curWeek2 = (rangeInt)*2+2
+            if(rangeInt==0){}
+            else{
+                //if(rangeInt-1)
+                //P1_text+=lastWeek1+"~"+lastWeek2+"주차보다 "+curWeek1+"~"+curWeek2+"주차의 물 일일 평균 섭취량이 "+
+            }
 
 
+            
+            //P1_comment.html(P1_text)
+
+        }
+ 
 
 //-------------------------------------------------Basic Tick Design----------------------------------------------------------//
         setTimeout(function(){
@@ -529,9 +523,9 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         let P1DG_maxY;
         let P1DG_grid=[];
         let P1DG_Y=[];
-        console.log(dailymaxDrink)
+        //console.log(dailymaxDrink)
         if(dailymaxDrink>=2000){
-            console.log(dailymaxDrink)
+            //console.log(dailymaxDrink)
             if(dailymaxDrink%600==0){
                 P1DG_maxY = dailymaxDrink;
             }
@@ -568,25 +562,24 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         }
 
 
-
         //Water Weekly Y axis, grid array setting
         let P1WG_maxY;
         let P1WG_grid=[];
         let P1WG_Y=[];
-        if(dailymaxDrink>=2000){
-            if(dailymaxDrink%=600){
-                P1WG_maxY = dailymaxDrink;
+        if(weeklymaxDrink>=2000){
+            if(weeklymaxDrink%600==0){
+                P1WG_maxY = weeklymaxDrink;
             }
             else{
-                P1WG_maxY = dailymaxDrink+(600-(dailymaxDrink%600))
+                P1WG_maxY = weeklymaxDrink+(600-(dailymaxDrink%600))
             }
         }
         else{
             if (dailymaxDrink%300==0){
-                P1WG_maxY = dailymaxDrink
+                P1WG_maxY = weeklymaxDrink
             }
             else{
-                P1WG_maxY = dailymaxDrink+(300-(dailymaxDrink%300));
+                P1WG_maxY = weeklymaxDrink+(300-(weeklymaxDrink%300));
             }
 
         }
@@ -619,12 +612,14 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         else if(P1DG_maxY<P1WG_maxY){
             P1DG_maxY=P1WG_maxY;
             P1DG_grid=P1WG_grid;
-            P1DG_Y=P1DG_Y;
+            P1DG_Y=P1WG_Y;
         }
         else{
             console.log("ERROR")
         }
         
+        //console.log(P1DG_grid, P1WG_grid)
+
 
 
 
@@ -1134,7 +1129,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             P1HG_margin = 10;
         }
 
-        console.log(P1HG_max, P1HG_Ytick)
+        //console.log(P1HG_max, P1HG_Ytick)
 
 
     var P1_TimezoneGraph = bb.generate({
@@ -1323,7 +1318,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         }
 
-        console.log(P2DG_maxY)
+        //console.log(P2DG_maxY)
 
         let goal_pee1=[];
         for(let i=0; i<14; i++){
@@ -1528,7 +1523,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
     $(".P2_DailyGraph").find(".bb-circles-배뇨-횟수").find("circle").each(function(i){
         d3.select(this).attr("r", 1)
-        console.log(this.getAttribute("r"))
+        //console.log(this.getAttribute("r"))
     })
 
 //-----------------------------------Drawing "goal rectangle"------------------------------------------------ 
@@ -1550,7 +1545,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
         goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
         goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
-        console.log(goal_rect);
+        //console.log(goal_rect);
 
     })
 
@@ -1769,7 +1764,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
         goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
         goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
-        console.log(goal_rect);
+        //console.log(goal_rect);
 
     })
 
@@ -1885,7 +1880,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         for(let i=0; i<parsedHours_Pee.length; i++){
             P2HG_grid.push({"value":i});
         }
-        console.log(P2HG_grid)
+        //console.log(P2HG_grid)
 
         let P2HG_Ytick=[];
         let P2HG_Ygrid=[];
@@ -1899,7 +1894,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
             else{
                 P2HG_maxY = hourlyPeeMax+(1-(hourlyPeeMax%1))
-                console.log(P2HG_maxY)
+                //console.log(P2HG_maxY)
             }
 
             for(let i=0; i<=P2HG_maxY/1; i++){
@@ -1923,7 +1918,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             P2HG_margin = 0.5;
 
         }
-        console.log(P2HG_Ytick, P2HG_Ygrid, hourlyPeeMax)
+        //console.log(P2HG_Ytick, P2HG_Ygrid, hourlyPeeMax)
 
     
     var P2_TimezoneGraph = bb.generate({
@@ -2142,7 +2137,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         let P3DG_maxY=dailyMaxPoop;
         if(P3DG_maxY<=3){P3DG_maxY=3}
         
-        console.log(P3DG_maxY)
+        //console.log(P3DG_maxY)
         let P3DG_grid=[];
         for(let i=0; i<=P3DG_maxY/1; i++){
                 P3DG_grid.push({"value":i})
@@ -2151,7 +2146,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
 
  
-        console.log(P3DG_grid)
+        //console.log(P3DG_grid)
 
 
 
@@ -2296,7 +2291,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 $(this).remove()
                 //console.log(this);
             })
-            console.log("P3DG X, Y loc", x_loc, y_loc)
+            //console.log("P3DG X, Y loc", x_loc, y_loc)
 
             const mainChart=d3.select(".P3_DG_SVG").select(".bb-chart")
 
@@ -2350,7 +2345,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
 
             let gridHeight=grid_height1-grid_height0;
-            console.log(gridHeight, grid_height1, grid_height0);
+            //console.log(gridHeight, grid_height1, grid_height0);
             let Ytext_P3DG=$(".P3_DailyGraph").find(".bb-axis-y").find("text").each(function(i){
                 if(i==0){this.remove()}
                 else if(i==1){this.remove()}
@@ -2478,7 +2473,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             }
         }
 
-        console.log(P3WG_maxY, P3WG_grid, P3WG_Y)
+        //console.log(P3WG_maxY, P3WG_grid, P3WG_Y)
 
 
     let P3_weeklyGraph=bb.generate({
@@ -2764,7 +2759,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
     function count_parse_hourly(UserData, count_Hourly, hours, parsedHours){
         //make a new array that contains only values (for drawing graph)
        let originalHourData=count_Hourly(UserData, hours);
-       console.log(originalHourData)
+       //console.log(originalHourData)
        let parsedHourData=[];
        for(let i=0; i<originalHourData.length; i++){
             parsedHourData.push((originalHourData[i]/14)); //normalization by 2 weeks
@@ -2842,7 +2837,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             day.setDate(day.getDate()+1);
             
         }
-        console.log(dates)
+        //console.log(dates)
 
         return dates;
     }

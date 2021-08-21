@@ -34,8 +34,10 @@ let startDate = new Date();
 let endDate = new Date();
 
 let loadData = () => {
-  console.log(`User ID ${targetID} / User Name :${targetName}`);
+  console.log(userData)
+  console.log(`User ID ${targetID} / User Name :${targetName} / User Gender :${targetGender}`);
   P1_Name.innerHTML = `${targetName} 어린이`
+  P1_Info.innerHTML = `${targetAge} 생 ${targetGender}`
   P1_IdNum.innerHTML = `등록 번호 : ${userData.creation_date.split('-')[0]}_${targetID}`
 
   let rangeInt = parseInt(range)
@@ -221,9 +223,12 @@ let target = parseInt(targetStr);
 let targetURL = serverUrl
 let targetID = 0;
 let targetName = "";
+let targetAge = 0;
+let targetGender = "";
 
 
 if(isNaN(target)) {
+  
   let str = `${targetURL}read_users?searchName=${targetStr}`
   jQuery.ajax({
     type:'GET',						// POST 방식으로
@@ -235,6 +240,17 @@ if(isNaN(target)) {
         userData = JSON.parse(msg).UserLogs[0];
         targetID = userData.id;
         targetName = userData.name;
+        targetGender = userData.targetGender;
+        targetAge = userData.birthday.split(" ")[0];
+        if(targetGender=="male"){
+          targetGender="남"
+        }
+        else if(targetGender=="female"){
+          targetGender="여"
+        }
+        else{
+          targetGender="ERROR"
+        }
         loadData();
       } catch(e) {
         location.href=`/SearchingFail`;
@@ -256,6 +272,17 @@ if(isNaN(target)) {
         userData = JSON.parse(msg).UserLogs[0];
         targetID = userData.id;
         targetName = userData.name;
+        targetGender = userData.gender;
+        targetAge = userData.birthday.split(" ")[0];
+        if(targetGender=="male"){
+          targetGender="남"
+        }
+        else if(targetGender=="female"){
+          targetGender="여"
+        }
+        else{
+          console.log("ERROR")
+        }
         loadData();
       } catch(e) {
         location.href=`/SearchingFail`;
