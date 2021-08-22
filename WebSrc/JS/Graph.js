@@ -202,11 +202,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyWaterIntake[i]=weeklyWaterIntake[i]*100/7
         }
 
-        //MUST DELETE LATER
-        {
-            weeklyWaterIntake[1]=weeklyWaterIntake[1]*7/6
-        }
-
 
         for(let i=lastidx+1; i<weeklyWaterIntake.length; i++){
             weeklyWaterIntake[i]=null;
@@ -293,13 +288,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyDrinkIntake[i]=weeklyDrinkIntake[i]*100/7
         }
 
-        //MUST DELETE LATER
-        {
-            weeklyDrinkIntake[1]=weeklyDrinkIntake[1]*7/6
-        }
-
-
-
 
         
 
@@ -370,10 +358,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             weeklyPeeCount[i]=weeklyPeeCount[i]/7   //.toFixed(0);
         }
 
-        //MUST DELETE LATER
-        {
-            weeklyPeeCount[1]=weeklyPeeCount[1]*7/6
-        }
 
         for(let i=lastidx+1; i<weeklyPeeCount.length; i++){
             weeklyPeeCount[i]=null;
