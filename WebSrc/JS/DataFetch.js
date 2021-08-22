@@ -37,7 +37,7 @@ let loadData = () => {
   console.log(userData)
   console.log(`User ID ${targetID} / User Name :${targetName} / User Gender :${targetGender}`);
   P1_Name.innerHTML = `${targetName} 어린이`
-  P1_Info.innerHTML = `${targetAge} 생 ${targetGender}`
+  P1_Info.innerHTML = `만 ${targetAge}세 ${targetGender}`
   P1_IdNum.innerHTML = `등록 번호 : ${userData.creation_date.split('-')[0]}_${targetID}`
 
   let rangeInt = parseInt(range)
@@ -240,8 +240,11 @@ if(isNaN(target)) {
         userData = JSON.parse(msg).UserLogs[0];
         targetID = userData.id;
         targetName = userData.name;
-        targetGender = userData.targetGender;
+        
         targetAge = userData.birthday.split(" ")[0];
+        targetAge = parseInt( (Date.now() - new Date(targetAge).getTime()) /(365*24*60*60*1000) );
+
+        targetGender = userData.targetGender;
         if(targetGender=="male"){
           targetGender="남"
         }
@@ -272,8 +275,11 @@ if(isNaN(target)) {
         userData = JSON.parse(msg).UserLogs[0];
         targetID = userData.id;
         targetName = userData.name;
-        targetGender = userData.gender;
+        
         targetAge = userData.birthday.split(" ")[0];
+        targetAge = parseInt( (Date.now() - new Date(targetAge).getTime()) /(365*24*60*60*1000) );
+        
+        targetGender = userData.gender;
         if(targetGender=="male"){
           targetGender="남"
         }
@@ -283,6 +289,7 @@ if(isNaN(target)) {
         else{
           console.log("ERROR")
         }
+
         loadData();
       } catch(e) {
         location.href=`/SearchingFail`;
