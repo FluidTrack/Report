@@ -512,6 +512,8 @@ body{
   padding:20px;
   overflow:hidden;
   font-size: 10px;
+  
+  text-align: justify;
 }
 
 
@@ -646,6 +648,8 @@ body{
   padding:20px;
   overflow:hidden;
   font-size: 10px;
+
+  text-align: justify;
 }
 
 
@@ -742,6 +746,8 @@ body{
   padding:20px;
   overflow:hidden;
   font-size: 10px;
+
+  text-align: justify;
 }
 
   /*============================================================================================
