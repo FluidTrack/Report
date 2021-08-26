@@ -177,6 +177,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         }
         let avgWater=(total_water/14).toFixed(1);
 
+        console.log(dailyWaterIntake)
+
    
     
 
@@ -496,15 +498,15 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let sameWaterorNot = false
 
             if(curWeek2_water > curWeek1_water){
-                P1_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 물 섭취량이 ${(curWeek2_water-curWeek1_water).toFixed(1)}ml 증가했고, `
+                P1_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 물 섭취량은 ${(curWeek2_water-curWeek1_water).toFixed(1)}ml 증가했고, `
             }
             else if(curWeek2_water == curWeek1_water){
-                P1_text+=`- ${curWeek1}주차와 ${curWeek2}주차의 일일 평균 물 섭취량은 동일하며, `
+                P1_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 물 섭취량은 변함 없고, `
                 sameWaterorNot = true
                 
             }
             else if(curWeek2_water < curWeek1_water){
-                P1_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 물 섭취량이 ${(curWeek1_water-curWeek2_water).toFixed(1)}ml 감소했고, `
+                P1_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 물 섭취량은 ${(curWeek1_water-curWeek2_water).toFixed(1)}ml 감소했고, `
             }
 
 
@@ -513,24 +515,24 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             
             if(sameWaterorNot == false){
                 if(curWeek2_totalDrink > curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink - curWeek1_totalDrink).toFixed(1)} 증가했습니다.`
+                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink - curWeek1_totalDrink).toFixed(1)}ml 증가했습니다.`
                 }
                 else if(curWeek2_totalDrink == curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량은 동일합니다.\n`
+                    P1_text+=`일일 평균 총 수분 섭취량은 변함 없습니다.\n`
                 }
                 else if(curWeek2_totalDrink < curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink - curWeek2_totalDrink).toFixed(1)} 감소했습니다.`
+                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink - curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
                 }
             }
             else if(sameWaterorNot == true){
                 if(curWeek2_totalDrink > curWeek1_totalDrink){
-                    P1_text+=`${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink-curWeek1_totalDrink).toFixed(1)}ml 증가했습니다.`
+                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink-curWeek1_totalDrink).toFixed(1)}ml 증가했습니다.`
                 }
                 else if(curWeek2_totalDrink == curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량도 동일합니다.\n`
+                    P1_text+=`일일 평균 총 수분 섭취량도 변함 없습니다.\n`
                 }
                 else if(curWeek2_totalDrink < curWeek1_totalDrink){
-                    P1_text+=`${curWeek1}주차에 비해 ${curWeek2}주차의 일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink-curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
+                    P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink-curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
                 }
             }
 
@@ -578,12 +580,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     nightWater+=hourlyWaterIntake_org[i]
                 }
             }
-            dawnWater = dawnWater/3
-            morningWater = morningWater/3
-            lunchWater = lunchWater/3
-            afternoonWater = afternoonWater/3
-            dinnerWater = dinnerWater/3
-            nightWater = nightWater/3
 
             let waterSeries = [dawnWater, morningWater, lunchWater, afternoonWater, dinnerWater, nightWater]
             let waterSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
@@ -603,7 +599,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             }
             
-            P1_text+=`- 평균적으로 ${timeWaterMax_str} 시간대에 물 섭취가 ${timeWaterMax.toFixed(1)}ml로 가장 많으며, ${timeWaterMin_str} 시간대에 ${timeWaterMin.toFixed(1)}ml로 가장 적습니다.
+            P1_text+=`- ${timeWaterMax_str} 시간대에 평균 물 섭취량의 총합이 ${timeWaterMax.toFixed(1)}ml로 가장 많으며, ${timeWaterMin_str} 시간대에 ${timeWaterMin.toFixed(1)}ml로 가장 적습니다.
     `
             P1_comment.innerHTML = P1_text
 
@@ -639,7 +635,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 P2_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 평균 배뇨 횟수가 ${(curWeek2_pee-curWeek1_pee).toFixed(1)}회 증가하였습니다. `
             }
             else if(curWeek2_pee == curWeek1_pee){
-                P2_text+=`- ${curWeek1}주차와 ${curWeek2}주차의 평균 배뇨 횟수가 동일합니다. `
+                P2_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 평균 배뇨 횟수가 변함 없습니다. `
             }
             else if(curWeek2_pee <curWeek1_pee){
                 P2_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 평균 배뇨 횟수가 ${(curWeek1_pee-curWeek2_pee).toFixed(1)}회 감소하였습니다. `
@@ -653,7 +649,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 }
             }
             if(normalPeeWeeks.length == 0){
-                P2_text+=`모든 주차의 일일 평균 배뇨 횟수가 정상범위 4-7회에 해당하지 않습니다.\n`
+                P2_text+=`${curWeek1}, ${curWeek2}주차의 일일 평균 배뇨 횟수가 정상범위 4-7회에 해당하지 않습니다.\n`
             }
             else if(normalPeeWeeks.length == 1){
                 P2_text+=`${normalPeeWeeks[0]}주차의 일일 평균 배뇨 횟수가 정상범위 4-7회에 해당합니다.\n`
@@ -697,12 +693,6 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     nightPee+=hourlyPeeCount_org[i]
                 }
             }
-            dawnPee = dawnPee/3
-            morningPee = morningPee/3
-            lunchPee = lunchPee/3
-            afternoonPee = afternoonPee/3
-            dinnerPee = dinnerPee/3
-            nightPee = nightPee/3
 
             let peeSeries = [dawnPee, morningPee, lunchPee, afternoonPee, dinnerPee, nightPee]
             let peeSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
@@ -721,7 +711,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                 }
 
             }
-            P2_text+=`- 평균적으로 ${timePeeMax_str} 시간대에 배뇨 횟수가 ${timePeeMax.toFixed(1)}회로 가장 많으며, ${timePeeMin_str} 시간대에 ${timePeeMin.toFixed(1)}회로 가장 적습니다.`
+            P2_text+=`- ${timePeeMax_str} 시간대에 평균 배뇨 횟수의 총합이 ${timePeeMax.toFixed(1)}회로 가장 많으며, ${timePeeMin_str} 시간대에 ${timePeeMin.toFixed(1)}회로 가장 적습니다.`
 
 
             P2_comment.innerHTML = P2_text
@@ -744,25 +734,34 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
 
             
             //weekly comment
+            let checkStayorNot = false;
             if(weeklyPoopCount[curWeek2] > weeklyPoopCount[curWeek1]){
-                P3_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 총 배변 횟수가 ${weeklyPoopCount[curWeek2] -weeklyPoopCount[curWeek1]}회 증가했고, `
+                P3_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 총 배변 횟수는 ${weeklyPoopCount[curWeek2] -weeklyPoopCount[curWeek1]}회 증가했고, `
             }
             else if(weeklyPoopCount[curWeek2] < weeklyPoopCount[curWeek1]){
-                P3_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 총 배변 횟수가 ${weeklyPoopCount[curWeek1] -weeklyPoopCount[curWeek2]}회 감소했고, `
+                P3_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 총 배변 횟수는 ${weeklyPoopCount[curWeek1] -weeklyPoopCount[curWeek2]}회 감소했고, `
             }
             else if(weeklyPoopCount[curWeek2] == weeklyPoopCount[curWeek1]){
-                P3_text+=`- ${curWeek1}주차와 ${curWeek2}주차의 총 배변 횟수는 동일하며, `
+                P3_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 총 배변 횟수는 변함 없고, `
+                checkStayorNot = true
             }
 
 
             if(weeklyHealthyPoopCount[curWeek2] > weeklyHealthyPoopCount[curWeek1]){
-                P3_text+=`${curWeek1}주차에 비해 ${curWeek2}주차의 건강한 배변 횟수는 ${weeklyHealthyPoopCount[curWeek2] -weeklyHealthyPoopCount[curWeek1]}회 증가했습니다.`
+                P3_text+=`건강한 배변 횟수는 ${weeklyHealthyPoopCount[curWeek2] -weeklyHealthyPoopCount[curWeek1]}회 증가했습니다.`
             }
             else if(weeklyHealthyPoopCount[curWeek2] < weeklyHealthyPoopCount[curWeek1]){
-                P3_text+=`${curWeek1}주차에 비해 ${curWeek2}주차의 건강한 배변 횟수는 ${weeklyHealthyPoopCount[curWeek1] -weeklyHealthyPoopCount[curWeek2]}회 감소했습니다.`
+                P3_text+=`건강한 배변 횟수는 ${weeklyHealthyPoopCount[curWeek1] -weeklyHealthyPoopCount[curWeek2]}회 감소했습니다.`
             }
             else if(weeklyHealthyPoopCount[curWeek2] == weeklyHealthyPoopCount[curWeek1]){
-                P3_text+=`${curWeek1}주차와 ${curWeek2}주차의 건강한 배변 횟수는 동일합니다.`
+                if(checkStayorNot = false){
+                    P3_text+=`건강한 배변 횟수는 변함 없습니다.`
+                }
+                else{
+                    P3_text+=`건강한 배변 횟수도 변함 없습니다.`
+                }
+                
+
             }
             
         
@@ -2944,7 +2943,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         //Count by day
         for(let i=0; i<Data.length; i++){
             let temp=Data[i];
-            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/');
+            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/').replace('/0', '/')
+            if(temp_day[0]==0){temp_day = temp_day.substr(1)}
 
             let checkDay=false;
             //let checkHour=false;
@@ -3006,7 +3006,8 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
         if(Data[i].type>8 || Data[i].type<0){console.log("WRONG POO TYPE INPUT")}
         else{
             let temp=Data[i];
-            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/');
+            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/').replace('/0', '/')
+            if(temp_day[0]==0){temp_day = temp_day.substr(1)}
 
             let checkDay=false;
             //let checkHour=false;
