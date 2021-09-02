@@ -518,7 +518,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink - curWeek1_totalDrink).toFixed(1)}ml 증가했습니다.`
                 }
                 else if(curWeek2_totalDrink == curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량은 변함 없습니다.\n`
+                    P1_text+=`일일 평균 총 수분 섭취량은 변함 없습니다.`
                 }
                 else if(curWeek2_totalDrink < curWeek1_totalDrink){
                     P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink - curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
@@ -529,7 +529,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
                     P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek2_totalDrink-curWeek1_totalDrink).toFixed(1)}ml 증가했습니다.`
                 }
                 else if(curWeek2_totalDrink == curWeek1_totalDrink){
-                    P1_text+=`일일 평균 총 수분 섭취량도 변함 없습니다.\n`
+                    P1_text+=`일일 평균 총 수분 섭취량도 변함 없습니다.`
                 }
                 else if(curWeek2_totalDrink < curWeek1_totalDrink){
                     P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink-curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
@@ -584,7 +584,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let waterSeries = [dawnWater, morningWater, lunchWater, afternoonWater, dinnerWater, nightWater]
             let waterSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
             timeWaterMax = 0;
-            timeWaterMax_str = ''
+            timeWaterMax_str = '새벽'
             timeWaterMin = waterSeries[0];
             timeWaterMin_str = '새벽'
             for(let i=0; i<waterSeries.length; i++){
@@ -697,7 +697,7 @@ let DataLoadComplete = (startDateStamp, rangeInt, creation, id) => {
             let peeSeries = [dawnPee, morningPee, lunchPee, afternoonPee, dinnerPee, nightPee]
             let peeSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
             timePeeMax = 0;
-            timePeeMax_str = ''
+            timePeeMax_str = '새벽'
             timePeeMin = peeSeries[0];
             timePeeMin_str = '새벽'
             for(let i=0; i<peeSeries.length; i++){
