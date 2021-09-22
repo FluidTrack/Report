@@ -1,5 +1,6 @@
 let name = document.getElementById('name');
 let Range = document.getElementById('Range');
+let startDay = document.getElementById('startDay');
 let mainDiv = document.getElementById('mainDiv');
 let advance = document.getElementById('advance');
 let checkLabel = document.getElementById('checkLabel');
@@ -53,6 +54,7 @@ searchButton.addEventListener('click',() => {
   } else {
     let url = "/Report"
     url += `?target=${name.value}&range=${Range.value}`
+    url += `&startDay=${startDay.value}`
     if(advance.checked) {
       url += `&server=${serverAddress.value}:${serverPort.value}/`
     } else {

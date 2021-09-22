@@ -24,6 +24,8 @@ function getParam(sname) {
 let serverUrl = getParam(`server`)
 let targetStr = getParam(`target`)
 let range = getParam(`range`)
+let startDay = getParam(`startDay`)
+
 
 if(serverUrl == null || targetStr == null || range == null) {
   location.href=`/IllegalApproach`;
@@ -184,7 +186,7 @@ let loadData = () => {
                                     UserTotalPoopData = null
                                   }
 
-                                  DataLoadComplete(startDateStamp, rangeInt, userData.creation_date, userData.id);
+                                  DataLoadComplete(startDateStamp, range, rangeInt, startDay, userData.creation_date, userData.id);
                                 },error: function(msg) {			// 실패시
                                   location.href=`/ConnectFail`;
                                 }
