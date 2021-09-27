@@ -285,16 +285,17 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 //-----------------------------------------------DRINK(only daily, weekly)-----------------------------------//
 
 //daily
-        let dailyDrinkCount=count_Daily(UserDrinkData, days);
+        let dailyDrinkCount=count_Daily_Drink(UserDrinkData, days);
+        console.log(dailyDrinkCount)
         let dailyDrinkIntake=[]
         if(range==0){
             dailyDrinkCount = dailyDrinkCount.slice(startDay)
         }
             
         for(let i=0; i<dailyDrinkCount.length; i++){ //add water logs to drink logs for drawing a graph (daily)
-                dailyDrinkIntake.push((dailyDrinkCount[i]+dailyWaterCount[i])*100); 
+                dailyDrinkIntake.push((dailyDrinkCount[i]+dailyWaterCount[i]*100)); 
         }
-        //console.log(dailyDrinkIntake)
+        console.log(dailyDrinkIntake)
 
         let dailymaxDrink=0;
         for(let i=0; i<dailyDrinkIntake.length; i++){
@@ -314,10 +315,10 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         for(let i=0; i<UserTotalDrinkData.length; i++){
             if(UserTotalDrinkData[i].id==id){
                 let time=new Date(UserTotalDrinkData[i].timestamp)
-                if(W0<=time && time<W1){weeklyDrinkIntake[0]++}
-                else if(W1<=time && time<W2){weeklyDrinkIntake[1]++}
-                else if(W2<=time && time<W3){weeklyDrinkIntake[2]++}
-                else if(W3<=time && time<W4){weeklyDrinkIntake[3]++}
+                if(W0<=time && time<W1){weeklyDrinkIntake[0]+=UserTotalDrinkData[i].volume}
+                else if(W1<=time && time<W2){weeklyDrinkIntake[1]+=UserTotalDrinkData[i].volume}
+                else if(W2<=time && time<W3){weeklyDrinkIntake[2]+=UserTotalDrinkData[i].volume}
+                else if(W3<=time && time<W4){weeklyDrinkIntake[3]+=UserTotalDrinkData[i].volume}
                 /*else if(W4<=time && time<W5){weeklyDrinkIntake[4]++}
                 else if(W5<=time && time<W6){weeklyDrinkIntake[5]++}
                 else if(W6<=time && time<W7){weeklyDrinkIntake[6]++}
@@ -327,10 +328,10 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         for(let i=0; i<weeklyDrinkIntake.length; i++){
  
             if(i == 0){
-                weeklyDrinkIntake[i]=weeklyDrinkIntake[i]*100/(7-startDay)
+                weeklyDrinkIntake[i]=weeklyDrinkIntake[i]/(7-startDay)
             }
             else{
-                weeklyDrinkIntake[i]=weeklyDrinkIntake[i]*100/7
+                weeklyDrinkIntake[i]=weeklyDrinkIntake[i]/7
             }
         }
 
@@ -545,8 +546,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
             let curWeek1 = (rangeInt)*2+1
             let curWeek2 = (rangeInt)*2+2
-            let curWeek1_water = weeklyWaterIntake[curWeek1].toFixed(1)
-            let curWeek2_water = weeklyWaterIntake[curWeek2].toFixed(1)
+            let curWeek1_water = Number(weeklyWaterIntake[curWeek1].toFixed(1))
+            let curWeek2_water = Number(weeklyWaterIntake[curWeek2].toFixed(1))
             let sameWaterorNot = false
 
             if(curWeek2_water > curWeek1_water){
@@ -562,8 +563,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
 
 
-            let curWeek1_totalDrink = weeklyDrinkIntake[curWeek1].toFixed(1)
-            let curWeek2_totalDrink = weeklyDrinkIntake[curWeek2].toFixed(1)
+            let curWeek1_totalDrink = Number(weeklyDrinkIntake[curWeek1].toFixed(1))
+            let curWeek2_totalDrink = Number(weeklyDrinkIntake[curWeek2].toFixed(1))
+
             
             if(sameWaterorNot == false){
                 if(curWeek2_totalDrink > curWeek1_totalDrink){
@@ -573,6 +575,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                     P1_text+=`일일 평균 총 수분 섭취량은 변함 없습니다.`
                 }
                 else if(curWeek2_totalDrink < curWeek1_totalDrink){
+                    console.log(curWeek2_totalDrink, curWeek1_totalDrink)
                     P1_text+=`일일 평균 총 수분 섭취량은 ${(curWeek1_totalDrink - curWeek2_totalDrink).toFixed(1)}ml 감소했습니다.`
                 }
             }
@@ -681,8 +684,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
             
             //주차별 코멘트
-            let curWeek1_pee = weeklyPeeCount[curWeek1].toFixed(1);
-            let curWeek2_pee = weeklyPeeCount[curWeek2].toFixed(1);
+            let curWeek1_pee = Number(weeklyPeeCount[curWeek1].toFixed(1));
+            let curWeek2_pee = Number(weeklyPeeCount[curWeek2].toFixed(1));
             if(curWeek2_pee > curWeek1_pee){
                 P2_text+=`- ${curWeek1}주차에 비해 ${curWeek2}주차의 평균 배뇨 횟수가 ${(curWeek2_pee-curWeek1_pee).toFixed(1)}회 증가하였습니다. `
             }
@@ -1668,12 +1671,11 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             for(let i=0; i<14; i++){
                 goal_pee1.push(4)
             }
-            let goal_pee2=[];
             for(let i=0; i<14; i++){
                 goal_pee2.push(7)
             }
         }
-
+console.log(goal_pee1, goal_pee2)
 
         goal_pee1.unshift("목표1");
         goal_pee2.unshift("목표2");
@@ -1742,7 +1744,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         }
 
 
-
+console.log(goal_pee1, goal_pee2)
     let P2_dailyGraph=bb.generate({
 
     size:{
@@ -1866,45 +1868,64 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         d3.select(this).attr("r", 1)
         //console.log(this.getAttribute("r"))
     })
-
-//-----------------------------------Drawing "goal rectangle"------------------------------------------------ 
-    let temp_height=0;
-    let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
-        //console.log(this);
-        let path=$(this).attr("d");
-        let parsedPath=path.split(/M|,|L/);
-        parsedPath=parsedPath.splice(1)
-        temp_height=parsedPath[1];
-    })
-
-    let elem5=$(".P2_DailyGraph").find(".bb-line-목표2").each(function(i){
-        //console.log(this);
-        let path=$(this).attr("d");
-        let parsedPath=path.split(/M|,|L/);
-        parsedPath=parsedPath.splice(1)
-        //console.log(parsedPath);
-        goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
-        goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
-        goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
-        //console.log(goal_rect);
-
-    })
-
-  
-
-    let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
-        //console.log(this);
-        
-        let rect=d3.select(this).insert("svg",":first-child")//.append("svg").attr("class","사각형")
-        rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]).attr("y", goal_rect["시작 좌표"]["y"])
-        .attr("height", goal_rect["높이"]["높이"])
-        .attr("width", goal_rect["가로"]["가로"])
-        .attr("fill","#03C52E")
-        .style("opacity", "0.25")
-        
-
-    })
   })
+
+  setTimeout(function(){
+    //-----------------------------------Drawing "goal rectangle"------------------------------------------------ 
+        let temp_height=0;
+        let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
+            //console.log(this);
+            let path=$(this).attr("d");
+            let parsedPath=path.split(/M|,|L/);
+            parsedPath=parsedPath.splice(1)
+            temp_height=parsedPath[1];
+        })
+
+        let elem5=$(".P2_DailyGraph").find(".bb-line-목표2").each(function(i){
+            //console.log(this);
+            let path=$(this).attr("d");
+            let parsedPath=path.split(/M|,|L/);
+            parsedPath=parsedPath.splice(1)
+            //console.log(parsedPath);
+            goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
+            goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
+            goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
+            //console.log(goal_rect);
+
+        })
+
+
+
+        let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
+            //console.log(this);
+            
+            let rect=d3.select(this).insert("svg",":first-child")//.append("svg").attr("class","사각형")
+            console.log(goal_rect)
+            rect.append("rect").attr("x", goal_rect["시작 좌표"]["x"]-50).attr("y", goal_rect["시작 좌표"]["y"])
+            .attr("height", goal_rect["높이"]["높이"])
+            .attr("width", goal_rect["가로"]["가로"]+50)
+            .attr("fill","#03C52E")
+            .style("opacity", "0.25")
+            
+
+                })
+    })
+//Goal, Average Path Design
+setTimeout(function(){
+    
+    let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ 
+        $(this).remove();
+    })
+
+    
+    let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){
+        $(this).remove();
+    })
+
+
+})
+
+
 
 
  
@@ -1925,7 +1946,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
 
-  
+ /* 
 //Goal, Average Path Design
     setTimeout(function(){
             
@@ -1940,7 +1961,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
     })
-
+*/
     //legend
 
     setTimeout(function(){
@@ -3033,6 +3054,40 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
     }
 
+    function count_Daily_Drink(Data, days){
+
+        let dailyData=new Array(14);
+
+        for(let i=0; i<14; i++){
+            dailyData[i]=0;
+        }
+
+        
+        //Count by day
+        for(let i=0; i<Data.length; i++){
+            let temp=Data[i];
+            let temp_day=temp.timestamp.split(' ')[0].substr(5).replace('-','/').replace('/0', '/')
+            if(temp_day[0]==0){temp_day = temp_day.substr(1)}
+
+            let checkDay=false;
+            //let checkHour=false;
+            for(let j=0; j<days.length; j++){
+                if(temp_day==days[j]){
+                    dailyData[j]+=temp.volume;
+                    checkDay=true;
+                    break;
+                }
+            }
+            if(checkDay==false){console.log("ERROR!!")}
+    
+        }
+        //console.log(dailyData);
+        return dailyData;
+    
+
+
+    }
+
     function count_Hourly(Data, hours){
 
         let hourlyData=new Array(24);
@@ -3186,7 +3241,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             let day = new Date(start);
             let days=[];
             for(let i=0; i<14; i++){
-                console.log(i)
                 if(i==0)
                 {
                     days.push((day.getMonth()+1+"/")+(day.getDate()+0+""));
