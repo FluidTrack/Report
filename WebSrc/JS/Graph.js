@@ -2637,7 +2637,7 @@ setTimeout(function(){
                 if(i==0){grid_height1=$(this).attr("y2")}
                 else if(i==1){
                     grid_height0=$(this).attr("y2")
-                    y_loc.push(Number($(this).attr("y2"))+3)
+                    y_loc.push(Number($(this).attr("y2"))+1)
                 }
                 else{
                     y_loc.push(Number($(this).attr("y2")))
@@ -2649,7 +2649,7 @@ setTimeout(function(){
             
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
-                x_loc.push($(this).attr("cx")-10)
+                x_loc.push($(this).attr("cx"))
                 $(this).remove()
                 //console.log(this);
             })
@@ -2975,8 +2975,8 @@ setTimeout(function(){
                 //labels
                 //d3.select(".P1_WG")
                 svg.append("text")
-                .attr('x', 15)
-                .attr('y',18)
+                .attr('x', 23)
+                .attr('y',15)
                 .text("회")
                 .style('font-size', '9px')
                 //.style('font-weight','bold')
