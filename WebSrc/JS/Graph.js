@@ -968,9 +968,10 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 columns: 
 
                     [
-                        goal_water,
+ 
                         dailyWaterIntake,
                         dailyDrinkIntake,
+                        goal_water,
                     ],
                 axes:{
                     "물":"y",
@@ -1000,7 +1001,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             },
  
         onrendered: function() {
-            console.log(document.getElementById("P1_DailyGraph"));
+            console.log(document.getElementById("P1_DailyGraph"))
 
             
             
@@ -1150,9 +1151,18 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             
         let temp=$(".P1_DailyGraphDiv").find(".bb-main")
         let $elem2=$(".P1_DailyGraph").find(".bb-ygrid-lines").clone().appendTo(temp);
+        
 
     })
 
+    setTimeout(function(){
+        //let temp=$(".P1_DailyGraphDiv").find(".bb-main")
+        let $elem0=$(".P1_DailyGraph").find(".bb-chart-lines")
+        let $elem1=$(".P1_DailyGraph").find(".bb-chart-bars")
+        $elem0.insertAfter($elem1)
+
+
+    })
 
      setTimeout(function(){
 
