@@ -115,6 +115,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
     //     > UserTotalPoopData  : 대변 활동 전체 기록 모음
     //     > UserTotalPeeData   : 소변 활동 전체 기록 모음
     //===============================================================================================================
+    
+    
+//시작일, 각 그래프의 사이즈 변수들
     let start = startDateStamp
     let height_P1 = 142;
     let width_P1 = 345;
@@ -123,19 +126,20 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
     let height_P3 = 142;
     let width_P3 = 523;
 
-    
-    startDay = parseInt(startDay);
+//데이터 매칭용, X축용 2주치 날짜/24시간/4주 Array 변수들    
+    startDay = parseInt(startDay); // 첫주 시작일 (선택 가능)
     range = parseInt(range);
-    let days=key_days(start); //for daily axis and data matching 
-    let dates=getDates(start);
-    let xDays=getXDays(start, startDay);
-    console.log(xDays)
+    let days=key_days(start); //2주치 날짜 어레이 for log와의 data matching
+    let dates=getDates(start); // 2주치 날짜 어레이 for 날짜 디자인
+    let xDays=getXDays(start, startDay); // 2주치 날짜 어레이 for 그래프 X축
 
-    let weeks=["1주차", "2주차", "3주차", "4주차", ] //"5주차", "6주차", "7주차", "8주차"
-    let hours=key_hours();
-    let parsed_hours=parsing_hours(); //for hourly axis
+    let weeks=["1주차", "2주차", "3주차", "4주차", ] //4주 array for Weekly Graph X축용 
 
-    //find current week's index
+    let hours=key_hours(); // 24시간 어레이 for log와의 data matching
+    let parsed_hours=parsing_hours(); //24시간 array for hourly graph의 X축
+
+
+//현재 날짜가 몇주차인지 찾음
     let lastidx;
     switch(rangeInt){
         case 0: lastidx=1; break;
@@ -143,17 +147,13 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         case 2: lastidx=5; break;
         case 3: lastidx=7; break;
     }
-
+//4주 날짜 찾음 
     let W0=new Date(creation);
     W0.setHours(0, 0, 0);
     let W1=week(W0, 1);
     let W2=week(W0, 2);
     let W3=week(W0, 3);
     let W4=week(W0, 4);
-    let W5=week(W0, 5);
-    let W6=week(W0, 6);
-    let W7=week(W0, 7);
-    let W8=week(W0, 8);
     W0.setDate(W0.getDate()+startDay)
 
 
@@ -163,21 +163,23 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 //-------------------------------------------WATER(daily, weekly, hourly )--------------------------------------------//
    
 //DAILY
+            //dailyWaterCount: 2주간 섭취한 water log 개수 array
+            //dailyWaterIntake: 2주간 섭취한 water log 개수 * 100(ml) array 
         let dailyWaterCount=count_Daily(UserWaterData, days);
         let dailyWaterIntake=[]
         for(let i=0; i<dailyWaterCount.length; i++){
             dailyWaterIntake.push(dailyWaterCount[i]*100)
         }
+            //첫주일 경우 시작일(선택 가능)에 맞춰 log를 잘라냄
         if(range==0){
             dailyWaterCount = dailyWaterCount.slice(startDay)
             dailyWaterIntake = dailyWaterIntake.slice(startDay)
-            //console.log(dailyWaterCount, dailyWaterIntake)
         }
 
         
 
 
-            //calculate the max, min, average value of water intake;
+            //2주 물 섭취량 중에 max, min, average 값 찾음 
         let maxWater=dailyWaterIntake[0];
         let minWater=dailyWaterIntake[0];
         let total_water=0;
@@ -191,16 +193,12 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         }
         let avgWater=(total_water/14).toFixed(1);
 
-        //console.log(dailyWaterIntake)
-
    
     
 
-//weekly (normalized)
-
-        let weeklyWaterIntake=[0, 0, 0, 0, ] //8 weeks data // 4 weeks data 0, 0, 0, 0
-        let twoWeeksWaterAvg=[0, 0, 0, 0]
-
+//weekly
+        let weeklyWaterIntake=[0, 0, 0, 0, ]
+                //Water log와 4주치 Data matching 
             for(let i=0; i<UserTotalWaterData.length; i++){
                 if(UserTotalWaterData[i].id==id){
                     let time=new Date(UserTotalWaterData[i].timestamp)
@@ -208,13 +206,10 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                     else if(W1<=time && time<W2){weeklyWaterIntake[1]++}
                     else if(W2<=time && time<W3){weeklyWaterIntake[2]++}
                     else if(W3<=time && time<W4){weeklyWaterIntake[3]++}
-                    /*else if(W4<=time && time<W5){weeklyWaterIntake[4]++}
-                    else if(W5<=time && time<W6){weeklyWaterIntake[5]++}
-                    else if(W6<=time && time<W7){weeklyWaterIntake[6]++}
-                    else if(W7<=time && time<W8){weeklyWaterIntake[7]++}*/
                 }
             }
-            console.log(weeklyWaterIntake)
+
+                //count * 100 / 7 (or 시작일)
         for(let i=0; i<weeklyWaterIntake.length; i++){
             if(i ==0){
                 weeklyWaterIntake[i]=weeklyWaterIntake[i]*100/(7-startDay)
@@ -224,11 +219,10 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
 
         }
-
+                //현재주 이후는 null 처리함
 
         for(let i=lastidx+1; i<weeklyWaterIntake.length; i++){
             weeklyWaterIntake[i]=null;
-            twoWeeksWaterAvg[i]=null;
         }
 
 
@@ -236,6 +230,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
 //hourly (normalized)
+            //hourlyWaterIntake: 각 시간대별 물 섭취한 array
+            //hourlyWaterIntake_org: 각 시간대별 물 섭취한 array for 코멘트용
+            //parsedHours_water: 기록 없는 시간을 앞뒤로 제외한 hours array
         let hourlyWater=count_parse_hourly(UserWaterData, count_Hourly, hours, parsed_hours, range, startDay);
         let hourlyWaterIntake=hourlyWater[0];
         let parsedHours_water=hourlyWater[1];
@@ -249,7 +246,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         for(let i=0; i<hourlyWaterIntake_org.length; i++){
             hourlyWaterIntake_org[i]=hourlyWaterIntake_org[i]*100;
         }
-
+            //Max값 찾기 
         let hourlyWaterMax=0
         for(let i=0; i<hourlyWaterIntake.length; i++){
             if(hourlyWaterIntake[i]>hourlyWaterMax){
@@ -257,11 +254,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
         }
 
-        //console.log(hourlyWaterIntake, parsedHours_water, hourlyWaterMax);
 
 
-
-                        //-------------WATER INTAKE GOAL(for drawing graph-------------------//
+                        //목표 1000ml array for 그래프 
                         let goal_water=["목표"];
                         if(range!=0){
                             for(let i=0; i<14; i++){
@@ -274,29 +269,25 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                                 }
                         }
                         
-                        //-------------WATER INTAKE AVERAGE(for drawing graph----------------//
-
-                        let avg_water=["1주평균"];
-                        for(let i=0; i<2; i++){
-                            avg_water.push(avgWater);
-                            }
-
 
 //-----------------------------------------------DRINK(only daily, weekly)-----------------------------------//
 
 //daily
+                        //dailyDrinkCount: 2주치 총 수분 섭취량 
+                        //dailyDrinkIntake: dailyDrinkCount * 100 (ml)
+
         let dailyDrinkCount=count_Daily_Drink(UserDrinkData, days);
-        console.log(dailyDrinkCount)
         let dailyDrinkIntake=[]
+
+                        //첫주 시작일에 맞춰 array slice
         if(range==0){
             dailyDrinkCount = dailyDrinkCount.slice(startDay)
         }
-            
-        for(let i=0; i<dailyDrinkCount.length; i++){ //add water logs to drink logs for drawing a graph (daily)
+                        //count * 100ml
+        for(let i=0; i<dailyDrinkCount.length; i++){ 
                 dailyDrinkIntake.push((dailyDrinkCount[i]+dailyWaterCount[i]*100)); 
         }
-        console.log(dailyDrinkIntake)
-
+                        //음료 max값 찾기
         let dailymaxDrink=0;
         for(let i=0; i<dailyDrinkIntake.length; i++){
             if(dailyDrinkIntake[i]>dailymaxDrink){
@@ -304,14 +295,13 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
         }
 
-        //console.log(dailymaxDrink)
-
     
 
 
-//weekly (normalized)
-        let weeklyDrinkIntake=[0, 0, 0, 0, ]; //0, 0, 0, 0
+//weekly
+        let weeklyDrinkIntake=[0, 0, 0, 0, ]
 
+                    //log와 4주 데이터 매칭 
         for(let i=0; i<UserTotalDrinkData.length; i++){
             if(UserTotalDrinkData[i].id==id){
                 let time=new Date(UserTotalDrinkData[i].timestamp)
@@ -319,12 +309,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 else if(W1<=time && time<W2){weeklyDrinkIntake[1]+=UserTotalDrinkData[i].volume}
                 else if(W2<=time && time<W3){weeklyDrinkIntake[2]+=UserTotalDrinkData[i].volume}
                 else if(W3<=time && time<W4){weeklyDrinkIntake[3]+=UserTotalDrinkData[i].volume}
-                /*else if(W4<=time && time<W5){weeklyDrinkIntake[4]++}
-                else if(W5<=time && time<W6){weeklyDrinkIntake[5]++}
-                else if(W6<=time && time<W7){weeklyDrinkIntake[6]++}
-                else if(W7<=time && time<W8){weeklyDrinkIntake[7]++}*/
             }
         }
+                    //시작일에 따라 평균을 다르게 냄 
         for(let i=0; i<weeklyDrinkIntake.length; i++){
  
             if(i == 0){
@@ -337,26 +324,24 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
         
-
-
-
-        //console.log(weeklyDrinkIntake)
+                    //음료 섭취량 + 물 섭취량 
         for(let i=0; i<weeklyDrinkIntake.length; i++){
             weeklyDrinkIntake[i]=weeklyDrinkIntake[i]+weeklyWaterIntake[i];
         }
         
-        console.log(weeklyDrinkIntake, lastidx)
+                    //현재 주 이후는 null값 처리 
         for(let i=lastidx+1; i<weeklyDrinkIntake.length; i++){
             weeklyDrinkIntake[i]=null
         }
 
-        
+                    //max값 찾음 
         let weeklymaxDrink=0;
         for(let i=0; i<weeklyDrinkIntake.length; i++){
             if(weeklyDrinkIntake[i]>weeklymaxDrink){weeklymaxDrink=weeklyDrinkIntake[i]}
         }
 
 
+                    //그래프 그리기 위해 어레이 첫 index에 지표 추가 
         dailyWaterIntake.unshift("물");
         weeklyWaterIntake.unshift("물")
         hourlyWaterIntake.unshift("물");
@@ -368,13 +353,16 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 //-----------------------------------------------Pee(daily, weekly, hourly)-----------------------------------//
 //daily
 
+                //dailyPeeCount: 2주간 소변 횟수
         let dailyPeeCount=count_Daily(UserPeeData, days);
+                //첫주일 경우 시작일에 맞춰 잘라냄 
         if(range == 0){
             dailyPeeCount = dailyPeeCount.slice(startDay)
         }
+                //그래프 그리기 위해 첫 인덱스에 지표 삽입 
         dailyPeeCount.unshift("배뇨 횟수")
-        //console.log(dailyPeeCount);
 
+                //max값 찾음 
         let dailyMaxPee=0;
         let dailyMinPee=dailyPeeCount[1]
         let total=0;
@@ -384,13 +372,14 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             total+=dailyPeeCount[i];
         }
 
-        //console.log(dailyMaxPee, dailyMinPee, avg_Pee);
 
 
 //weekly
-        //let weeklyPeeCount=["배뇨 횟수", 0, 0, 0, 0, 0, 0, 0, 0]
-        let weeklyPeeCount=[0, 0, 0, 0, ] //0, 0, 0, 0
 
+                //weeklyPeeCount: 4주치 소변 횟수 
+        let weeklyPeeCount=[0, 0, 0, 0, ] 
+
+                //data matching 
         for(let i=0; i<UserTotalPeeData.length; i++){
             if(UserTotalPeeData[i].id==id){
                 let time=new Date(UserTotalPeeData[i].timestamp)
@@ -398,12 +387,9 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 else if(W1<=time && time<W2){weeklyPeeCount[1]++}
                 else if(W2<=time && time<W3){weeklyPeeCount[2]++}
                 else if(W3<=time && time<W4){weeklyPeeCount[3]++}
-                /*else if(W4<=time && time<W5){weeklyPeeCount[4]++}
-                else if(W5<=time && time<W6){weeklyPeeCount[5]++}
-                else if(W6<=time && time<W7){weeklyPeeCount[6]++}
-                else if(W7<=time && time<W8){weeklyPeeCount[7]++}*/
             }
         }
+                //주차별 평균 냄. 첫주일 경우 시작일에 맞춰 평균 냄 
         for(let i=0; i<weeklyPeeCount.length; i++){
             if(i == 0){
                 weeklyPeeCount[i]=weeklyPeeCount[i]/(7-startDay)   //.toFixed(0);
@@ -414,43 +400,49 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
         }
 
-
+                //현재 주차 이후는 null 처리
         for(let i=lastidx+1; i<weeklyPeeCount.length; i++){
             weeklyPeeCount[i]=null;
         }
 
-
+                //max값 찾음
         let weeklyMaxPee=0;
         for(let i=0; i<=lastidx; i++){
             if(weeklyPeeCount[i]>weeklyMaxPee){
                 weeklyMaxPee=weeklyPeeCount[i];}
         }
-
+                //그래프 그리기 위해 첫 인덱스에 지표 삽입 
         weeklyPeeCount.unshift("배뇨 횟수")
 
 
 
-//hourly (normalized)
+//hourly
+                //hourlyPeeCount: 시간당 소변 본 횟수 어레이
+                //parsedHours_Pee: 로그 없는 시간을 제외한 시간 어레이 for X축
+                //hourlyPeeCount_org: 시간당 소변 본 횟수 어레이 for comment 
         let hourlyPeeMax=0;
         let hourlyPee=count_parse_hourly(UserPeeData, count_Hourly, hours, parsed_hours, range, startDay);
         let hourlyPeeCount=hourlyPee[0];
         let parsedHours_Pee=hourlyPee[1];
         let hourlyPeeCount_org=hourlyPee[2];
 
+                //max값 찾음 
         for(let i=0; i<hourlyPeeCount.length; i++){
             hourlyPeeCount[i]=Number(hourlyPeeCount[i])
             if(hourlyPeeMax<hourlyPeeCount[i]){hourlyPeeMax=hourlyPeeCount[i]}
         }
 
-
+                //그래프 그리기 위해 첫 인덱스에 지표 추가 
         hourlyPeeCount.unshift("배뇨 횟수");
-        //(hourlyPeeCount, hourlyPeeMax)
-        //console.log(hourlyPeeCount, parsedHours_Pee);
+
 
 //-----------------------------------------------Poop(daily, weekly)-----------------------------------//
 
 
 //DAILY
+
+                //dailyPoopArray: 2주간 대변을 본 횟수 (모양을 포함한 2차원 배열)
+                //dailyPoopCount: 2주간 대변을 본 횟수 (모양을 제외한 1차원 배열)
         let dailyPoopArray=count_daily_Poop(UserPoopData, days)
         let dailyMaxPoop=0;
         for(let i=0; i<dailyPoopArray.length; i++){
@@ -462,15 +454,20 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             dailyPoopCount[i]=dailyPoopArray[i].length
         }
 
+                //첫주일 경우 시작일에 맞춰 slice 
+
         if(range == 0){
             dailyPoopCount = dailyPoopCount.slice(startDay)
             dailyPoopArray = dailyPoopArray.slice(startDay)
         }
 
 //WEEKLY
-        let weeklyPoopCount=[0, 0, 0, 0, ] //8 weeks data //0, 0, 0, 0
-        let weeklyHealthyPoopCount=[0, 0, 0, 0, ] //0, 0, 0, 0
+                //weeklyPoopCount: 4주간 대변을 본 횟수(주차당 누적)
+                //weeklyHealthyPoopCount: 4주간 건강한 대변을 본 횟수(주차당 누적)
+        let weeklyPoopCount=[0, 0, 0, 0, ] 
+        let weeklyHealthyPoopCount=[0, 0, 0, 0, ]
 
+                //Data matching 
         for( let i=0; i<UserTotalPoopData.length; i++){
             valid=false;
             idx=-1;
@@ -484,28 +481,28 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 else if(W1<=time && time<W2){weeklyPoopCount[1]++; valid=true; idx=1;}
                 else if(W2<=time && time<W3){weeklyPoopCount[2]++; valid=true; idx=2;}
                 else if(W3<=time && time<W4){weeklyPoopCount[3]++; valid=true; idx=3;}
-                /*else if(W4<=time && time<W5){weeklyPoopCount[4]++; valid=true; idx=4;}
-                else if(W5<=time && time<W6){weeklyPoopCount[5]++; valid=true; idx=5;}
-                else if(W6<=time && time<W7){weeklyPoopCount[6]++; valid=true; idx=6;}
-                else if(W7<=time && time<W8){weeklyPoopCount[7]++; valid=true; idx=7;}*/
 
                 if(valid && (UserTotalPoopData[i].type==3||UserTotalPoopData[i].type==4)){
                     weeklyHealthyPoopCount[idx]++
                 }
             }
         }
-
+                //현재 주차 이후는 null값 처리
         for(let i=lastidx+1; i<weeklyPoopCount.length; i++){
             weeklyPoopCount[i]=null;
             weeklyHealthyPoopCount[i]=null;
         }
-        //console.log(weeklyPoopCount)
         let weeklyMaxPoop=Math.max.apply(null, weeklyPoopCount)
 
-        
+                //그래프를 만들기 위해 첫 인덱스에 지표 삽입 
         dailyPoopCount.unshift("대변")
         weeklyPoopCount.unshift('총 배변 횟수')
         weeklyHealthyPoopCount.unshift('건강한 배변 횟수')
+
+
+
+
+
 
  //------------------------------------------Post doctor's opinion to html page------------------------------------------------// 
         let P1_comment = document.getElementById("P1_CommentTextArea")
@@ -827,6 +824,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
  
 
 //-------------------------------------------------Basic Tick Design----------------------------------------------------------//
+        
+                //전반적으로 y축 tick 지우고 opacity 디자인 
         setTimeout(function(){
 
             let elem0=$(".bb-axis-y").find(".tick").find("line").each(function(i){
@@ -842,8 +841,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
 
-
 //P1 Graphs
+
 //-------------------------------------------------WATER DAILY GRAPH----------------------------------------------------------//
 
 
@@ -851,7 +850,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         let P1DG_maxY;
         let P1DG_grid=[];
         let P1DG_Y=[];
-        //console.log(dailymaxDrink)
+
+                //최소 1200ml로 맞춤. 그 이후 300 or 600ml 단위로 그리드 생성 
         if(dailymaxDrink>=2000){
             //console.log(dailymaxDrink)
             if(dailymaxDrink%600==0){
@@ -874,7 +874,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         if(1200>P1DG_maxY){P1DG_maxY=1200;}
 
 
-            //grid, Y axis label
+                //grid, Y axis label 생성
 
         if(P1DG_maxY>=2000){        
             for(let i=0; i<=(P1DG_maxY/600); i++){
@@ -891,6 +891,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
         //Water Weekly Y axis, grid array setting
+
+                //최소 1200ml로 맞춤. 그 이후 300 or 600ml로 그리드 생성
         let P1WG_maxY;
         let P1WG_grid=[];
         let P1WG_Y=[];
@@ -914,7 +916,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         if(1200>P1WG_maxY){P1WG_maxY=1200;}
 
         
-            //grid, Y axis label
+                //grid, Y axis label 생성
         if(P1WG_maxY>=2000){
             for(let i=0; i<=(P1WG_maxY/600); i++){
                 P1WG_grid.push({"value":i*600})
@@ -930,7 +932,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         }
 
 
-        //adjusting the number of two graphs' grid lines
+                //Daily, Weekly graph의 최댓값을 통일한다. 
         if(P1DG_maxY>=P1WG_maxY)
         {
             P1WG_maxY=P1DG_maxY;
@@ -946,7 +948,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             console.log("ERROR")
         }
         
-        //console.log(P1DG_grid, P1WG_grid)
+
 
 
         
@@ -1005,7 +1007,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
             
             
-            //increase stroke line's length
+            //평균 1000ml line을 그래프 양끝까지 확장시키는 디자인 
             setTimeout(function(){
                 let temp1=document.getElementById("P1_DailyGraph").getElementsByClassName("bb-line-목표") //.find(".bb-line-평균")
                 let text1=temp1[0].getAttribute("d")
@@ -1079,7 +1081,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                         tick:{
                             values: P1DG_Y,
                         },
-                        //padding:0,
                     },
                     
                     y2:{
@@ -1164,6 +1165,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
     })
 
+
+    //레전드 디자인 
      setTimeout(function(){
 
                         //Legend
@@ -1215,8 +1218,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 
  //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------// 
- //-------------------------------------------------WATER WEEKLY GRAPH-----------------------------------------------------------//
-
+ 
     let goal_water2=["목표", 1000, 1000, 1000, 1000]
 
     var P1_WeeklyGraph = bb.generate({
@@ -1263,7 +1265,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 
                     console.log(document.getElementById("P1_weeklyGraph"));
 
-                    //increase stroke line's length
+                    //목표 1000ml line을 그래프 양옆으로 확장시키는 디자인 
                     setTimeout(function(){
                         let temp1=document.getElementById("P1_weeklyGraph").getElementsByClassName("bb-line-목표") //.find(".bb-line-평균")
                         let text_1=temp1[0].getAttribute("d")
@@ -1373,6 +1375,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
         })
  
+
+        //레전드 디자인 
         setTimeout(function(){
                     //Legend
             d3.select(".P1_WG")
@@ -1418,6 +1422,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
    
 
 
+        //y축 grid를 한번 더 덮어씌움 (for 진한 디자인)
         setTimeout(function(){
 
             let temp=$(".P1_weeklyGraphDiv").find(".bb-main")
@@ -1439,6 +1444,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
  
         let P1HG_max;
 
+        //Max값을 50 or 100 단위로 조절함 
         if(hourlyWaterMax>=250){
             if(hourlyWaterMax%100==0){
                 P1HG_max = hourlyWaterMax;
@@ -1463,6 +1469,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             P1HG_grid.push({"value":i});
         }
         
+        //50, 100ml 단위로 grid 생성 
         if(hourlyWaterMax>=250){
             for(let i=0; i<=P1HG_max/100; i++){
                 P1HG_Ytick.push(i*100)
@@ -1476,7 +1483,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             P1HG_margin = 10;
         }
 
-        //console.log(P1HG_max, P1HG_Ytick)
 
 
     var P1_TimezoneGraph = bb.generate({
@@ -1494,13 +1500,11 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
     },
     data:{
         columns:[
-            //["cheating", 50, 100, 150], 
             hourlyWaterIntake 
         ],
-        type: "bar", //"bubble",
+        type: "bar", 
         colors:{
             "물":"#56A4FF",
-            //"cheating":"rgb(247, 247, 247)"
 
         },
     
@@ -1514,7 +1518,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         width: {
             "물": 8,
                 },
-        //zerobased: true,
         },
 
     onrendered: function() {
@@ -1533,7 +1536,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 categories: parsedHours_water,
                 tick:{
                     show:false,
-                    //rotate: 60,
 
             
                 }
@@ -1542,15 +1544,11 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             },
             y: {
                 show:true,
-                //min:0,
                 max: P1HG_max+P1HG_margin,
                 tick: {
                     values: P1HG_Ytick,
-                    //rotate: 7,
                     text: {
                         position: {
-                          //x: -11,
-                          //y: 3
                         }
                       }
                   },
@@ -1565,7 +1563,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             show: false,
             lines:P1HG_grid
             },
-        //lines:{front: false}
 
         y:{
             show: true
@@ -1627,7 +1624,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 //------------------------------------------------------------------------------------------------------------------------------//
 
 //P2 Graphs
-        //for drawing max Y value, grid lines
+            //P2 Daily Graph의 그리드 라인 생성, Max값을 5 또는 10 단위로 맞추기 
         let P2DG_maxY;
 
         if(dailyMaxPee>=30){
@@ -1665,7 +1662,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
         }
 
-        //console.log(P2DG_maxY)
+                //목표 횟수(4~7회) 어레이
 
         let goal_pee1=[];
         let goal_pee2=[];
@@ -1685,7 +1682,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 goal_pee2.push(7)
             }
         }
-console.log(goal_pee1, goal_pee2)
 
         goal_pee1.unshift("목표1");
         goal_pee2.unshift("목표2");
@@ -1695,7 +1691,7 @@ console.log(goal_pee1, goal_pee2)
 
 
 
-        //for drawing max Y value, grid lines
+                //P2 Weekly Graph의 그리드 라인 생성, Max값을 5 또는 10 단위로 맞추기 
         let P2WG_maxY;
 
         if(weeklyMaxPee>=30){
@@ -1737,7 +1733,7 @@ console.log(goal_pee1, goal_pee2)
 
 
 
-        //adjusting the number of two graphs' grid lines
+                //Daily Graph, Weekly Graph의 최대 Grid 값 맞추기 
         if(P2DG_maxY>=P2WG_maxY)
         {
             P2WG_maxY=P2DG_maxY;
@@ -1754,7 +1750,7 @@ console.log(goal_pee1, goal_pee2)
         }
 
 
-console.log(goal_pee1, goal_pee2)
+
     let P2_dailyGraph=bb.generate({
 
     size:{
@@ -1884,7 +1880,6 @@ console.log(goal_pee1, goal_pee2)
     //-----------------------------------Drawing "goal rectangle"------------------------------------------------ 
         let temp_height=0;
         let elem4=$(".P2_DailyGraph").find(".bb-line-목표1").each(function(i){
-            //console.log(this);
             let path=$(this).attr("d");
             let parsedPath=path.split(/M|,|L/);
             parsedPath=parsedPath.splice(1)
@@ -1900,14 +1895,12 @@ console.log(goal_pee1, goal_pee2)
             goal_rect["시작 좌표"]={"x":parsedPath[0]-10, "y":parsedPath[1]}
             goal_rect["가로"]={"가로":parsedPath[parsedPath.length-2]-parsedPath[0]+50}
             goal_rect["높이"]={"높이":temp_height-parsedPath[1]}
-            //console.log(goal_rect);
 
         })
 
 
 
         let elem6=$(".P2_DailyGraph").find(".bb-chart-lines").each(function(i){
-            //console.log(this);
             
             let rect=d3.select(this).insert("svg",":first-child")//.append("svg").attr("class","사각형")
             console.log(goal_rect)
@@ -1920,7 +1913,9 @@ console.log(goal_pee1, goal_pee2)
 
                 })
     })
-//Goal, Average Path Design
+
+
+//Circle 지우기 
 setTimeout(function(){
     
     let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ 
@@ -1948,7 +1943,6 @@ setTimeout(function(){
             d3.select(this).style('stroke-opacity','0.1').style("stroke","white");
         }
         else{
-            //d3.select(this).style('stroke-opacity', 0.5);
         }
     })
   })
@@ -1956,36 +1950,18 @@ setTimeout(function(){
 
 
 
- /* 
-//Goal, Average Path Design
-    setTimeout(function(){
-            
-            let elem1=$(".P2_DailyGraph").find(".bb-circles-목표1").each(function(i){ 
-                $(this).remove();
-            })
-        
-            
-            let elem3=$(".P2_DailyGraph").find(".bb-circles-목표2").each(function(i){
-                $(this).remove();
-            })
-
-
-    })
-*/
     //legend
 
     setTimeout(function(){
 
         const svg=d3.select(".P2_DG")
 
-        //d3.select(".P1_WG")
         svg.append("circle")
         .attr('cx', 174)
         .attr('cy',15)
         .attr("r", 4)
         .attr("fill","#F2C94C")
 
-        //d3.select(".P1_WG")
         svg.append("line")
         .attr('x1', 165)
         .attr('y1',15)
@@ -1994,14 +1970,14 @@ setTimeout(function(){
         .style("stroke-width", 3)
         .style("stroke", "#F2C94C");   
 
-        //d3.select(".P1_WG")
+
         svg.append("text")
         .attr('x', 187)
         .attr('y',20)
         .text("배뇨 횟수")
         .style('font-size', '100%')
 
-        //d3.select(".P1_WG")
+
         svg.append("rect")
         .attr('x', 240)
         .attr('y',12)
@@ -2011,7 +1987,6 @@ setTimeout(function(){
         .style("opacity", "0.3")
     
 
-        //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 250)
         .attr('y',20)
@@ -2020,7 +1995,6 @@ setTimeout(function(){
 
 
         //labels
-        //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 13)
         .attr('y',20)
@@ -2029,6 +2003,8 @@ setTimeout(function(){
         //.style('font-weight','bold')
 
     })
+
+
 
 
     let goal_pee1_2 = ["목표1", 4, 4, 4, 4]
@@ -2096,8 +2072,7 @@ setTimeout(function(){
                     values: P2WG_Y,
                     //tick:5
                 },
-                max:P2WG_maxY+10,
-                //padding:0,
+                max:P2WG_maxY+10, //그래프 윗쪽 text 잘림 방지 위함 
             },
         },
         legend:{
@@ -2181,7 +2156,7 @@ setTimeout(function(){
         .attr("r", 4)
         .attr("fill","#F2C94C")
 
-        //d3.select(".P1_WG")
+
         svg.append("line")
         .attr('x1', 165)
         .attr('y1',20)
@@ -2190,14 +2165,14 @@ setTimeout(function(){
         .style("stroke-width", 3)
         .style("stroke", "#F2C94C");   
 
-        //d3.select(".P1_WG")
+
         svg.append("text")
         .attr('x', 187)
         .attr('y',25)
         .text("배뇨 횟수")
         .style('font-size', '100%')
 
-        //d3.select(".P1_WG")
+
         svg.append("rect")
         .attr('x', 240)
         .attr('y',17)
@@ -2207,7 +2182,7 @@ setTimeout(function(){
         .style("opacity", "0.3")
     
 
-        //d3.select(".P1_WG")
+
         svg.append("text")
         .attr('x', 250)
         .attr('y',25)
@@ -2216,7 +2191,6 @@ setTimeout(function(){
 
 
         //labels
-        //d3.select(".P1_WG")
         svg.append("text")
         .attr('x', 13)
         .attr('y',30)
@@ -2247,12 +2221,11 @@ setTimeout(function(){
     })
 
 
-
+            //P2 Hourly Graph의 grid, tick값 등 생성. max를 1 또는 0.5 단위로 맞추기 
         let P2HG_grid=[];
         for(let i=0; i<parsedHours_Pee.length; i++){
             P2HG_grid.push({"value":i});
         }
-        //console.log(P2HG_grid)
 
         let P2HG_Ytick=[];
         let P2HG_Ygrid=[];
@@ -2290,7 +2263,6 @@ setTimeout(function(){
             P2HG_margin = 0.5;
 
         }
-        //console.log(P2HG_Ytick, P2HG_Ygrid, hourlyPeeMax)
 
     
     var P2_TimezoneGraph = bb.generate({
@@ -2338,47 +2310,7 @@ setTimeout(function(){
 
         },
         
-        /*onresize:function(){
-            //move bars upside
-            setTimeout(function(){
-                let regStartY = new RegExp(/\,\d+\.*\d*\w/)
-                let regWidth = new RegExp(/H\d+\.*\d*\b/)
-                let regHeight = new RegExp(/V\d+\.*\d*\b/)
-                let height;
-                $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
-                    let path = this.getAttribute("d")
-                    let MY = path.match(regStartY)[0]
-                    MY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
-                    let VY = Number(path.match(regHeight)[0].substr(1)) //VY: 수직선 Y 값의 end
-                    let H = Number(path.match(regWidth)[0].substr(1)) //H: 수평선 = 데이터 값 
-
-                    if(H!=0){ //Data가 0이 아닐 때, 즉 Bar가 있을 경우 
-                        height=(VY-MY)/2;
-                    }
-                })
-                $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
-                    let path = this.getAttribute("d");
-                    let MY = path.match(regStartY)[0]
-                    let VY = path.match(regHeight)[0]
-
-                    let modifiedMY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
-                    let modifiedVY = Number(VY.substr(1)) //VY: 수직선 Y 값의 end
-                    modifiedMY = ","+(modifiedMY-height)+"H";
-                    modifiedVY = "V"+(modifiedVY-height);
-
-                    let path1 = path.replace(MY, modifiedMY)
-                    let path2 = path1.replace(VY, modifiedVY)
-
-                    this.setAttribute("d", path2)
-
-
-                })
-
-            })
-
-        },*/
-
-
+ 
         axis:{
             rotated:true,
                 x: {
@@ -2441,42 +2373,8 @@ setTimeout(function(){
     })
 
     
-    //move bars upside
-    /*setTimeout(function(){
-        let regStartY = new RegExp(/\,\d+\.*\d*\w/)
-        let regWidth = new RegExp(/H\d+\.*\d*\b/)
-        let regHeight = new RegExp(/V\d+\.*\d*\b/)
-        let height;
-        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
-            let path = this.getAttribute("d")
-            let MY = path.match(regStartY)[0]
-            MY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
-            let VY = Number(path.match(regHeight)[0].substr(1)) //VY: 수직선 Y 값의 end
-            let H = Number(path.match(regWidth)[0].substr(1)) //H: 수평선 = 데이터 값 
-
-            if(H!=0){ //Data가 0이 아닐 때, 즉 Bar가 있을 경우 
-                height=(VY-MY)/2;
-            }
-        })
-        $(".P2_TimezoneGraph").find(".bb-bars-배뇨-횟수").find("path").each(function(i){
-            let path = this.getAttribute("d");
-            let MY = path.match(regStartY)[0]
-            let VY = path.match(regHeight)[0]
-
-            let modifiedMY = Number(MY.substr(1, MY.length-2)) // MY: 수직선 Y 값의 start 
-            let modifiedVY = Number(VY.substr(1)) //VY: 수직선 Y 값의 end
-            modifiedMY = ","+(modifiedMY-height)+"H";
-            modifiedVY = "V"+(modifiedVY-height);
-
-            let path1 = path.replace(MY, modifiedMY)
-            let path2 = path1.replace(VY, modifiedVY)
-
-            this.setAttribute("d", path2)
-
-
-        })
-
-    })*/
+  
+            //legend
     setTimeout(function(){
         d3.select(".P2_TG")
         .append("rect")
@@ -2504,21 +2402,18 @@ setTimeout(function(){
     $(".P2_TimezoneGraph").find(".bb-ygrids").attr("opacity", "0.5")
 
 
+
+
 //P3 graphs 
         
         let P3DG_maxY=dailyMaxPoop;
         if(P3DG_maxY<=3){P3DG_maxY=3}
         
-        //console.log(P3DG_maxY)
+  
         let P3DG_grid=[];
         for(let i=0; i<=P3DG_maxY/1; i++){
                 P3DG_grid.push({"value":i})
         }
-
-
-
- 
-        //console.log(P3DG_grid)
 
 
 
@@ -2545,13 +2440,13 @@ setTimeout(function(){
  
         
         onrendered: function() {
-
                 
             console.log(document.getElementById("P3_DailyGraph"));
 
         },
+
         onresized: function(){
-            //move y labels to middle 
+                //Y축 label text를 grid 옆으로 이동시킴 
             let grid_height0=0;
             let grid_height1=0;
 
@@ -2633,6 +2528,8 @@ setTimeout(function(){
         })
 
 
+            //본래 Circle이었던 그래프를 Circle -> 번호에 해당하는 대변 이미지로 바꾸는 작업
+            //특히 이 부분에서 이미지 X, Y값 위치에 오류가 많이 납니다... 원하시는대로 수정하셔도 괜찮습니다 
         setTimeout(function(){
             
             let x_loc=[]
@@ -2640,9 +2537,10 @@ setTimeout(function(){
             let grid_height0=0;
             let grid_height1=0;
             let size=0;
-            //let y_start=0
             let y_loc=[]
 
+                //Grid height을 찾음 for 이미지 사이즈 
+                //Y location을 찾음 for 이미지 삽입 위치 
             let elem0=$(".P3_DailyGraph").find(".bb-ygrid-lines").find("line").each(function(i){ //circle centering
                 if(i==0){grid_height1=$(this).attr("y2")}
                 else if(i==1){
@@ -2652,19 +2550,17 @@ setTimeout(function(){
                 else{
                     y_loc.push(Number($(this).attr("y2")))
                 }
-                //console.log(grid_height1, grid_height0)
             })
             size=(grid_height1-grid_height0)*0.75
 
-            
+                //X location을 찾음 for 이미지 삽입 위치 + 서클 삭제
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
                 x_loc.push($(this).attr("cx"))
                 $(this).remove()
-                //console.log(this);
             })
-            //console.log("P3DG X, Y loc", x_loc, y_loc)
 
+                    //dailyPoopArray에 저장된 정보에 따라 이미지 삽입 
             const mainChart=d3.select(".P3_DG_SVG").select(".bb-chart")
 
             for(let i=0; i<dailyPoopArray.length; i++){
@@ -2731,7 +2627,7 @@ setTimeout(function(){
 
         })
 
-              
+              //legend
         setTimeout(function(){
 
             const svg=d3.select(".P3_DG_SVG").append("g").attr("class", "legend_P3DG")
@@ -2813,16 +2709,15 @@ setTimeout(function(){
        
 
 
-            
+                //P3 Weekly Graph. 2 단위로 max 값 조절 
         let P3WG_maxY = weeklyMaxPoop;
         if(weeklyMaxPoop%2==0){}
         else{
             P3WG_maxY = Number(weeklyMaxPoop)+Number(2-(weeklyMaxPoop%2))
 
         }
-        
-        //if(8>P3WG_maxY){P3WG_maxY=8;}
 
+                //만일 max 값이 10, 20이 넘을 경우 5 또는 10 단위로 조절 
         let P3WG_grid=[];
         let P3WG_Y=[];
 
@@ -2845,7 +2740,6 @@ setTimeout(function(){
             }
         }
 
-        //console.log(P3WG_maxY, P3WG_grid, P3WG_Y)
 
 
     let P3_weeklyGraph=bb.generate({
@@ -2863,7 +2757,6 @@ setTimeout(function(){
         onrendered: function(){
 
             console.log(document.getElementById("P3_weeklyGraph"));
-
 
         },
         
@@ -2940,6 +2833,7 @@ setTimeout(function(){
     })
 
 
+            //text와 grid가 흐릿하게 보이는 현상 수정 
     setTimeout(function(){
 
         let temp=$(".P3_weeklyGraphDiv").find(".bb-main")
@@ -2948,6 +2842,7 @@ setTimeout(function(){
 
       })
 
+            //legend
     setTimeout(function(){
 
                 const svg=d3.select(".P3_WG")
@@ -2993,7 +2888,10 @@ setTimeout(function(){
             
               })
            
-        //remove all interactive events
+
+
+              
+            //remove all interactive events
         $(".P1_DailyGraph").find(".bb-event-rects-single").remove()
         $(".P1_weeklyGraph").find(".bb-event-rects-single").remove()
         $(".P1_TimezoneGraph").find(".bb-event-rects-multiple").remove()
@@ -3208,7 +3106,8 @@ setTimeout(function(){
        return [parsedHourData1, parsedHours1, parsedHourData];
     }
 
-    
+   
+//2주치 날짜 Array를 만드는 함수
     function key_days(start){
         
         let day = new Date(start);
@@ -3223,6 +3122,7 @@ setTimeout(function(){
         return days;
     }
 
+//X축에 표시할 2주치 날짜를 만드는 함수(Parsing된 형태)
     function getXDays(start, startDay){
         if(range == 0){
         let day = new Date(start);
@@ -3270,6 +3170,7 @@ setTimeout(function(){
             return days;
             }
     }
+
 
     function getDates(start){
         
