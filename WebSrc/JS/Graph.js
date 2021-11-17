@@ -130,7 +130,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
     startDay = parseInt(startDay); // 첫주 시작일 (선택 가능)
     range = parseInt(range);
     let days=key_days(start); //2주치 날짜 어레이 for log와의 data matching
-    let dates=getDates(start); // 2주치 날짜 어레이 for 날짜 디자인
+    let dates=getDates(start); // 2주치 날짜 어레이 for 날짜 디자인 (주말 빨간색)
+
     let xDays=getXDays(start, startDay); // 2주치 날짜 어레이 for 그래프 X축
 
     let weeks=["1주차", "2주차", "3주차", "4주차", ] //4주 array for Weekly Graph X축용 
@@ -164,7 +165,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
    
 //DAILY
             //dailyWaterCount: 2주간 섭취한 water log 개수 array
-            //dailyWaterIntake: 2주간 섭취한 water log 개수 * 100(ml) array 
+            //dailyWaterIntake: 2주간 섭취한 water log 개수 * 100(ml) array *실제 그래프 데이터*
         let dailyWaterCount=count_Daily(UserWaterData, days);
         let dailyWaterIntake=[]
         for(let i=0; i<dailyWaterCount.length; i++){
@@ -237,6 +238,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
         let hourlyWaterIntake=hourlyWater[0];
         let parsedHours_water=hourlyWater[1];
         let hourlyWaterIntake_org=hourlyWater[2]
+        //console.log("hourlyWaterIntake:", hourlyWaterIntake, "parsed Hours water:", parsedHours_water, "hourlyWaterIntake_org:", hourlyWaterIntake_org)
 
 
             //count * 100(ml)
@@ -441,8 +443,8 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
 //DAILY
 
-                //dailyPoopArray: 2주간 대변을 본 횟수 (모양을 포함한 2차원 배열)
-                //dailyPoopCount: 2주간 대변을 본 횟수 (모양을 제외한 1차원 배열)
+                //dailyPoopArray: 2주간 대변을 본 횟수 (모양을 포함한 2차원 배열) [[4],[1,2]....]
+                //dailyPoopCount: 2주간 대변을 본 횟수 (모양을 제외한 1차원 배열) [1, 2.....]
         let dailyPoopArray=count_daily_Poop(UserPoopData, days)
         let dailyMaxPoop=0;
         for(let i=0; i<dailyPoopArray.length; i++){
@@ -970,7 +972,6 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                 columns: 
 
                     [
- 
                         dailyWaterIntake,
                         dailyDrinkIntake,
                         goal_water,
@@ -1156,6 +1157,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
 
     })
 
+    //목표 line을 Bar 앞으로 보내는 Block
     setTimeout(function(){
         //let temp=$(".P1_DailyGraphDiv").find(".bb-main")
         let $elem0=$(".P1_DailyGraph").find(".bb-chart-lines")
@@ -2541,7 +2543,7 @@ setTimeout(function(){
 
                 //Grid height을 찾음 for 이미지 사이즈 
                 //Y location을 찾음 for 이미지 삽입 위치 
-            let elem0=$(".P3_DailyGraph").find(".bb-ygrid-lines").find("line").each(function(i){ //circle centering
+            let elem0=$(".P3_DailyGraph").find(".bb-ygrid-lines").find("line").each(function(i){ 
                 if(i==0){grid_height1=$(this).attr("y2")}
                 else if(i==1){
                     grid_height0=$(this).attr("y2")
@@ -2552,11 +2554,16 @@ setTimeout(function(){
                 }
             })
             size=(grid_height1-grid_height0)*0.75
+            console.log("y_loc:", y_loc)
+            for(let i=0; i<y_loc.length; i++){
+                y_loc[i] = y_loc[i] + ((grid_height1-grid_height0)-size)/2
+            }
+            console.log("y_loc:", y_loc)
 
                 //X location을 찾음 for 이미지 삽입 위치 + 서클 삭제
             let elem1=$(".P3_DailyGraph").find(".bb-circles-대변").find("circle").each(function(i){ //circle centering
                 //d3.select(this).attr("dy", "20").style("font-weight", "bold").style("font-size", "9")
-                x_loc.push($(this).attr("cx"))
+                x_loc.push($(this).attr("cx")-size/2)
                 $(this).remove()
             })
 
@@ -2583,10 +2590,10 @@ setTimeout(function(){
                         //console.log("START")
                         mainChart.append('image')
                         .attr('xlink:href', "../IMG/poo/hard.png")
-                        .attr('width', size*1.5)
-                        .attr('height', size*1.5)
-                        .attr("x", x_loc[i]-2)
-                        .attr("y", y_loc[j]*0.95)//y)
+                        .attr('width', size)
+                        .attr('height', size)
+                        .attr("x", x_loc[i])
+                        .attr("y", y_loc[j])//y)
                     }
                     else if(temp==3 || temp==4){
                         //console.log("START")
@@ -2605,13 +2612,14 @@ setTimeout(function(){
                         .attr('width', size)
                         .attr('height', size)
                         .attr("x", x_loc[i])
-                        .attr("y", y_loc[j]+2)//y)
+                        .attr("y", y_loc[j])//y)
 
                     }
                     else{console.log("(POOP) TYPE INPUT ERROR!!!!!")}
                 }
             }
 
+            //Y축 Label을 Grid 중간으로 옮기기
             let gridHeight=grid_height1-grid_height0;
             //console.log(gridHeight, grid_height1, grid_height0);
             let Ytext_P3DG=$(".P3_DailyGraph").find(".bb-axis-y").find("text").each(function(i){
