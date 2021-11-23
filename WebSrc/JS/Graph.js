@@ -636,24 +636,31 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
 
             let waterSeries = [dawnWater, morningWater, lunchWater, afternoonWater, dinnerWater, nightWater]
-            let waterSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
+            let waterSeries_str = ["새벽 6-9시", "아침 9-12시", "점심 12-15시", "낮 15-18시", "저녁 18-21시", "밤 21-24시"]
             timeWaterMax = 0;
-            timeWaterMax_str = '새벽'
-            timeWaterMin = waterSeries[0];
-            timeWaterMin_str = '새벽'
+            timeWaterMax_str = ''
+            timeWaterMin = 10000;
+            timeWaterMin_str = ''
             for(let i=0; i<waterSeries.length; i++){
-                if(waterSeries[i]>timeWaterMax){
-                    timeWaterMax = waterSeries[i]
+                waterTemp = waterSeries[i]
+                if(waterTemp>timeWaterMax){
+                    timeWaterMax = waterTemp
                     timeWaterMax_str = waterSeries_str[i]
                 }
-                if(waterSeries[i]<timeWaterMin){
-                    timeWaterMin = waterSeries[i]
+                else if(waterTemp==timeWaterMax){
+                    timeWaterMax_str += ', ' + waterSeries_str[i]
+                }
+                if(waterTemp<timeWaterMin && waterTemp != 0){
+                    timeWaterMin = waterTemp
                     timeWaterMin_str = waterSeries_str[i]
+                }
+                else if(waterTemp==timeWaterMin){
+                    timeWaterMax_str += ', ' + waterSeries_str[i]
                 }
 
             }
             
-            P1_text+=`- ${timeWaterMax_str} 시간대에 평균 물 섭취량의 총합이 ${timeWaterMax.toFixed(1)}ml로 가장 많으며, ${timeWaterMin_str} 시간대에 ${timeWaterMin.toFixed(1)}ml로 가장 적습니다.
+            P1_text+=`- ${timeWaterMax_str} 동안 마신 물이 평균 ${timeWaterMax.toFixed(1)}ml로 가장 많으며, ${timeWaterMin_str} 동안 마신 물은 평균 ${timeWaterMin.toFixed(1)}ml로 가장 적습니다.
     `
             P1_comment.innerHTML = P1_text
 
