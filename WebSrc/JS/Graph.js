@@ -655,7 +655,7 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
                     timeWaterMin_str = waterSeries_str[i]
                 }
                 else if(waterTemp==timeWaterMin){
-                    timeWaterMax_str += ', ' + waterSeries_str[i]
+                    timeWaterMin_str += ', ' + waterSeries_str[i]
                 }
 
             }
