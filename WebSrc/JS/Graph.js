@@ -756,23 +756,30 @@ let DataLoadComplete = (startDateStamp, range, rangeInt, startDay, creation, id)
             }
 
             let peeSeries = [dawnPee, morningPee, lunchPee, afternoonPee, dinnerPee, nightPee]
-            let peeSeries_str = ["새벽", "아침", "점심", "낮", "저녁", "밤"]
+            let peeSeries_str = ["새벽 6-9시", "아침 9-12시", "점심 12-15시", "낮 15-18시", "저녁 18-21시", "밤 21-24시"]
             timePeeMax = 0;
-            timePeeMax_str = '새벽'
-            timePeeMin = peeSeries[0];
-            timePeeMin_str = '새벽'
+            timePeeMax_str = ''
+            timePeeMin = 10000;
+            timePeeMin_str = ''
             for(let i=0; i<peeSeries.length; i++){
-                if(peeSeries[i]>timePeeMax){
-                    timePeeMax = peeSeries[i]
+                peeTemp = peeSeries[i]
+                if(peeTemp>timePeeMax){
+                    timePeeMax = peeTemp
                     timePeeMax_str = peeSeries_str[i]
                 }
-                if(peeSeries[i]<timePeeMin){
-                    timePeeMin = peeSeries[i]
+                else if(peeTemp==timePeeMax){
+                    timePeeMax_str += ', ' + peeSeries_str[i]
+                }
+                if(peeTemp<timePeeMin && peeTemp != 0){
+                    timePeeMin = peeTemp
                     timePeeMin_str = peeSeries_str[i]
+                }
+                else if(peeTemp==timePeeMin){
+                    timePeeMin_str += ', ' + peeSeries_str[i]
                 }
 
             }
-            P2_text+=`- ${timePeeMax_str} 시간대에 평균 배뇨 횟수의 총합이 ${timePeeMax.toFixed(1)}회로 가장 많으며, ${timePeeMin_str} 시간대에 ${timePeeMin.toFixed(1)}회로 가장 적습니다.`
+            P2_text+=`- ${timePeeMax_str} 동안의 평균 배뇨 횟수의 총합이 ${timePeeMax.toFixed(1)}회로 가장 많으며, ${timePeeMin_str} 동안에 ${timePeeMin.toFixed(1)}회로 가장 적습니다.`
 
 
             P2_comment.innerHTML = P2_text
