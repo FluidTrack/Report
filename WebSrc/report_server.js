@@ -11,7 +11,7 @@ require('./routes.js')(app);
 
 app.use(express.static(path.join(__dirname, './')));
 // Save our port
-var port = process.env.PORT || 8055;
+var port = process.env.PORT || 443;
 
 // Start the server and listen on port
 app.listen(port,function(){
