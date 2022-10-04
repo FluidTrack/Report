@@ -34,7 +34,7 @@ advance.addEventListener('click', () => {
 
 
 DB_Button.addEventListener('click', () => {
-  location.href="http://fluidtrack.site/"
+  location.href="http://165.132.106.186/"
 })
 
 let isMobile = () => {
@@ -58,7 +58,7 @@ searchButton.addEventListener('click',() => {
     if(advance.checked) {
       url += `&server=${serverAddress.value}:${serverPort.value}/`
     } else {
-      url += `&server=http://fluidtrack.site/`
+      url += `&server=http://165.132.106.186/`
     }
     console.log(url)
     location.href=url;
